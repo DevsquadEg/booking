@@ -23,9 +23,9 @@ import RoomsGrid from "./templates/Main/Rooms/rooms/RoomsGrid";
 import RoomDetails from "./templates/Main/Rooms/room-details/RoomDetails";
 import ChangePass from "./templates/AuthTemplate/change-pass/ChangePass";
 import FavList from "./templates/Main/Favorites/fav-list/FavList";
-import Payment from "./templates/Main/Booking/Payment/Payment";
 import Confirmation from "./templates/Main/Booking/confirmation/Confirmation";
 import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
+import Payment from "./templates/Main/Booking/payment/Payment";
 function App() {
   const routes = createBrowserRouter([
     {
