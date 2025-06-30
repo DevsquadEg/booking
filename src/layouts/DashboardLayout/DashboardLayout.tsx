@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 
-export default function AuthLayout() {
+export default function DashboardLayout() {
   return (
     <>
-      <h1>Auth layout</h1>
+      <h1>Dashboard layout</h1>
       <Outlet />
     </>
   );
