@@ -8,7 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { data, Link, useNavigate } from "react-router-dom";
 import AuhtHeader from "./authHeader/AuhtHeader";
 import { axiosInstance } from "../../../services/axiosInstance";
 import { ADMIN_URLS } from "../../../services/apiEndpoints";
@@ -19,7 +19,7 @@ export default function Login() {
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);
   };
-
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
   // =========== submit login ========
@@ -41,7 +41,7 @@ export default function Login() {
   };
   return (
     <>
-      <Grid container sx={{ height: "100vh" }}>
+      <Grid container height={"100vh"}>
         {/* Left Side: Form */}
         <Grid
           size={{ xs: 12, md: 6 }}
@@ -52,14 +52,32 @@ export default function Login() {
             px: 4,
           }}
         >
+          {/* Logo in Top-Left */}
+          <Box
+            position={"absolute"}
+            top={"3rem"}
+            left={"3rem"}
+            fontSize={"26px"}
+            fontWeight={"500"}
+          >
+            <span style={{ color: "#3252DF" }}>Stay</span>
+            <span style={{ color: "#152C5B" }}>cation.</span>
+          </Box>
+
           <Container maxWidth="sm">
-            <AuhtHeader header={"Login !"} />
-            <form>
+            <AuhtHeader
+              header={"Sign in"}
+              linkName={"Register here !"}
+              message={"If you don’t have an account register You can"}
+              link={"./register"}
+            />
+            <Box component="form" onSubmit={onSubmit(data)}>
               <TextField
                 fullWidth
                 margin="normal"
                 label="Email Address"
                 placeholder="Please type here ..."
+                {...register("email")}
               />
 
               <TextField
@@ -93,7 +111,7 @@ export default function Login() {
               <Button fullWidth variant="contained" size="large">
                 Login
               </Button>
-            </form>
+            </Box>
           </Container>
         </Grid>
 
@@ -101,7 +119,7 @@ export default function Login() {
         <Grid size={{ xs: 0, md: 6 }} sx={{ padding: "1rem" }}>
           <Grid
             sx={{
-              backgroundImage: `url("/loginbg.svg")`,              
+              backgroundImage: `url("/loginbg.svg")`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               display: { xs: "none", md: "block" },
@@ -110,9 +128,8 @@ export default function Login() {
               borderRadius: "1rem",
               "&::after": {
                 content: '""',
-                position: "absolute"
-                
-              }
+                position: "absolute",
+              },
             }}
           ></Grid>
         </Grid>

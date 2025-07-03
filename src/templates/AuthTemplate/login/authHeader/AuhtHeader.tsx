@@ -1,47 +1,45 @@
-import React from "react";
 import { Typography, Link as MuiLink } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
-export default function AuhtHeader({ link, header }: any) {
+interface AuthHeaderProps {
+  header: string;
+  message: string;
+  linkName: string;
+  link: string;
+}
+export default function AuhtHeader({
+  header,
+  message,
+  linkName,
+  link,
+}: AuthHeaderProps) {
   return (
     <>
-      <Typography
-        sx={{
-          fontWeight: "600",
-          lineHeight: "normal",
-        }}
-        color="black"
-        fontSize={"30px"}
-        variant="h4"
-        fontWeight={700}
-        gutterBottom
-      >
+      <Typography fontSize={"30px"} variant="h4" fontWeight={500} gutterBottom>
         {header}
       </Typography>
 
-      <Typography
-        variant="body2"
-        mb={2}
-        sx={{
-          color: "#152C5B",
-
-          fontSize: "16px",
-        }}
-      >
-        If you don't have an account register
-        <MuiLink
-          component={RouterLink}
-          to="/register"
-          sx={{
-            ml: 1,
-            fontWeight: "bold",
-            textDecoration: "none",
-            color: "primary.main",
-          }}
+      {message && link && (
+        <Typography
+          variant="body2"
+          mb={2}
+          sx={{ fontSize: "16px", color: "text.primary" }}
         >
-          {link || "Register here !"}
-        </MuiLink>
-      </Typography>
+          {message}
+          <MuiLink
+            component={RouterLink}
+            to={link}
+            sx={{
+              ml: 1,
+              fontWeight: "bold",
+              textDecoration: "none",
+              color: "primary.main",
+            }}
+          >
+            {linkName || "Click here"}
+          </MuiLink>
+        </Typography>
+      )}
     </>
   );
 }
