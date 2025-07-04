@@ -164,7 +164,7 @@ export default function Login() {
 
               <Box sx={{ my: 2 }} textAlign="right">
                 <Link
-                  to="/forgot-password"
+                  to="/forget-pass"
                   style={{
                     color: "#4D4D4D",
                     fontWeight: "400",

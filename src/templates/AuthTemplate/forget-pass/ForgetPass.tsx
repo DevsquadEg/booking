@@ -1,3 +1,197 @@
+
+import { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import forgetBg from "../../../assets/imgs/forget-password.png";
+import axios, { isAxiosError } from "axios";
+import toast from "react-hot-toast";
+
+// mui imports 
+import Box from '@mui/material/Box';
+import Typography from "@mui/material/Typography";
+import FilledInput from '@mui/material/FilledInput';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Avatar from "@mui/material/Avatar";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import FormHelperText from "@mui/material/FormHelperText";
+import type { ForgetProps } from "../../../services/interfaces";
+import { ADMIN_URLS, baseURL, PORTAL_URLS } from "../../../services/apiEndpoints";
+import { axiosInstance } from "../../../services/axiosInstance";
+import validation from "../../../services/validation";
+import { Alert, OutlinedInput } from "@mui/material";
+
+
+
+
+
 export default function ForgetPass() {
-  return <div>ForgetPass</div>;
+  const [helperText, setHelperText] =useState("");
+const navigate = useNavigate()
+
+
+  const {register , handleSubmit , formState: { errors,isSubmitting},watch} = useForm<ForgetProps>({mode:"onChange"});
+
+
+// forget
+
+const forget  = useCallback( async function(userInfo:ForgetProps){
+const toastId = toast.loading("Waiting....")
+
+try {
+  const options = {
+    method: "POST",
+    url:`${baseURL}/api/v0/portal/users/forgot-password`,
+    data:userInfo
+  }
+  
+const {data} = await axios.request(options)
+if(data.success){
+  toast.success("Password Reset OTP Sent to Your Email")
+  setTimeout(()=>{
+    navigate("/reset-pass" ,{state:{userEmail:watch("email")}})
+  },1500)
+}
+
+
+
+
+} catch (error) {
+  console.log(error)
+  if(isAxiosError(error)){
+  toast.error(error.response?.data.message || " Some thing go Wrong !")
+  setHelperText(error.response?.data.message || " Some thing go Wrong !")
+  }
+   
+}finally{
+  toast.dismiss(toastId)
+}
+
+
+
+
+} ,[navigate,watch])
+
+
+
+
+
+
+ 
+  return (
+   <>
+
+
+  <Box overflow={"hidden"} component={"main"}>
+{/*  text and form */}
+<Grid container spacing={1}  direction="row"
+  sx={{
+    justifyContent: "center",
+    alignItems: "center",
+  }}>
+
+ <Grid sx={{px:1}} size={{md:5, xs: 12 }}>
+    {/*  header */}
+<Box component={"header"}>
+    <Typography component={"h3"}>Forgot password</Typography>
+  <Typography component={"p"}>If you already have an account register</Typography>
+  <Typography component={"span"}>You can   <Link style={{color:"red",textDecoration:"none"}} to="/auth/login"> Login here !</Link></Typography>
+
+</Box>
+
+{/* form */}
+
+
+<Box onSubmit={handleSubmit(forget)} style={{width:"100%"}} mt={5} component={"form"}>
+
+
+{/*  input for Email */}
+
+{/* <Box mb={2}>
+    <InputLabel htmlFor="email">Email</InputLabel>
+   <FormControl fullWidth variant="filled">
+        <FilledInput
+        {...register("email" , validation.EMAIL_VALIDATION) }
+        type="email"
+      />
+     </FormControl>
+
+{errors.email && <FormHelperText>{errors.email.message}</FormHelperText>}
+
+</Box> */}
+
+<Box
+                sx={{
+                  mt: "1.5rem",
+                }}
+              >
+                <InputLabel
+                  sx={{
+                    color: "var(--dark-blue-color)",
+                    fontWeight: "400",
+                    fontSize: "16px",
+                  }}
+                >
+                  Email Address
+                </InputLabel>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    margin: { top: ".3rem", bottom: "35px" },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        border: "none",
+                      },
+                    },
+                  }}
+                  variant="standard"
+                >
+                  <OutlinedInput
+                    sx={{
+                      background: "#f5f6f8",
+                    }}
+                    id="outlined-adornment-email"
+                    type={"email"}
+                    // placeholder="Email"
+                    {...register("email",validation.EMAIL_VALIDATION)}
+                  />
+                </FormControl>
+                {errors.email && (
+                  <Alert sx={{ marginBottom: "1rem" }} severity="error">
+                    {errors.email.message}
+                  </Alert>
+                )}
+              </Box>
+      
+     
+
+
+
+
+
+{helperText && <FormHelperText sx={{textAlign:"center"}}>{helperText}</FormHelperText>
+}
+  <Button fullWidth sx={{display:"block",mx:"auto" , mt:4}} variant="contained" type="submit" loading ={isSubmitting}>Send Email</Button>
+
+</Box>
+
+
+
+
+
+   </Grid>
+
+{/*  imge */}
+<Grid size={{md:5}}>
+<Avatar variant="square" sx={{width:"100%" , height:"auto",objectFit:"contain"}} alt="bg-img-for-register" src={forgetBg}/>
+</Grid>
+</Grid>
+
+
+
+  </Box>
+
+   </>
+  )
 }
