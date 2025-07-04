@@ -15,8 +15,9 @@ import AuhtHeader from "../../../components/AuthComponents/authHeader/AuhtHeader
 import RightSideImage from "../../../components/AuthComponents/rightSideImage/RightSideImage";
 import Logo from "../../../components/AuthComponents/Logo/Logo";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
-import type { LoginInputs } from "@/services/types";
+import type { LoginInputs } from "../../../services/types";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
+import { FORGET_PASS_PATH } from "../../../services/paths";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -169,7 +170,7 @@ export default function Login() {
 
               <Box sx={{ my: 2 }} textAlign="right">
                 <Link
-                  to="/forgot-password"
+                  to={FORGET_PASS_PATH}
                   style={{
                     color: "#4D4D4D",
                     fontWeight: "400",
