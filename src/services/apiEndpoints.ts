@@ -21,6 +21,19 @@ export const ADMIN_URLS = {
     FORGET_PASSWORD: "/admin/users/forget-password", // As seen in Postman screenshot
   },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   // Room Management Endpoints within Admin
   ROOM: {
     // Path to create a new room
@@ -158,5 +171,13 @@ export const PORTAL_URLS = {
 // -----------------------------------------------------------------------------
 
 export const PING_URL: string = "/Misc/Ping"; // Check if service is working
+
+
+export const USER_FORGET_PASSWORD = `https://upskilling-egypt.com:3000/api/v0/portal/users/forgot-password`
+export const USER_RESET_PASSWORD = `https://upskilling-egypt.com:3000/api/v0/portal/users/reset-password`
+
+
+
+
 
 

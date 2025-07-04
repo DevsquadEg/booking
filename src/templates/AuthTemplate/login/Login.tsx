@@ -85,7 +85,7 @@ export default function Login() {
               />
 
               <Box sx={{ mb: 2 }} textAlign="right">
-                <Link to="/forgot-password" variant="body2" underline="none">
+                <Link to="/forget_pass" variant="body2" underline="none">
                   Forgot Password ?
                 </Link>
               </Box>
