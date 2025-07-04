@@ -2,10 +2,8 @@ import {
   Alert,
   Container,
   FormControl,
-  FormHelperText,
   Grid,
   IconButton,
-  Input,
   InputAdornment,
   InputLabel,
   OutlinedInput,
@@ -30,6 +28,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AuhtHeader from "../../../components/AuthComponents/authHeader/AuhtHeader";
 import RightSideImage from "../../../components/AuthComponents/rightSideImage/RightSideImage";
 import Logo from "../../../components/AuthComponents/Logo/Logo";
+import { LOGIN_PATH } from "../../../services/paths";
+import { isAxiosError } from "axios";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -71,7 +71,7 @@ export default function Register() {
 
   // Function to handle form submission
   const onSubmitRegister = async (data: IRegitserForm) => {
-    let finalData = convertValuesInroForm(data);
+    const finalData = convertValuesInroForm(data);
     try {
       const response = await axiosInstance.post(
         PORTAL_URLS.USER.REGISTER,
@@ -82,12 +82,15 @@ export default function Register() {
       // Here you would typically send the data to your backend
       console.log("Form submitted successfully:", response);
 
-      navigate("/Login", { replace: true });
+      navigate(LOGIN_PATH, { replace: true });
 
       // You can also handle success messages or navigation here
-    } catch (error: string | any) {
-      console.error("Error submitting form:", error);
-      toast.error(error?.response?.data?.message || "This didn't work.");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        console.error("Error submitting form:", error);
+
+        toast.error(error?.response?.data?.message || "This didn't work.");
+      }
 
       // Handle error messages here
     }
@@ -117,7 +120,7 @@ export default function Register() {
             header={"Sign Up!"}
             message={"If you already have an account register "}
             linkName={"Login here!"}
-            link={"/login"}
+            link={LOGIN_PATH}
           />
           <form onSubmit={handleSubmit(onSubmitRegister)}>
             {/* =================== User Name ===================== */}

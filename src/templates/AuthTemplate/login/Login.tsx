@@ -1,4 +1,3 @@
-import Button from "@mui/material/Button";
 import { Alert, Box, Container, Grid } from "@mui/material";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
@@ -42,12 +41,14 @@ export default function Login() {
       // await getCurrentUser();
       toast.success("Login success!");
       navigate("/dashboard");
-    } catch (error: string | any) {
+    } catch (error) {
       // console.log(error?.response?.data?.message);
       if (isAxiosError(error))
         toast.error(error?.response?.data || "Something went wrong");
-      if (isAxiosError(error)) console.log(error);
-      toast.error(error?.response?.data?.message || "Something went wrong");
+      if (isAxiosError(error)) {
+        console.log(error);
+        toast.error(error?.response?.data?.message || "Something went wrong");
+      }
     }
   };
   return (
