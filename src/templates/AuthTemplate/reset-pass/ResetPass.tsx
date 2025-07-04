@@ -143,7 +143,6 @@ const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !s
  <Grid sx={{px:1}} size={{md:5, xs: 12 }}>
     {/*  header */}
 <Box component={"header"}>
-    <Typography component={"h3"}>Sign up</Typography>
   <Typography component={"p"}>If you already have an account register</Typography>
   <Typography component={"span"}>You can   <Link style={{color:"red",textDecoration:"none"}} to="/login"> Login here !</Link></Typography>
 
