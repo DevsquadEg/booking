@@ -5,6 +5,7 @@ import Login from "./templates/AuthTemplate/login/Login";
 import Register from "./templates/AuthTemplate/register/Register";
 import Dashoard from "./templates/Dashboard/Dashoard/Dashoard";
 import Home from "./templates/Dashboard/Home/Home";
+import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 function App() {
   const routes = createBrowserRouter([
@@ -33,6 +34,7 @@ function App() {
   return (
     <>
       <RouterProvider router={routes}></RouterProvider>
+      <Toaster />
     </>
   );
 }

@@ -7,11 +7,12 @@ import InputAdornment from "@mui/material/InputAdornment";
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { data, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { axiosInstance } from "../../../services/axiosInstance";
 import { ADMIN_URLS } from "../../../services/apiEndpoints";
 import { isAxiosError } from "axios";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
