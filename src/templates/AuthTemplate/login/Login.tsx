@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { Box, Container, Grid } from "@mui/material";
+import { Alert, Box, Container, Grid } from "@mui/material";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import AuhtHeader from "../../../components/AuthComponents/authHeader/AuhtHeader";
 import RightSideImage from "../../../components/AuthComponents/rightSideImage/RightSideImage";
 import Logo from "../../../components/AuthComponents/Logo/Logo";
+import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +22,11 @@ export default function Login() {
     setShowPassword((prev) => !prev);
   };
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm();
 
   // =========== submit login ========
   const onSubmit = async (data: any) => {
@@ -33,11 +38,10 @@ export default function Login() {
       // await getCurrentUser();
       toast.success("Login success!");
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: string | any) {
       // console.log(error?.response?.data?.message);
       if (isAxiosError(error)) console.log(error);
-
-      // toast.error(error?.response?.data?.message || "Something went wrong");
+      toast.error(error?.response?.data?.message || "Something went wrong");
     }
   };
   return (
@@ -59,7 +63,7 @@ export default function Login() {
               header={"Sign in"}
               message={"If you don’t have an account register You can"}
               linkName={"Register here!"}
-              link={"./register"}
+              link={"/register"}
             />
             <Box component="form" onSubmit={handleSubmit(onSubmit)}>
               <Box
@@ -82,12 +86,20 @@ export default function Login() {
                   variant="standard"
                 >
                   <OutlinedInput
+                    sx={{
+                      background: "#f5f6f8",
+                    }}
                     id="outlined-adornment-email"
                     type={"text"}
                     // placeholder="Email"
                     {...register("email")}
                   />
                 </FormControl>
+                {errors.email && (
+                  <Alert sx={{ marginBottom: "1rem" }} severity="error">
+                    {errors.email.message}
+                  </Alert>
+                )}
               </Box>
               {/* =============== password ========================== */}
 
@@ -113,6 +125,9 @@ export default function Login() {
                   variant="standard"
                 >
                   <OutlinedInput
+                    sx={{
+                      background: "#f5f6f8",
+                    }}
                     type={showPassword ? "text" : "password"}
                     endAdornment={
                       <InputAdornment position="end">
@@ -133,6 +148,11 @@ export default function Login() {
                     {...register("password")}
                   />
                 </FormControl>
+                {errors.password && (
+                  <Alert sx={{ marginBottom: "1rem" }} severity="error">
+                    {errors.password.message}
+                  </Alert>
+                )}
               </Box>
 
               <Box sx={{ my: 2 }} textAlign="right">
@@ -149,17 +169,7 @@ export default function Login() {
                 </Link>
               </Box>
 
-              <Button
-                fullWidth
-                variant="contained"
-                size="large"
-                type="submit"
-                sx={{
-                  bgcolor: "var(--blue-color) !important",
-                }}
-              >
-                Login
-              </Button>
+              <SubmitBtn isSubmitting={isSubmitting} title="Login" />
             </Box>
           </Container>
         </Grid>
