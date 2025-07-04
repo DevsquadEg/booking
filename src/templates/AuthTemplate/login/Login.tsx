@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -14,6 +14,8 @@ import toast from "react-hot-toast";
 import AuhtHeader from "../../../components/AuthComponents/authHeader/AuhtHeader";
 import RightSideImage from "../../../components/AuthComponents/rightSideImage/RightSideImage";
 import Logo from "../../../components/AuthComponents/Logo/Logo";
+import { useAuth } from "../../../store/AuthContext/AuthContext";
+import type { LoginInputs } from "@/services/types";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,19 +24,22 @@ export default function Login() {
   };
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const { saveLoginData } = useAuth();
 
   // =========== submit login ========
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: LoginInputs) => {
     try {
       const response = await axiosInstance.post(ADMIN_URLS.USER.LOGIN, data);
-      console.log(response);
       localStorage.setItem("token", response?.data.data.token);
+      await saveLoginData();
       // await saveLoginData();
       // await getCurrentUser();
       toast.success("Login success!");
       navigate("/dashboard");
     } catch (error) {
       // console.log(error?.response?.data?.message);
+      if (isAxiosError(error))
+        toast.error(error?.response?.data || "Something went wrong");
       if (isAxiosError(error)) console.log(error);
 
       // toast.error(error?.response?.data?.message || "Something went wrong");

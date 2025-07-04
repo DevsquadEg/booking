@@ -8,7 +8,7 @@ export const ADMIN_URLS = {
     // Path to get all users (admin view, with pagination/filtering)
     GET_ALL_USERS: "/admin/Users", // Example: /api/v0/admin/Users?page=1&size=10
     // Path to get a specific user profile (admin view)
-    GET_USER_PROFILE: (id: number): string => `/admin/Users/${id}`,
+    GET_USER_PROFILE: (id: string): string => `/admin/Users/${id}`,
     // Path to create a new user (e.g., manager, admin)
     CREATE_USER: "/admin/Users",
     // Path for admin to reset a user's password
@@ -158,5 +158,3 @@ export const PORTAL_URLS = {
 // -----------------------------------------------------------------------------
 
 export const PING_URL: string = "/Misc/Ping"; // Check if service is working
-
-
