@@ -27,6 +27,8 @@ import FavList from "./templates/Main/Favorites/fav-list/FavList";
 import Confirmation from "./templates/Main/Booking/confirmation/Confirmation";
 import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
 import Payment from "./templates/Main/Booking/payment/Payment";
+import { Toaster } from "react-hot-toast";
+
 function App() {
   const routes = createBrowserRouter([
     {

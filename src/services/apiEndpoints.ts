@@ -88,7 +88,7 @@ export const PORTAL_URLS = {
     // User login path for portal users
     LOGIN: "/portal/users/login", // As seen in Postman screenshot
     // Path for portal users to register
-    REGISTER: "/portal/Users/Register", // Assuming a separate registration for portal
+    REGISTER: "/portal/Users/", // Assuming a separate registration for portal
     // Path for portal users to forget password
     FORGET_PASSWORD: "/portal/users/forget-password", // As seen in Postman screenshot
     // Path for portal users to reset password
