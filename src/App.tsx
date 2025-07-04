@@ -28,7 +28,6 @@ import Confirmation from "./templates/Main/Booking/confirmation/Confirmation";
 import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
 import Payment from "./templates/Main/Booking/payment/Payment";
 
-
 function App() {
   const routes = createBrowserRouter([
     {
@@ -38,9 +37,9 @@ function App() {
       children: [
         { path: "login", element: <Login /> },
         { path: "register", element: <Register /> },
-        { path: "forget_pass", element: <ForgetPass /> },
-        { path: "reset_pass", element: <ResetPass /> },
-        { path: "verify_account", element: <VerifyAccount /> },
+        { path: "forget-pass", element: <ForgetPass /> },
+        { path: "reset-pass", element: <ResetPass /> },
+        { path: "verify-account", element: <VerifyAccount /> },
       ],
     },
     {
@@ -50,11 +49,11 @@ function App() {
       children: [
         { index: true, element: <Home /> },
         { path: "rooms", element: <RoomsGrid /> },
-        { path: "room_details/:id", element: <RoomDetails /> },
-        { path: "fav_list", element: <FavList /> },
+        { path: "room-details/:id", element: <RoomDetails /> },
+        { path: "fav-list", element: <FavList /> },
         { path: "payment", element: <Payment /> },
         { path: "confirmation", element: <Confirmation /> },
-        { path: "change_pass", element: <ChangePass /> },
+        { path: "change-pass", element: <ChangePass /> },
       ],
     },
     {
@@ -63,18 +62,18 @@ function App() {
       errorElement: <NotFound />,
       children: [
         { index: true, element: <Dashboard /> },
-        { path: "facilities_list", element: <FacilitiesList /> },
-        { path: "facility_data", element: <FacilityData /> },
-        { path: "ads_list", element: <AdsList /> },
-        { path: "ad_data/add/", element: <AdData /> },
-        { path: "ad_data/edit/:id", element: <AdData /> },
-        { path: "rooms_list", element: <RoomsList /> },
+        { path: "facilities-list", element: <FacilitiesList /> },
+        { path: "facility-data", element: <FacilityData /> },
+        { path: "ads-list", element: <AdsList /> },
+        { path: "ad-data/add/", element: <AdData /> },
+        { path: "ad-data/edit/:id", element: <AdData /> },
+        { path: "rooms-list", element: <RoomsList /> },
         { path: "room/add/", element: <RoomData /> },
         { path: "room/edit/:id", element: <RoomData /> },
-        { path: "bookings_list", element: <BookingsList /> },
-        { path: "booking_data", element: <BookingData /> },
-        { path: "users_list", element: <UsersList /> },
-        { path: "user_data/:id", element: <UserData /> },
+        { path: "bookings-list", element: <BookingsList /> },
+        { path: "booking-data", element: <BookingData /> },
+        { path: "users-list", element: <UsersList /> },
+        { path: "user-data/:id", element: <UserData /> },
       ],
     },
   ]);
