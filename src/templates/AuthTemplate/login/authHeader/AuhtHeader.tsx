@@ -1,8 +1,8 @@
 import React from "react";
 import { Typography, Link as MuiLink } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { NavLink, Link as RouterLink } from "react-router-dom";
 
-export default function AuhtHeader({ link, header }: any) {
+export default function AuhtHeader({ link, header ,caption,NavLink}: any) {
   return (
     <>
       <Typography
@@ -28,15 +28,15 @@ export default function AuhtHeader({ link, header }: any) {
           fontSize: "16px",
         }}
       >
-        If you don't have an account register
+        {caption}
         <MuiLink
           component={RouterLink}
-          to="/register"
+          to={NavLink}
           sx={{
             ml: 1,
             fontWeight: "bold",
             textDecoration: "none",
-            color: "primary.main",
+            color: "red",
           }}
         >
           {link || "Register here !"}

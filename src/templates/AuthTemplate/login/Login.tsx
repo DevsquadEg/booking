@@ -53,7 +53,7 @@ export default function Login() {
           }}
         >
           <Container maxWidth="sm">
-            <AuhtHeader header={"Login !"} />
+            <AuhtHeader header={"Login !"} caption={"If you don’t have an account register You can  "} NavLink={"/register"}/>
             <form>
               <TextField
                 fullWidth
@@ -69,18 +69,18 @@ export default function Login() {
                 type={showPassword ? "text" : "password"}
                 placeholder="Please type here ..."
                 InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={handleTogglePassword}
-                        onMouseDown={(e) => e.preventDefault()}
-                        edge="end"
-                        aria-label="toggle password visibility"
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}{" "}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleTogglePassword}
+                          onMouseDown={(e) => e.preventDefault()}
+                          edge="end"
+                          aria-label="toggle password visibility"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}{" "}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                 }}
               />
 
