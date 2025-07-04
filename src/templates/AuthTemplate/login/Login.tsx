@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { Box, Container, Grid } from "@mui/material";
+import { Alert, Box, Container, Grid } from "@mui/material";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -16,6 +16,7 @@ import RightSideImage from "../../../components/AuthComponents/rightSideImage/Ri
 import Logo from "../../../components/AuthComponents/Logo/Logo";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import type { LoginInputs } from "@/services/types";
+import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +24,11 @@ export default function Login() {
     setShowPassword((prev) => !prev);
   };
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm();
   const { saveLoginData } = useAuth();
 
   // =========== submit login ========
@@ -36,13 +41,12 @@ export default function Login() {
       // await getCurrentUser();
       toast.success("Login success!");
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: string | any) {
       // console.log(error?.response?.data?.message);
       if (isAxiosError(error))
         toast.error(error?.response?.data || "Something went wrong");
       if (isAxiosError(error)) console.log(error);
-
-      // toast.error(error?.response?.data?.message || "Something went wrong");
+      toast.error(error?.response?.data?.message || "Something went wrong");
     }
   };
   return (
@@ -64,57 +68,120 @@ export default function Login() {
               header={"Sign in"}
               message={"If you don’t have an account register You can"}
               linkName={"Register here!"}
-              link={"./register"}
+              link={"/register"}
             />
             <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-              <InputLabel>Email</InputLabel>
-              <FormControl fullWidth margin="dense" variant="standard">
-                <OutlinedInput
-                  id="outlined-adornment-email"
-                  type={"text"}
-                  // placeholder="Email"
-                  {...register("email")}
-                />
-              </FormControl>
-
+              <Box
+                sx={{
+                  mt: "1.5rem",
+                }}
+              >
+                <InputLabel
+                  sx={{
+                    color: "var(--dark-blue-color)",
+                    fontWeight: "400",
+                    fontSize: "16px",
+                  }}
+                >
+                  Email Address
+                </InputLabel>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    margin: { top: ".3rem", bottom: "35px" },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        border: "none",
+                      },
+                    },
+                  }}
+                  variant="standard"
+                >
+                  <OutlinedInput
+                    sx={{
+                      background: "#f5f6f8",
+                    }}
+                    id="outlined-adornment-email"
+                    type={"text"}
+                    // placeholder="Email"
+                    {...register("email")}
+                  />
+                </FormControl>
+                {errors.email && (
+                  <Alert sx={{ marginBottom: "1rem" }} severity="error">
+                    {errors.email.message}
+                  </Alert>
+                )}
+              </Box>
               {/* =============== password ========================== */}
-              <InputLabel>Password</InputLabel>
-              <FormControl fullWidth margin="dense" variant="standard">
-                <OutlinedInput
-                  type={showPassword ? "text" : "password"}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label={
-                          showPassword
-                            ? "hide the password"
-                            : "display the password"
-                        }
-                        onClick={handleTogglePassword}
-                        onMouseDown={(e) => e.preventDefault()}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  {...register("password")}
-                />
-              </FormControl>
 
-              <Box sx={{ mb: 2 }} textAlign="right">
-                <Link to="/forgot-password">Forgot Password ?</Link>
+              <Box
+                sx={{
+                  mt: "1.5rem",
+                }}
+              >
+                <InputLabel
+                  sx={{
+                    color: "var(--dark-blue-color)",
+                    fontWeight: "400",
+                    fontSize: "16px",
+                  }}
+                >
+                  Password
+                </InputLabel>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    mt: ".3rem",
+                  }}
+                  variant="standard"
+                >
+                  <OutlinedInput
+                    sx={{
+                      background: "#f5f6f8",
+                    }}
+                    type={showPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label={
+                            showPassword
+                              ? "hide the password"
+                              : "display the password"
+                          }
+                          onClick={handleTogglePassword}
+                          onMouseDown={(e) => e.preventDefault()}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    {...register("password")}
+                  />
+                </FormControl>
+                {errors.password && (
+                  <Alert sx={{ marginBottom: "1rem" }} severity="error">
+                    {errors.password.message}
+                  </Alert>
+                )}
               </Box>
 
-              <Button
-                className="bgBlue"
-                fullWidth
-                variant="contained"
-                size="large"
-                type="submit"
-              >
-                Login
-              </Button>
+              <Box sx={{ my: 2 }} textAlign="right">
+                <Link
+                  to="/forgot-password"
+                  style={{
+                    color: "#4D4D4D",
+                    fontWeight: "400",
+                    fontSize: "16px",
+                    textDecoration: "none",
+                  }}
+                >
+                  Forgot Password ?
+                </Link>
+              </Box>
+
+              <SubmitBtn isSubmitting={isSubmitting} title="Login" />
             </Box>
           </Container>
         </Grid>

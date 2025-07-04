@@ -31,9 +31,9 @@ export default function AuhtHeader({
             to={link}
             sx={{
               ml: 1,
-              fontWeight: "bold",
+              fontWeight: "600",
               textDecoration: "none",
-              color: "primary.main",
+              color: "var(--dark-blue-color)",
             }}
           >
             {linkName || "Click here"}
