@@ -82,7 +82,14 @@ export default function Login() {
                 </InputLabel>
                 <FormControl
                   fullWidth
-                  sx={{ margin: { top: ".3rem", bottom: "35px" } }}
+                  sx={{
+                    margin: { top: ".3rem", bottom: "35px" },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        border: "none",
+                      },
+                    },
+                  }}
                   variant="standard"
                 >
                   <OutlinedInput
