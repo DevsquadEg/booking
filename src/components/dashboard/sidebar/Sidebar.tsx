@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Drawer,
@@ -31,6 +31,8 @@ import {
   USERS_LIST_PATH,
 } from "../../../services/paths";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../../store/AuthContext/AuthContext";
+import toast from "react-hot-toast";
 
 const drawerWidth = 240;
 
@@ -38,14 +40,28 @@ interface MenuItem {
   label: string;
   icon: React.ReactNode;
   path: string;
+  onClick?: () => void;
 }
 
-const Sidebar: React.FC = () => {
+const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const { logOutUser } = useAuth();
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
   };
+
+  //   check if media is mobile then make side bar collapsed by default
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleMediaChange = (event: MediaQueryListEvent) => {
+      setCollapsed(event.matches);
+    };
+    mediaQuery.addEventListener("change", handleMediaChange);
+    return () => {
+      mediaQuery.removeEventListener("change", handleMediaChange);
+    };
+  }, []);
 
   const menuItems: MenuItem[] = [
     { label: "Home", icon: <HomeOutlined />, path: DASHBOARD_PATH },
@@ -54,7 +70,15 @@ const Sidebar: React.FC = () => {
     { label: "Rooms", icon: <HotelOutlined />, path: ROOMS_LIST_PATH },
     { label: "ADS", icon: <AdUnitsOutlined />, path: ADS_LIST_PATH },
 
-    { label: "Logout", icon: <LogoutOutlined />, path: LOGIN_PATH },
+    {
+      label: "Logout",
+      icon: <LogoutOutlined />,
+      onClick: () => {
+        logOutUser();
+        toast.success("Logout success!");
+      },
+      path: LOGIN_PATH,
+    },
     {
       label: "Change Password",
       icon: <LockOutlined />,
@@ -64,7 +88,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <Drawer
-      variant="permanent"
+      variant={anchorElNav ? "temporary" : "permanent"}
       sx={{
         width: collapsed ? 60 : drawerWidth,
         flexShrink: 0,
@@ -96,7 +120,11 @@ const Sidebar: React.FC = () => {
             title={collapsed ? item.label : ""}
             placement="right"
           >
-            <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={item.onClick}
+            >
               <ListItemButton
                 component={NavLink}
                 to={item.path}
