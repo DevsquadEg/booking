@@ -3,6 +3,11 @@
 :root {
   --blue-color: #3252df;
   --dark-blue-color: #152c5b;
+  --sidebar-bg-color: #203fc7;
+  --sidebar-icon-color: #ffffff;
+  --sidebar-active-icon-color: #fff;
+  --sidebar-active-bg-color: #1a1b1e2b;
+  --sidebar-active-before-color: #1a1b1e;
 }
 
 body {
@@ -11,5 +16,3 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-
