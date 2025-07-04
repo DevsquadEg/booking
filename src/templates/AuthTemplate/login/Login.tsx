@@ -62,51 +62,101 @@ export default function Login() {
               link={"./register"}
             />
             <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-              <InputLabel>Email</InputLabel>
-              <FormControl fullWidth margin="dense" variant="standard">
-                <OutlinedInput
-                  id="outlined-adornment-email"
-                  type={"text"}
-                  // placeholder="Email"
-                  {...register("email")}
-                />
-              </FormControl>
-
+              <Box
+                sx={{
+                  mt: "1.5rem",
+                }}
+              >
+                <InputLabel
+                  sx={{
+                    color: "var(--dark-blue-color)",
+                    fontWeight: "400",
+                    fontSize: "16px",
+                  }}
+                >
+                  Email Address
+                </InputLabel>
+                <FormControl
+                  fullWidth
+                  sx={{ margin: { top: ".3rem", bottom: "35px" } }}
+                  variant="standard"
+                >
+                  <OutlinedInput
+                    id="outlined-adornment-email"
+                    type={"text"}
+                    // placeholder="Email"
+                    {...register("email")}
+                  />
+                </FormControl>
+              </Box>
               {/* =============== password ========================== */}
-              <InputLabel>Password</InputLabel>
-              <FormControl fullWidth margin="dense" variant="standard">
-                <OutlinedInput
-                  type={showPassword ? "text" : "password"}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label={
-                          showPassword
-                            ? "hide the password"
-                            : "display the password"
-                        }
-                        onClick={handleTogglePassword}
-                        onMouseDown={(e) => e.preventDefault()}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  {...register("password")}
-                />
-              </FormControl>
 
-              <Box sx={{ mb: 2 }} textAlign="right">
-                <Link to="/forgot-password">Forgot Password ?</Link>
+              <Box
+                sx={{
+                  mt: "1.5rem",
+                }}
+              >
+                <InputLabel
+                  sx={{
+                    color: "var(--dark-blue-color)",
+                    fontWeight: "400",
+                    fontSize: "16px",
+                  }}
+                >
+                  Password
+                </InputLabel>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    mt: ".3rem",
+                  }}
+                  variant="standard"
+                >
+                  <OutlinedInput
+                    type={showPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label={
+                            showPassword
+                              ? "hide the password"
+                              : "display the password"
+                          }
+                          onClick={handleTogglePassword}
+                          onMouseDown={(e) => e.preventDefault()}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    {...register("password")}
+                  />
+                </FormControl>
+              </Box>
+
+              <Box sx={{ my: 2 }} textAlign="right">
+                <Link
+                  to="/forgot-password"
+                  style={{
+                    color: "#4D4D4D",
+                    fontWeight: "400",
+                    fontSize: "16px",
+                    textDecoration: "none",
+                  }}
+                >
+                  Forgot Password ?
+                </Link>
               </Box>
 
               <Button
-                className="bgBlue"
                 fullWidth
                 variant="contained"
                 size="large"
                 type="submit"
+                sx={{
+                  bgcolor: "var(--blue-color) !important",
+                }}
               >
                 Login
               </Button>
