@@ -38,7 +38,3 @@ export type AuthContextType = {
   getCurrentUser: () => void;
 };
 
-export type LoginInputs = {
-  email: string;
-  password: string;
-};

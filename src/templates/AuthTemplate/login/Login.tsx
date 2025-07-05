@@ -14,7 +14,6 @@ import AuhtHeader from "../../../components/AuthComponents/authHeader/AuhtHeader
 import RightSideImage from "../../../components/AuthComponents/rightSideImage/RightSideImage";
 import Logo from "../../../components/AuthComponents/Logo/Logo";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
-import type { LoginInputs } from "../../../services/types";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
 import { FORGET_PASS_PATH } from "../../../services/paths";
 import validation from "../../../services/validation";
