@@ -1,4 +1,3 @@
-import Button from "@mui/material/Button";
 import { Alert, Box, Container, Grid } from "@mui/material";
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
@@ -15,6 +14,8 @@ import AuhtHeader from "../../../components/AuthComponents/authHeader/AuhtHeader
 import RightSideImage from "../../../components/AuthComponents/rightSideImage/RightSideImage";
 import Logo from "../../../components/AuthComponents/Logo/Logo";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
+import validation from "../../../services/validation";
+import type { LoginProps } from "../../../interfaces/interfaces";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,10 +27,10 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
-  } = useForm();
+  } = useForm<LoginProps>();
 
   // =========== submit login ========
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: LoginProps) => {
     try {
       const response = await axiosInstance.post(ADMIN_URLS.USER.LOGIN, data);
       console.log(response);
@@ -98,8 +99,8 @@ export default function Login() {
                     }}
                     id="outlined-adornment-email"
                     type={"text"}
-                    // placeholder="Email"
-                    {...register("email")}
+                    placeholder="Enter your Email"
+                    {...register("email", validation.EMAIL_VALIDATION)}
                   />
                 </FormControl>
                 {errors.email && (
@@ -152,7 +153,10 @@ export default function Login() {
                         </IconButton>
                       </InputAdornment>
                     }
-                    {...register("password")}
+                    {...register(
+                      "password",
+                      validation.PASSWORD_VALIDATION("your password is requird")
+                    )}
                   />
                 </FormControl>
                 {errors.password && (
