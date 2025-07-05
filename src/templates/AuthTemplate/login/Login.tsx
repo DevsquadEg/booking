@@ -36,7 +36,7 @@ export default function Login() {
     try {
       const response = await axiosInstance.post(ADMIN_URLS.USER.LOGIN, data);
       localStorage.setItem("token", response?.data.data.token);
-      await saveLoginData();
+      saveLoginData();
       // await saveLoginData();
       // await getCurrentUser();
       toast.success("Login success!");

@@ -33,6 +33,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import toast from "react-hot-toast";
+import { ChangePasswordModal } from "../../common/changePasswordModal/ChangePasswordModal";
 
 const drawerWidth = 240;
 
@@ -45,6 +46,7 @@ interface MenuItem {
 
 const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [open, setOpen] = useState(false);
   const { logOutUser } = useAuth();
 
   const toggleSidebar = () => {
@@ -83,6 +85,9 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
       label: "Change Password",
       icon: <LockOutlined />,
       path: CHANGE_PASS_PATH,
+      onClick: () => {
+        setOpen(true);
+      },
     },
   ];
 
@@ -126,8 +131,9 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
               onClick={item.onClick}
             >
               <ListItemButton
-                component={NavLink}
-                to={item.path}
+                component={item.onClick ? "button" : NavLink}
+                to={item.onClick ? "" : item.path}
+                onClick={item.onClick}
                 end
                 sx={{
                   minHeight: 48,
@@ -173,6 +179,10 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
           </Tooltip>
         ))}
       </List>
+      <ChangePasswordModal
+        open={open}
+        onClose={() => setOpen(false)}
+      ></ChangePasswordModal>
     </Drawer>
   );
 };

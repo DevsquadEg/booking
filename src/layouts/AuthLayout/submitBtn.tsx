@@ -3,17 +3,21 @@ import { Box, Button, CircularProgress } from "@mui/material";
 const SubmitBtn = ({
   isSubmitting,
   title,
+  size,
+  smallWidth = false,
   className,
 }: {
   isSubmitting: boolean;
   title: string;
+  smallWidth?: boolean;
+  size?: "large" | "medium" | "small";
   className?: string;
 }) => {
   return (
     <Button
       type="submit"
-      fullWidth
-      size="large"
+      fullWidth={!smallWidth}
+      size={size || "large"}
       variant="contained"
       sx={{ bgcolor: "#3252DF", borderRadius: "5px", marginTop: "10px" }}
     >
