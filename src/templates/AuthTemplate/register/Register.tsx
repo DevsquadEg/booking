@@ -19,7 +19,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
 import { axiosInstance } from "../../../services/axiosInstance";
 import { PORTAL_URLS } from "../../../services/apiEndpoints";
-import type { IRegitserForm } from "../../../interfaces/interfaces";
+
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
@@ -30,6 +30,7 @@ import RightSideImage from "../../../components/AuthComponents/rightSideImage/Ri
 import Logo from "../../../components/AuthComponents/Logo/Logo";
 import { LOGIN_PATH } from "../../../services/paths";
 import { isAxiosError } from "axios";
+import type { IRegitserForm } from "../../../interfaces/interfaces";
 
 export default function Register() {
   const navigate = useNavigate();

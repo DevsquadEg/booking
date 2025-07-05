@@ -17,6 +17,8 @@ import { useAuth } from "../../../store/AuthContext/AuthContext";
 import type { LoginInputs } from "../../../services/types";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
 import { FORGET_PASS_PATH } from "../../../services/paths";
+import validation from "../../../services/validation";
+import type { LoginProps } from "../../../interfaces/interfaces";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,11 +30,11 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
-  } = useForm();
+  } = useForm<LoginProps>();
   const { saveLoginData } = useAuth();
 
   // =========== submit login ========
-  const onSubmit = async (data: LoginInputs) => {
+  const onSubmit = async (data: LoginProps) => {
     try {
       const response = await axiosInstance.post(ADMIN_URLS.USER.LOGIN, data);
       localStorage.setItem("token", response?.data.data.token);
@@ -105,8 +107,8 @@ export default function Login() {
                     }}
                     id="outlined-adornment-email"
                     type={"text"}
-                    // placeholder="Email"
-                    {...register("email")}
+                    placeholder="Enter your Email"
+                    {...register("email", validation.EMAIL_VALIDATION)}
                   />
                 </FormControl>
                 {errors.email && (
@@ -159,7 +161,10 @@ export default function Login() {
                         </IconButton>
                       </InputAdornment>
                     }
-                    {...register("password")}
+                    {...register(
+                      "password",
+                      validation.PASSWORD_VALIDATION("your password is requird")
+                    )}
                   />
                 </FormControl>
                 {errors.password && (

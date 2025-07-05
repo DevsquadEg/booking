@@ -1,10 +1,14 @@
 import { Box } from "@mui/material";
+import Login from "../../../templates/AuthTemplate/login/Login";
+import { Link } from "react-router-dom";
 
 export default function Logo() {
   return (
     <>
       {/* Logo in Top-Left */}
       <Box
+        component={Link}
+        to={"/login"}
         sx={{
           position: {
             xs: "static",
@@ -26,6 +30,7 @@ export default function Logo() {
           },
           fontSize: "26px",
           fontWeight: 500,
+          textDecoration: "none",
         }}
       >
         <span style={{ color: "#3252DF" }}>Stay</span>

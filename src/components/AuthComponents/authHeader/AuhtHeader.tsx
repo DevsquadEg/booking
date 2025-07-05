@@ -15,7 +15,13 @@ export default function AuhtHeader({
 }: AuthHeaderProps) {
   return (
     <>
-      <Typography fontSize={"30px"} variant="h4" fontWeight={600} gutterBottom>
+      <Typography
+        fontStyle={"capitalize"}
+        fontSize={"30px"}
+        variant="h4"
+        fontWeight={500}
+        mb={2}
+      >
         {header}
       </Typography>
 

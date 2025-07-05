@@ -13,7 +13,6 @@ import Dashboard from "./templates/Dashboard/Dashboard/Dashboard";
 import FacilitiesList from "./templates/Dashboard/Facilities/facilities-list/FacilitiesList";
 import FacilityData from "./templates/Dashboard/Facilities/facility-data/FacilityData";
 import Home from "./templates/Main/Home/Home";
-import { Toaster } from "react-hot-toast";
 import RoomsList from "./templates/Dashboard/RoomsData/rooms-list/RoomsList";
 import RoomData from "./templates/Dashboard/RoomsData/room-data/RoomData";
 import BookingData from "./templates/Dashboard/BookingData/booking-data/BookingData";
@@ -169,7 +168,6 @@ function App() {
   return (
     <>
       <RouterProvider router={routes}></RouterProvider>
-      <Toaster />
     </>
   );
 }
