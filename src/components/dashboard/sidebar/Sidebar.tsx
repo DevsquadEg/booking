@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   ListItemText,
   Tooltip,
+  Link,
 } from "@mui/material";
 import {
   AppsOutlined,
@@ -23,7 +24,6 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import {
   ADS_LIST_PATH,
-  CHANGE_PASS_PATH,
   DASHBOARD_PATH,
   FACILITIES_LIST_PATH,
   LOGIN_PATH,
@@ -77,6 +77,7 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
       label: "Logout",
       icon: <LogoutOutlined />,
       onClick: () => {
+        navigate(LOGIN_PATH, { replace: true });
         logOutUser();
         toast.success("Logout success!");
         navigate(LOGIN_PATH);
@@ -86,7 +87,7 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
     {
       label: "Change Password",
       icon: <LockOutlined />,
-      path: CHANGE_PASS_PATH,
+      // path: CHANGE_PASS_PATH,
       onClick: () => {
         setOpen(true);
       },
@@ -134,10 +135,9 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
               onClick={item.onClick}
             >
               <ListItemButton
-                component={item.onClick ? "button" : NavLink}
-                to={item.onClick ? "" : item.path}
-                onClick={item.onClick}
-                end
+                component={item.onClick ? Link : NavLink}
+                to={item.path}
+                end={(item.path === DASHBOARD_PATH && true) || undefined}
                 sx={{
                   minHeight: 48,
                   justifyContent: collapsed ? "center" : "initial",
