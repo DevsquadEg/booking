@@ -13,7 +13,7 @@ export const ADMIN_URLS = {
     // Path for admin to reset a user's password
     RESET_PASSWORD: `${baseURL}/admin/Users/reset-password`, // Assuming a dedicated admin reset endpoint
     // Path for admin to change a user's password
-    CHANGE_PASSWORD: `${baseURL}/admin/Users/change-password`, // Assuming a dedicated admin change endpoint
+    CHANGE_PASSWORD: `${baseURL}/admin/users/change-password`, // Assuming a dedicated admin change endpoint
     // Path for admin to login (if different from regular user login)
     LOGIN: `${baseURL}/admin/users/login`, // As seen in Postman screenshot
     // Path for admin to forget password (if different from regular user)

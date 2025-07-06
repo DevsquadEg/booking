@@ -60,11 +60,10 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
     try {
       setIsSubmitting(true);
       setError(null);
-      const response = await axiosInstance.put(
+      const response = await axiosInstance.post(
         ADMIN_URLS.USER.CHANGE_PASSWORD,
         data
       );
-      console.log("response", response);
       toast.success(response.data.message || "Password changed successfully");
       // toast.success("Password changed successfully");
       reset();
@@ -167,7 +166,10 @@ const PasswordInput = ({
   label: string;
   register: UseFormRegister<PasswordFormData>;
   registeredTitle: "oldPassword" | "newPassword" | "confirmPassword";
-  validation: object;
+  validation: object & {
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    validate?: (value: string) => string;
+  };
   errors: FieldErrors<PasswordFormData>;
   handleTogglePassword: () => void;
   showPassword: boolean;
@@ -216,13 +218,24 @@ const PasswordInput = ({
               </IconButton>
             </InputAdornment>
           }
-          {...register(registeredTitle, validation)}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            if (trigger && triggeredInput && isSubmitted) {
-              trigger(triggeredInput);
-            }
-            register(registeredTitle).onChange(e);
-          }}
+          {...register(registeredTitle, {
+            ...validation,
+
+            onChange: (e) => {
+              if (validation?.onChange) {
+                validation.onChange(e);
+              }
+
+              if (trigger && isSubmitted && triggeredInput)
+                trigger(triggeredInput);
+            },
+          })}
+          // onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          //   if (trigger && triggeredInput && isSubmitted) {
+          //     trigger(triggeredInput);
+          //   }
+          //   register(registeredTitle).onChange(e);
+          // }}
         />
       </FormControl>
       {errors[registeredTitle] && (
