@@ -30,7 +30,7 @@ import {
   ROOMS_LIST_PATH,
   USERS_LIST_PATH,
 } from "../../../services/paths";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import toast from "react-hot-toast";
 import { ChangePasswordModal } from "../../common/changePasswordModal/ChangePasswordModal";
@@ -40,7 +40,7 @@ const drawerWidth = 240;
 interface MenuItem {
   label: string;
   icon: React.ReactNode;
-  path: string;
+  path?: string;
   onClick?: () => void;
 }
 
@@ -48,6 +48,7 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
   const { logOutUser } = useAuth();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
@@ -78,8 +79,9 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
       onClick: () => {
         logOutUser();
         toast.success("Logout success!");
+        navigate(LOGIN_PATH);
       },
-      path: LOGIN_PATH,
+      // path: LOGIN_PATH,
     },
     {
       label: "Change Password",

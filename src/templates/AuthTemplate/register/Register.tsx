@@ -22,7 +22,7 @@ import {
 } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
 import { axiosInstance } from "../../../services/axiosInstance";
-import { PORTAL_URLS } from "../../../services/apiEndpoints";
+import { ADMIN_URLS, PORTAL_URLS } from "../../../services/apiEndpoints";
 
 // import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";

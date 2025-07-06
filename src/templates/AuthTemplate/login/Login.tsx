@@ -15,7 +15,7 @@ import RightSideImage from "../../../components/AuthComponents/rightSideImage/Ri
 import Logo from "../../../components/AuthComponents/Logo/Logo";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
-import { FORGET_PASS_PATH } from "../../../services/paths";
+import { DASHBOARD_PATH, FORGET_PASS_PATH } from "../../../services/paths";
 import validation from "../../../services/validation";
 import type { LoginProps } from "../../../interfaces/interfaces";
 
@@ -41,14 +41,14 @@ export default function Login() {
       // await saveLoginData();
       // await getCurrentUser();
       toast.success("Login success!");
-      navigate("/dashboard");
+      navigate(DASHBOARD_PATH);
     } catch (error) {
       // console.log(error?.response?.data?.message);
-      if (isAxiosError(error))
-        toast.error(error?.response?.data || "Something went wrong");
       if (isAxiosError(error)) {
         console.log(error);
         toast.error(error?.response?.data?.message || "Something went wrong");
+      } else {
+        
       }
     }
   };

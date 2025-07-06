@@ -15,7 +15,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Grid from "@mui/material/Grid";
 import type { ResetPasswordProps } from "../../../interfaces/interfaces";
-import { baseURL, PORTAL_URLS } from "../../../services/apiEndpoints";
+import { PORTAL_URLS } from "../../../services/apiEndpoints";
 import validation from "../../../services/validation";
 import { Container, OutlinedInput } from "@mui/material";
 import AuhtHeader from "../../../components/AuthComponents/authHeader/AuhtHeader";
@@ -23,6 +23,7 @@ import Logo from "../../../components/AuthComponents/Logo/Logo";
 import { Alert } from "@mui/material";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
 import RightSideImage from "../../../components/AuthComponents/rightSideImage/RightSideImage";
+import { LOGIN_PATH } from "../../../services/paths";
 
 export default function ResetPass() {
   const [showPassword, setShowPassword] = useState(false);
@@ -68,7 +69,7 @@ export default function ResetPass() {
         if (data.success) {
           toast.success("Password Reset Successfully");
           setTimeout(() => {
-            navigate("/login");
+            navigate(LOGIN_PATH);
           }, 1500);
         }
       } catch (error) {

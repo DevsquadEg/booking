@@ -1,21 +1,17 @@
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import forgetBg from "../../../assets/imgs/forget-password.png";
+import { useNavigate } from "react-router-dom";
 import axios, { isAxiosError } from "axios";
 import toast from "react-hot-toast";
 import type { ForgetProps } from "../../../interfaces/interfaces";
-import { baseURL } from "../../../services/apiEndpoints";
+import { PORTAL_URLS } from "../../../services/apiEndpoints";
 import validation from "../../../services/validation";
 
 // mui imports
 import Box from "@mui/material/Box";
-
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-
 import Grid from "@mui/material/Grid";
-
 import { Alert, Container, OutlinedInput } from "@mui/material";
 import Logo from "../../../components/AuthComponents/Logo/Logo";
 import AuhtHeader from "../../../components/AuthComponents/authHeader/AuhtHeader";
@@ -34,7 +30,6 @@ export default function ForgetPass() {
   } = useForm<ForgetProps>({ mode: "onChange" });
 
   // forget
-
   const handleForgetPassword = useCallback(
     async function (userInfo: ForgetProps) {
       const toastId = toast.loading("Waiting....");
@@ -42,13 +37,19 @@ export default function ForgetPass() {
       try {
         const options = {
           method: "POST",
-          url: `${baseURL}/portal/users/forgot-password`,
+          // url: `${baseURL}/portal/users/forgot-password`,
+          url: PORTAL_URLS.USER.FORGET_PASSWORD,
           data: userInfo,
         };
 
         const { data } = await axios.request(options);
+        console.log({ data });
+
         if (data.success) {
-          toast.success("Password Reset OTP Sent to Your Email");
+          toast.success(
+            data.message || "Password Reset OTP Sent to Your Email"
+          );
+
           setTimeout(() => {
             navigate("/reset-pass", { state: { userEmail: watch("email") } });
           }, 1500);
