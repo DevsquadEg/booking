@@ -106,6 +106,7 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
           overflowX: "hidden",
           backgroundColor: "var(--sidebar-bg-color)",
           color: "var(--sidebar-icon-color)",
+          
         },
       }}
     >
