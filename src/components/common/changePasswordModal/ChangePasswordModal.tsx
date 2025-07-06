@@ -137,7 +137,11 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
           />
         </DialogContent>
         <DialogActions sx={{ alignItems: "center" }}>
-          <Button onClick={onClose} disabled={isSubmitting}>
+          <Button
+            onClick={onClose}
+            disabled={isSubmitting}
+            sx={{ borderRadius: "5px", marginTop: "2rem" }}
+          >
             Cancel
           </Button>
           <SubmitBtn
