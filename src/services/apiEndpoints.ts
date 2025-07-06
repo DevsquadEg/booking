@@ -1,4 +1,3 @@
-export const imgBaseURL: string = "https://upskilling-egypt.com:3000/"; // Assuming this remains the same for images
 export const baseURL: string = "https://upskilling-egypt.com:3000/api/v0"; // Updated base URL based on Postman
 
 // -----------------------------------------------------------------------------
@@ -34,12 +33,12 @@ export const ADMIN_URLS = {
     // Path to get all rooms (admin view, with filtering/pagination)
     GET_ALL_ROOMS: `${baseURL}/admin/Room`,
     // Path to get room types/facilities
-    GET_ROOM_FACILITIES: `${baseURL}/admin/RoomFacility`, // As seen in Postman screenshot
+    GET_ROOM_FACILITIES: `${baseURL}/admin/room-facilities`, // As seen in Postman screenshot
     // Path to add a new room facility
-    ADD_ROOM_FACILITY: `${baseURL}/admin/RoomFacility`,
+    ADD_ROOM_FACILITY: `${baseURL}/admin/room-facilities`,
     // Path to delete a room facility
     DELETE_ROOM_FACILITY: (id: number): string =>
-      `${baseURL}/admin/RoomFacility/${id}`,
+      `${baseURL}/admin/room-facilities/${id}`,
   },
 
   // Booking Management Endpoints within Admin

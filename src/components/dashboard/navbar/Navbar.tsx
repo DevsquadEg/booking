@@ -60,9 +60,11 @@ function Navbar({ setAnchorElNav, anchorElNav }: Props) {
         borderRadius: "16px",
         boxShadow: "none",
         py: 1,
+        
+        // bgcolor: "blanchedalmond",
       }}
     >
-      <Container maxWidth="100%">
+      <Container maxWidth="">
         <Toolbar
           disableGutters
           sx={{ display: "flex", justifyContent: "space-between" }}
@@ -142,7 +144,7 @@ function Navbar({ setAnchorElNav, anchorElNav }: Props) {
                   key={setting.label + index}
                   onClick={() => {
                     handleCloseUserMenu();
-                    setting.onClick?.(); // في حال فيه onClick مخصص
+                    // setting.onClick?.(); // في حال فيه onClick مخصص
                   }}
                 >
                   <Typography

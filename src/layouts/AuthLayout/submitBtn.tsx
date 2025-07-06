@@ -20,6 +20,7 @@ const SubmitBtn = ({
       size={size || "large"}
       variant="contained"
       sx={{ bgcolor: "#3252DF", borderRadius: "5px", marginTop: "2rem" }}
+      disabled={isSubmitting}
     >
       {(isSubmitting && (
         <Box sx={{ display: "flex" }}>

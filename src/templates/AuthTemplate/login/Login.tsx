@@ -48,7 +48,6 @@ export default function Login() {
         console.log(error);
         toast.error(error?.response?.data?.message || "Something went wrong");
       } else {
-        
       }
     }
   };
@@ -161,8 +160,8 @@ export default function Login() {
                       </InputAdornment>
                     }
                     {...register(
-                      "password",
-                      validation.PASSWORD_VALIDATION("your password is requird")
+                      "password"
+                      // validation.PASSWORD_VALIDATION("your password is requird")
                     )}
                   />
                 </FormControl>
