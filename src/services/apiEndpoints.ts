@@ -88,7 +88,7 @@ export const PORTAL_URLS = {
     // User login path for portal users
     LOGIN: "/portal/users/login", // As seen in Postman screenshot
     // Path for portal users to register
-    REGISTER: "/portal/Users", // Assuming a separate registration for portal
+    REGISTER: "/portal/users", // Assuming a separate registration for portal
     // Path for portal users to forget password
     FORGET_PASSWORD: "/portal/users/forget-password", // As seen in Postman screenshot
     // Path for portal users to reset password
@@ -98,13 +98,13 @@ export const PORTAL_URLS = {
     // Path for Facebook OAuth login
     FACEBOOK_AUTH: "/portal/facebook-auth", // As seen in Postman screenshot
     // Path to get current user profile for portal users
-    GET_USER_PROFILE: "/portal/Users/currentUser", // Assuming a dedicated endpoint for portal
+    GET_USER_PROFILE: "/portal/users/currentUser", // Assuming a dedicated endpoint for portal
     // Path to update current user profile for portal users
-    UPDATE_PROFILE: "/portal/Users",
+    UPDATE_PROFILE: "/portal/users",
     // Path to change password for portal users
-    CHANGE_PASSWORD: "/portal/Users/ChangePassword",
+    CHANGE_PASSWORD: "/portal/users/ChangePassword",
     // Path to verify account for portal users
-    VERIFY_ACCOUNT: "/portal/Users/verify",
+    VERIFY_ACCOUNT: "/portal/users/verify",
   },
 
   // Rooms Endpoints within Portal

@@ -1,10 +1,11 @@
+
 // ------------------ Auth Routes ------------------
 export const MAIN_PATH = "/";
 export const LOGIN_PATH = `${MAIN_PATH}login`;
 export const REGISTER_PATH = `${MAIN_PATH}register`;
-export const FORGET_PASS_PATH = `${MAIN_PATH}forget_pass`;
-export const RESET_PASS_PATH = `${MAIN_PATH}reset_pass`;
-export const VERIFY_ACCOUNT_PATH = `${MAIN_PATH}verify_account`;
+export const FORGET_PASS_PATH = `${MAIN_PATH}forget-pass`;
+export const RESET_PASS_PATH = `${MAIN_PATH}reset-pass`;
+export const VERIFY_ACCOUNT_PATH = `${MAIN_PATH}verifyaccount`;
 
 // ------------------ Main Layout Routes ------------------
 export const HOME_PATH = MAIN_PATH;

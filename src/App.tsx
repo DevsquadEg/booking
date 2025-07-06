@@ -53,6 +53,7 @@ import {
   USERS_LIST_PATH,
   USER_DATA_PATH,
 } from "./services/paths";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const routes = createBrowserRouter([
@@ -168,6 +169,7 @@ function App() {
   return (
     <>
       <RouterProvider router={routes}></RouterProvider>
+      <Toaster/>
     </>
   );
 }

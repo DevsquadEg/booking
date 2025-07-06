@@ -92,11 +92,11 @@ export default function Login() {
                   fullWidth
                   sx={{
                     margin: { top: ".3rem", bottom: "35px" },
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        border: "none",
-                      },
-                    },
+                    // "& .MuiOutlinedInput-root": {
+                    //   "& fieldset": {
+                    //     border: "none",
+                    //   },
+                    // },
                   }}
                   variant="standard"
                 >

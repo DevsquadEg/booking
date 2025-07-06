@@ -15,12 +15,16 @@ import countries from "./CountryList";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useEffect, useRef, useState } from "react";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Visibility,
+  VisibilityOff,
+  VisibilityOffOutlined,
+} from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
 import { axiosInstance } from "../../../services/axiosInstance";
 import { PORTAL_URLS } from "../../../services/apiEndpoints";
 
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -31,6 +35,7 @@ import Logo from "../../../components/AuthComponents/Logo/Logo";
 import { LOGIN_PATH } from "../../../services/paths";
 import { isAxiosError } from "axios";
 import type { IRegitserForm } from "../../../interfaces/interfaces";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -158,7 +163,10 @@ export default function Register() {
                 />
               </FormControl>
               {errors.userName && (
-                <Alert sx={{ marginBottom: "1rem" }} severity="error">
+                <Alert
+                  sx={{ marginBottom: "1rem", p: "0 20px" }}
+                  severity="error"
+                >
                   {errors.userName.message}
                 </Alert>
               )}
@@ -192,14 +200,17 @@ export default function Register() {
                 >
                   <OutlinedInput
                     placeholder="Please type here ..."
-                    type={"text"}
+                    type={"number"}
                     {...register("phoneNumber", {
                       required: "Phone Number is required",
                     })}
                   />
                 </FormControl>
                 {errors.phoneNumber && (
-                  <Alert sx={{ marginBottom: "1rem" }} severity="error">
+                  <Alert
+                    sx={{ marginBottom: "1rem", p: "0 20px" }}
+                    severity="error"
+                  >
                     {errors.phoneNumber.message}
                   </Alert>
                 )}
@@ -279,7 +290,12 @@ export default function Register() {
                   />
                 </Box>
                 {errors.country && (
-                  <Alert severity="error">{errors.country.message}</Alert>
+                  <Alert
+                    sx={{ marginBottom: "1rem", p: "0 20px" }}
+                    severity="error"
+                  >
+                    {errors.country.message}
+                  </Alert>
                 )}
               </Box>
             </Box>
@@ -317,7 +333,10 @@ export default function Register() {
                 />
               </FormControl>
               {errors.email && (
-                <Alert sx={{ marginBottom: "1rem" }} severity="error">
+                <Alert
+                  sx={{ marginBottom: "1rem", p: "0 20px" }}
+                  severity="error"
+                >
                   {errors.email.message}
                 </Alert>
               )}
@@ -371,7 +390,12 @@ export default function Register() {
                 />
               </FormControl>
               {errors.password && (
-                <Alert severity="error">{errors.password.message}</Alert>
+                <Alert
+                  sx={{ marginBottom: "1rem", p: "0 20px" }}
+                  severity="error"
+                >
+                  {errors.password.message}
+                </Alert>
               )}
             </Box>
 
@@ -420,11 +444,16 @@ export default function Register() {
                   }
                   {...register("confirmPassword", {
                     required: "confirmPassword is required",
+                    validate: (value) =>
+                      value === watch("password") || "Passwords do not match",
                   })}
                 />
               </FormControl>
               {errors.confirmPassword && (
-                <Alert sx={{ marginBottom: "1rem" }} severity="error">
+                <Alert
+                  sx={{ marginBottom: "1rem", p: "0 20px" }}
+                  severity="error"
+                >
                   {errors.confirmPassword.message}
                 </Alert>
               )}
@@ -499,7 +528,10 @@ export default function Register() {
             )}
 
             {errors.profileImage && (
-              <Alert sx={{ marginBottom: "1rem" }} severity="error">
+              <Alert
+                sx={{ marginBottom: "1rem", p: "0 20px" }}
+                severity="error"
+              >
                 {errors.profileImage.message}
               </Alert>
             )}
