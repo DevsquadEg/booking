@@ -54,3 +54,16 @@ export interface submitBtnAuth {
   title: string;
   className?: string;
 }
+
+export interface IroomList {
+  roomNumber:number;
+  images: string[];
+  price: number;
+  discount: number;
+  capacity: number;
+  length: number | null;
+  createdAt: string;
+  _id: number;
+}
+
+
