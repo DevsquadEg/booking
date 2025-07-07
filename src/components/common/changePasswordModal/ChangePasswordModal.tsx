@@ -103,9 +103,7 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
             register={register}
             errors={errors}
             registeredTitle="oldPassword"
-            validation={validation.PASSWORD_VALIDATION(
-              "Current Password is required"
-            )}
+            validation={{ required: "Current Password is required" }}
             handleTogglePassword={handleTogglePassword}
             showPassword={showPassword}
           />
@@ -171,6 +169,7 @@ const PasswordInput = ({
   register: UseFormRegister<PasswordFormData>;
   registeredTitle: "oldPassword" | "newPassword" | "confirmPassword";
   validation: object & {
+    required?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     validate?: (value: string) => string;
   };
