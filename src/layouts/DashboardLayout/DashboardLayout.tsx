@@ -23,7 +23,13 @@ export default function DashboardLayout() {
         <Sidebar anchorElNav={anchorElNav} />
         <Box
           component="main"
-          sx={{ display: "flex", flexDirection: "column", flexGrow: 1, p: 3 }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            py: 3,
+            px: 4,
+          }}
         >
           <Navbar setAnchorElNav={setAnchorElNav} anchorElNav={anchorElNav} />
           <Outlet />
