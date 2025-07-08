@@ -16,7 +16,7 @@ import {
 import type { Facility } from "@/interfaces/interfaces";
 
 export default function FacilitiesList() {
-  const [facilities, setFacilities] = useState<Facility>([]);
+  const [facilities, setFacilities] = useState<Facility[]>([]);
   const [pageSize, setPageSize] = useState(200);
   const [pageNumber, setPageNumber] = useState(1);
 
