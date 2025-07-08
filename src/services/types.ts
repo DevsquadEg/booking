@@ -50,3 +50,33 @@ export type UserType = {
   verified: boolean;
   _id: string;
 };
+
+export type FacilityType = {
+  _id: string;
+  name: string;
+};
+
+export type RoomType = {
+  _id: string;
+  roomNumber: string;
+  price: number;
+  capacity: number;
+  discount: number;
+  facilities: FacilityType[];
+  createdBy: UserType;
+  images: string[];
+  createdAt: Date | string;
+  updatedAt: Date | string;
+};
+
+export type BookingsType = {
+  _id: string;
+  startDate: Date | string;
+  endDate: Date | string;
+  totalPrice: number;
+  user: UserType;
+  room: RoomType | null;
+  status: "pending" | "completed";
+  createdAt: Date | string;
+  updatedAt: Date | string;
+};
