@@ -38,3 +38,15 @@ export type AuthContextType = {
   getCurrentUser: () => void;
 };
 
+export type UserType = {
+  country: string;
+  createdAt: Date | string;
+  email: string;
+  phoneNumber: number;
+  profileImage: string;
+  role: "admin" | "portal";
+  updatedAt: Date | string;
+  userName: string;
+  verified: boolean;
+  _id: string;
+};
