@@ -13,7 +13,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Facility } from "@/interfaces/interfaces";
+import type { Facility } from "@/interfaces/interfaces";
 
 export default function FacilitiesList() {
   const [facilities, setFacilities] = useState<Facility>([]);
