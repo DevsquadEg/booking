@@ -5,13 +5,13 @@ const SubmitBtn = ({
   title,
   size,
   smallWidth = false,
-  className,
+  
 }: {
   isSubmitting: boolean;
   title: string;
   smallWidth?: boolean;
   size?: "large" | "medium" | "small";
-  className?: string;
+  
 }) => {
   return (
     <Button
