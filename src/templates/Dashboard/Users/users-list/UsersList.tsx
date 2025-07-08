@@ -12,6 +12,8 @@ import { axiosInstance } from "../../../../services/axiosInstance";
 import type { UserType } from "../../../../services/types";
 import { Avatar, IconButton, Skeleton, Typography } from "@mui/material";
 import { Visibility } from "@mui/icons-material";
+import toast from "react-hot-toast";
+import { isAxiosError } from "axios";
 
 export default function UsersList() {
   const [page, setPage] = useState<number>(0);
@@ -28,9 +30,12 @@ export default function UsersList() {
       );
       setAllUsers(response.data.data.users);
       setAllUsersCount(response.data.data.totalCount);
-      console.log(response);
+      // console.log(response);
     } catch (error) {
-      console.log(error);
+      if (isAxiosError(error)) {
+        toast.error(error?.response?.data?.message || "Something went wrong");
+      }
+      // console.log(error);
     } finally {
       setloading(false);
     }
