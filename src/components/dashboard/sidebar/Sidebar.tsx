@@ -19,11 +19,13 @@ import {
   LockOutlined,
   LogoutOutlined,
   AdUnitsOutlined,
+  Assignment,
 } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import {
   ADS_LIST_PATH,
+  BOOKINGS_LIST_PATH,
   DASHBOARD_PATH,
   FACILITIES_LIST_PATH,
   LOGIN_PATH,
@@ -72,6 +74,7 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
     { label: "Facilities", icon: <AppsOutlined />, path: FACILITIES_LIST_PATH },
     { label: "Rooms", icon: <HotelOutlined />, path: ROOMS_LIST_PATH },
     { label: "ADS", icon: <AdUnitsOutlined />, path: ADS_LIST_PATH },
+    { label: "Bookings", icon: <Assignment />, path: BOOKINGS_LIST_PATH },
 
     {
       label: "Logout",
@@ -107,7 +110,6 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
           overflowX: "hidden",
           backgroundColor: "var(--sidebar-bg-color)",
           color: "var(--sidebar-icon-color)",
-          
         },
       }}
     >
