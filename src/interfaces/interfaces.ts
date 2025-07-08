@@ -54,3 +54,19 @@ export interface submitBtnAuth {
   title: string;
   className?: string;
 }
+
+export interface IFacility {
+  name: string;
+  _id: number;
+}
+
+export interface Facility {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  createdBy: {
+    _id?: string;
+    userName: string;
+  };
+}
