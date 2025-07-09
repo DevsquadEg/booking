@@ -5,6 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
   Box,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
   Paper,
   Skeleton,
   Table,
@@ -17,13 +22,33 @@ import {
   Typography,
 } from "@mui/material";
 import type { Facility } from "@/interfaces/interfaces";
+import { Delete, Edit, MoreVert } from "@mui/icons-material";
 
 export default function FacilitiesList() {
   const [facilities, setFacilities] = useState<Facility[]>([]);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(15);
   const [pageNumber, setPageNumber] = useState(1);
   const [loading, setLoading] = useState(false);
   const [facilitiesCount, setFacilitiesCount] = useState(0);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectType | null>(
+    null
+  );
+
+  const handleMenuOpen = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    project
+  ) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedProject(project);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedProject(null);
+  };
+
 
   //============  get all projects ==============
   const getAllFacilities = useCallback(
@@ -93,6 +118,7 @@ export default function FacilitiesList() {
                         { id: "createdBy", label: "Created By", minWidth: 100 },
                         { id: "createdAt", label: "Created At", minWidth: 100 },
                         { id: "updatedAt", label: "Updated At", minWidth: 100 },
+                        { id: "Actions", label: "Action", minWidth: 100 },
                       ].map((column) => (
                         <TableCell key={column.id} align="center">
                           {column.label}
@@ -120,6 +146,55 @@ export default function FacilitiesList() {
                         <TableCell align="center">
                           {new Date(facility.updatedAt).toLocaleDateString()}
                         </TableCell>
+                        <TableCell align="center">
+                          <IconButton
+                            onClick={(e) => handleMenuOpen(e, project)}
+                          >
+                            <MoreVert />
+                          </IconButton>
+
+                          <Menu
+                            anchorEl={anchorEl}
+                            open={
+                              Boolean(anchorEl) &&
+                              selectedProject?.id === project.id
+                            }
+                            onClose={handleMenuClose}
+                            anchorOrigin={{
+                              vertical: "bottom",
+                              horizontal: "right",
+                            }}
+                            transformOrigin={{
+                              vertical: "top",
+                              horizontal: "right",
+                            }}
+                          >
+                            <MenuItem
+                              onClick={() => {
+                                // handleMenuClose();
+                                // navigate(`/projects/edit/${project.id}`);
+                              }}
+                            >
+                              <ListItemIcon>
+                                <Edit fontSize="small" color="success" />
+                              </ListItemIcon>
+                              <ListItemText primary="Edit" />
+                            </MenuItem>
+
+                            <MenuItem
+                              onClick={() => {
+                                // handleMenuClose();
+                                // setSelectedProject(project);
+                                // setShowDeleteModal(true);
+                              }}
+                            >
+                              <ListItemIcon>
+                                <Delete fontSize="small" color="error" />
+                              </ListItemIcon>
+                              <ListItemText primary="Delete" />
+                            </MenuItem>
+                          </Menu>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -127,7 +202,7 @@ export default function FacilitiesList() {
               </TableContainer>
 
               <TablePagination
-                rowsPerPageOptions={[10, 25, 50, 100]}
+                rowsPerPageOptions={[10, 15, 25, 50, 100]}
                 component="div"
                 count={facilitiesCount}
                 rowsPerPage={pageSize}
