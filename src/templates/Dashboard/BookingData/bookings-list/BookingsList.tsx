@@ -35,7 +35,7 @@ export default function BookingsList() {
 
   const navigate = useNavigate();
   const handleView = (booking: BookingsType) => {
-    navigate(`${BOOKING_DATA_PATH}/${booking._id}`, { state: booking });
+    navigate(`${BOOKING_DATA_PATH}/${booking._id}`, { state: { booking } });
   };
 
   const featchAllBookings = useCallback(async () => {

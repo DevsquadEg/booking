@@ -46,7 +46,7 @@ export const ADMIN_URLS = {
     // Path to create a new booking (admin can create bookings)
     CREATE_BOOKING: "/admin/Booking",
     // Path to get details of a specific booking by its ID (admin view)
-    GET_BOOKING: (id: number): string => `${baseURL}/admin/Booking/${id}`,
+    GET_BOOKING: (id: string): string => `${baseURL}/admin/booking/${id}`,
     // Path to update details of a specific booking by its ID (admin view)
     UPDATE_BOOKING: (id: number): string => `${baseURL}/admin/Booking/${id}`,
     // Path to cancel a specific booking by its ID (admin view)

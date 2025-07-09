@@ -58,7 +58,8 @@ export default function UsersList() {
   };
 
   const handleOnView = (user: UserType) => {
-    navigate(`${USER_DATA_PATH}/${user._id}`, { state: user });
+    console.log("user", user);
+    navigate(`${USER_DATA_PATH}/${user._id}`, { state: { user } });
   };
 
   useEffect(() => {
