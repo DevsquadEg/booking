@@ -7,13 +7,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { ADMIN_URLS } from "../../../../services/apiEndpoints";
-import { axiosInstance } from "../../../../services/axiosInstance";
-import type { BookingsType } from "../../../../services/types";
-import { Chip, IconButton, Skeleton, Typography } from "@mui/material";
-import { Visibility } from "@mui/icons-material";
+import { ADMIN_URLS } from "@/services/apiEndpoints";
+import { axiosInstance } from "@/services/axiosInstance";
+import type { BookingsType } from "@/services/types";
+import { Chip, Skeleton, Typography } from "@mui/material";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
+import SectionTitle from "@/components/dashboard/sectionTitle/SectionTitle";
+import ViewBtn from "@/components/dashboard/actionsBtn/viewBtn/ViewBtn";
+import { useNavigate } from "react-router-dom";
+import { BOOKING_DATA_PATH } from "@/services/paths";
 
 export default function BookingsList() {
   const [page, setPage] = useState<number>(0);
@@ -28,6 +31,11 @@ export default function BookingsList() {
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+  };
+
+  const navigate = useNavigate();
+  const handleView = (booking: BookingsType) => {
+    navigate(`${BOOKING_DATA_PATH}/${booking._id}`, { state: booking });
   };
 
   const featchAllBookings = useCallback(async () => {
@@ -66,125 +74,128 @@ export default function BookingsList() {
   }, [featchAllBookings]);
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden", mt: "1rem" }}>
-      {(loading &&
-        // make 6 skeleton rows
-        [...Array(6)].map(() => (
-          <Skeleton
-            sx={{ padding: "1rem", mx: "0.5rem" }}
-            height={40}
-          ></Skeleton>
-        ))) ||
-        (allBookings.length === 0 && (
-          <Typography
-            sx={{
-              padding: "1rem",
-              fontSize: "50px",
-              color: "text.primary",
-              textAlign: "center",
-            }}
-          >
-            No Bookings Found
-          </Typography>
-        )) || (
-          <>
-            <TableContainer sx={{ maxHeight: 400 }}>
-              <Table stickyHeader aria-label="sticky table">
-                <TableHead>
-                  <TableRow>
-                    {[
-                      { id: "startDate", label: "Start Date", minWidth: 70 },
-                      {
-                        id: "endDate",
-                        label: "End Date",
-                        minWidth: 70,
-                      },
-                      { id: "room", label: "Room Number", minWidth: 70 },
-                      { id: "status", label: "Stauts", minWidth: 70 },
-                      { id: "price", label: "Price ($.)", minWidth: 70 },
-                      { id: "actions", label: "Actions", minWidth: 70 },
-                    ].map((column) => (
-                      <TableCell key={column.id} align={"center"}>
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {allBookings?.map((booking) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={booking._id}
-                      >
-                        {[
-                          "startDate",
-                          "endDate",
-                          "room",
-                          "status",
-                          "totalPrice",
-                          "actions",
-                        ].map((info, index) => {
-                          const value =
-                            booking[info as keyof BookingsType]?.toString();
-                          return (
-                            <TableCell key={info + index} align={"center"}>
-                              {["startDate", "endDate"].includes(info) ? (
-                                new Date(value as string).toLocaleString(
-                                  "en-US",
-                                  dateOptions
-                                )
-                              ) : info === "actions" ? (
-                                // return button with text view and with icon of eye
-                                <IconButton
-                                  sx={{
-                                    mx: "auto",
-                                    display: "flex",
-                                    gap: "0.5rem",
-                                    fontSize: "1rem",
-                                    color: "var(--blue-color)",
-                                  }}
-                                >
-                                  <Visibility sx={{ fontSize: "1rem" }} />
-                                  View
-                                </IconButton>
-                              ) : info === "status" ? (
-                                <Chip
-                                  label={value}
-                                  color={
-                                    value === "pending" ? "warning" : "success"
-                                  }
-                                />
-                              ) : info === "room" ? (
-                                <Chip
-                                  label={booking[info]?.roomNumber || "not set"}
-                                  color="info"
-                                />
-                              ) : (
-                                value
-                              )}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={allBookingsCount}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </>
-        )}
-    </Paper>
+    <>
+      <SectionTitle title="Bookings Table Details" />
+      <Paper sx={{ width: "100%", overflow: "hidden", mt: "1rem" }}>
+        {(loading &&
+          // make 6 skeleton rows
+          [...Array(6)].map(() => (
+            <Skeleton
+              sx={{ padding: "1rem", mx: "0.5rem" }}
+              height={40}
+            ></Skeleton>
+          ))) ||
+          (allBookings.length === 0 && (
+            <Typography
+              sx={{
+                padding: "1rem",
+                fontSize: "50px",
+                color: "text.primary",
+                textAlign: "center",
+              }}
+            >
+              No Bookings Found
+            </Typography>
+          )) || (
+            <>
+              <TableContainer sx={{ maxHeight: 400 }}>
+                <Table stickyHeader aria-label="sticky table">
+                  <TableHead>
+                    <TableRow>
+                      {[
+                        { id: "startDate", label: "Start Date", minWidth: 70 },
+                        {
+                          id: "endDate",
+                          label: "End Date",
+                          minWidth: 70,
+                        },
+                        { id: "room", label: "Room Number", minWidth: 70 },
+                        { id: "status", label: "Stauts", minWidth: 70 },
+                        { id: "price", label: "Price ($.)", minWidth: 70 },
+                        { id: "actions", label: "Actions", minWidth: 70 },
+                      ].map((column) => (
+                        <TableCell key={column.id} align={"center"}>
+                          {column.label}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {allBookings?.map((booking) => {
+                      return (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={booking._id}
+                        >
+                          {[
+                            "startDate",
+                            "endDate",
+                            "room",
+                            "status",
+                            "totalPrice",
+                            "actions",
+                          ].map((info, index) => {
+                            const value =
+                              booking[info as keyof BookingsType]?.toString();
+                            return (
+                              <TableCell
+                                key={info + index}
+                                align={"center"}
+                                sx={{ position: "relative" }}
+                              >
+                                {["startDate", "endDate"].includes(info) ? (
+                                  new Date(value as string).toLocaleString(
+                                    "en-US",
+                                    dateOptions
+                                  )
+                                ) : info === "actions" ? (
+                                  <ViewBtn
+                                    handleOnClick={() => {
+                                      handleView(booking);
+                                    }}
+                                  />
+                                ) : info === "status" ? (
+                                  <Chip
+                                    label={value}
+                                    color={
+                                      value === "pending"
+                                        ? "warning"
+                                        : "success"
+                                    }
+                                  />
+                                ) : info === "room" ? (
+                                  <Chip
+                                    label={
+                                      booking[info]?.roomNumber || "not set"
+                                    }
+                                    color="info"
+                                  />
+                                ) : (
+                                  value
+                                )}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={allBookingsCount}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </>
+          )}
+      </Paper>
+    </>
   );
 }
