@@ -108,7 +108,7 @@ export default function BookingData() {
 
         <Grid container spacing={3}>
           {/* Main Booking Card */}
-          <Grid size={{ xs: 12, md: 8 }}>
+          <Grid size={12}>
             <Card elevation={3} sx={{ borderRadius: 3 }}>
               <CardContent>
                 {/* Timeline Progress */}
@@ -138,7 +138,7 @@ export default function BookingData() {
 
                 <Grid container spacing={3}>
                   {/* Dates */}
-                  <Grid size={{ xs: 12, md: 6 }}>
+                  <Grid size={12}>
                     <DetailCard
                       icon={<CalendarMonth color="primary" />}
                       title="Dates"
@@ -212,7 +212,7 @@ export default function BookingData() {
                   </Grid>
 
                   {/* Payment Info */}
-                  <Grid size={{ xs: 12, md: 6 }}>
+                  <Grid size={12}>
                     <DetailCard
                       icon={<Paid color="primary" />}
                       title="Payment"
@@ -267,9 +267,6 @@ export default function BookingData() {
 
             {/* Action Buttons */}
             <Stack direction="row" spacing={2} mt={3}>
-              <Button variant="contained" startIcon={<Edit />} sx={{ px: 4 }}>
-                Modify Booking
-              </Button>
               <Button variant="outlined" startIcon={<Print />}>
                 Print Receipt
               </Button>
@@ -277,47 +274,6 @@ export default function BookingData() {
                 Share
               </Button>
             </Stack>
-          </Grid>
-
-          {/* Sidebar - Quick Actions */}
-          <Grid size={{ xs: 12, md: 4 }}>
-            <Card elevation={3} sx={{ borderRadius: 3 }}>
-              <CardContent>
-                <Typography variant="h6" fontWeight="bold" mb={2}>
-                  Quick Actions
-                </Typography>
-                <Stack spacing={2}>
-                  <Button fullWidth variant="outlined">
-                    Request Early Check-In
-                  </Button>
-                  <Button fullWidth variant="outlined">
-                    Add Special Requests
-                  </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color={
-                      currentBooking.status === "completed"
-                        ? "success"
-                        : "warning"
-                    }
-                  >
-                    {currentBooking.status === "completed"
-                      ? "Leave a Review"
-                      : "Check In Now"}
-                  </Button>
-                </Stack>
-
-                <Divider sx={{ my: 3 }} />
-
-                <Typography variant="subtitle2" color="text.secondary" mb={1}>
-                  Need Help?
-                </Typography>
-                <Button fullWidth variant="text" size="small">
-                  Contact Support
-                </Button>
-              </CardContent>
-            </Card>
           </Grid>
         </Grid>
       </Box>
