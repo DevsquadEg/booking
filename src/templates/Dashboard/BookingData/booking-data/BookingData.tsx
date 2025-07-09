@@ -1,11 +1,12 @@
+import { ReceiptTemplate } from "@/components/dashboard/pritableComponent/ReceiptTemplate";
 import { ADMIN_URLS } from "@/services/apiEndpoints";
 import { axiosInstance } from "@/services/axiosInstance";
 import type { BookingsType } from "@/services/types";
+import { useReactToPrint } from "react-to-print";
 import {
   AccessTime,
   CalendarMonth,
   CheckCircle,
-  Edit,
   Hotel,
   NavigateBeforeOutlined,
   Paid,
@@ -30,7 +31,7 @@ import {
   Typography,
 } from "@mui/material";
 import { isAxiosError } from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
@@ -72,6 +73,37 @@ export default function BookingData() {
       getBookingDetails();
     }
   }, [getBookingDetails, currentBooking, id]);
+
+  // printing receipt
+  const receiptRef = useRef<HTMLDivElement>(null);
+
+  // todo: replace with actual booking URL after deploy
+  const bookingUrl = `https://website.com/bookings/${currentBooking._id}`;
+
+  const handlePrint = useReactToPrint({
+    contentRef: receiptRef,
+    onBeforePrint: () => {
+      // Temporarily make the content visible before capturing
+      if (receiptRef.current) {
+        receiptRef.current.style.display = "block";
+      }
+      return Promise.resolve();
+    },
+    onAfterPrint: () => {
+      if (receiptRef.current) {
+        receiptRef.current.style.display = "none";
+        receiptRef.current.style.position = "";
+        receiptRef.current.style.left = "";
+      }
+    },
+    pageStyle: `
+        @page { size: auto; margin: 5mm; }
+        @media print {
+          body { -webkit-print-color-adjust: exact; }
+          .no-print { display: none !important; }
+        }
+      `,
+  });
 
   return (
     <>
@@ -267,7 +299,11 @@ export default function BookingData() {
 
             {/* Action Buttons */}
             <Stack direction="row" spacing={2} mt={3}>
-              <Button variant="outlined" startIcon={<Print />}>
+              <Button
+                variant="outlined"
+                startIcon={<Print />}
+                onClick={handlePrint}
+              >
                 Print Receipt
               </Button>
               <Button variant="outlined" startIcon={<Share />}>
@@ -276,6 +312,9 @@ export default function BookingData() {
             </Stack>
           </Grid>
         </Grid>
+      </Box>
+      <Box ref={receiptRef} sx={{ display: "none" }}>
+        <ReceiptTemplate booking={currentBooking} qrValue={bookingUrl} />
       </Box>
     </>
   );
