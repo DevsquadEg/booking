@@ -25,7 +25,7 @@ export default function DashboardLayout() {
           sx={{ display: "flex", flexDirection: "column", flexGrow: 1, p: 3 }}
         >
           <Navbar setAnchorElNav={setAnchorElNav} anchorElNav={anchorElNav} />
-          <Outlet />
+          <Outlet  />
         </Box>
       </Box>
     </>

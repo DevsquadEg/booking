@@ -23,7 +23,7 @@ export const ADMIN_URLS = {
   // Room Management Endpoints within Admin
   ROOM: {
     // Path to create a new room
-    CREATE_ROOM: `${baseURL}/admin/Room`,
+    CREATE_ROOM: `${baseURL}/admin/rooms`,
     // Path to get details of a specific room by its ID
     GET_ROOM: (id: number): string => `${baseURL}/admin/rooms/${id}`,
     // Path to update details of a specific room by its ID

@@ -38,3 +38,13 @@ export type AuthContextType = {
   getCurrentUser: () => void;
 };
 
+export type RoomFormInputs = {
+  roomNumber: string;
+  price: string;
+  discount: string;
+  capacity: string;
+  facilities: string[1];
+  imgs: File | null;
+
+};
+

@@ -64,6 +64,15 @@ export interface IroomList {
   length: number | null;
   createdAt: string;
   _id: number;
+  
 }
+
+ export interface Facility {
+  _id: string;
+  name: string;
+  [key: string]: any; 
+}
+
+
 
 

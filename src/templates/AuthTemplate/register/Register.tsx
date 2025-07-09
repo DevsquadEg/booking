@@ -57,7 +57,7 @@ export default function Register() {
     watch,
     trigger,
   } = useForm<IRegitserForm>({ mode: "onChange" });
-  const file = watch("profileImage"); // Assuming you're using react-hook-form's `watch`
+  const file = watch("profileImage"); 
 
   const convertValuesInroForm = (data: IRegitserForm) => {
     const formData = new FormData();

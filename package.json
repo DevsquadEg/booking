@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
+    "@mui/x-data-grid": "^8.7.0",
     "axios": "^1.10.0",
     "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
@@ -21,7 +22,8 @@
     "react-hook-form": "^7.59.0",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
-    "react-router-dom": "^7.6.3"
+    "react-router-dom": "^7.6.3",
+    "sweetalert2": "^11.22.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
