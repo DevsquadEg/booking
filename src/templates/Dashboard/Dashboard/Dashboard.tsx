@@ -102,7 +102,6 @@ export default function Dashboard() {
           borderRadius: 3,
           p: { xs: 2, md: 4 },
           backgroundColor: theme.palette.background.default,
-          minHeight: "90vh",
         }}
       >
         {/* Header */}
