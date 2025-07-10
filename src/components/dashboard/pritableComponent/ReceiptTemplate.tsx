@@ -1,4 +1,4 @@
-import QRCodeSVG from "qrcode.react";
+import { QRCodeSVG } from "qrcode.react";
 import { Box, Typography, Divider, Grid, Stack } from "@mui/material";
 import type { BookingsType } from "@/services/types";
 
