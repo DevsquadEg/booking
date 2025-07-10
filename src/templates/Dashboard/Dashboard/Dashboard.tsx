@@ -1,3 +1,6 @@
+import { ADMIN_URLS } from "@/services/apiEndpoints";
+import { axiosInstance } from "@/services/axiosInstance";
+import type { Dashboard_Charts } from "@/services/types";
 import {
   CampaignTwoTone,
   HotelTwoTone,
@@ -10,6 +13,7 @@ import {
   Divider,
   Grid,
   Paper,
+  Skeleton,
   Stack,
   Typography,
   useTheme,
@@ -21,21 +25,45 @@ import {
   ChartsTooltip,
   ChartsAxis,
 } from "@mui/x-charts";
+import { isAxiosError } from "axios";
+import { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+const placeholderData = {
+  rooms: 13,
+  facilities: 145,
+  bookings: {
+    pending: 37,
+    completed: 7,
+  },
+  ads: 7,
+  users: {
+    user: 634,
+    admin: 225,
+  },
+};
 
 export default function Dashboard() {
-  const data = {
-    rooms: 13,
-    facilities: 145,
-    bookings: {
-      pending: 37,
-      completed: 7,
-    },
-    ads: 7,
-    users: {
-      user: 634,
-      admin: 225,
-    },
-  };
+  const [data, setdata] = useState<Dashboard_Charts>(placeholderData);
+  const [loading, setloading] = useState(true);
+
+  const fetchDashboardData = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get(
+        ADMIN_URLS.DASHBOARD.GET_SUMMARY
+      );
+      setdata(response.data.data);
+      setloading(false);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error(error?.response?.data?.message || "Something went wrong");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   const theme = useTheme();
 
@@ -70,9 +98,11 @@ export default function Dashboard() {
     <>
       <Box
         sx={{
+          my: 2,
+          borderRadius: 3,
           p: { xs: 2, md: 4 },
           backgroundColor: theme.palette.background.default,
-          minHeight: "100vh",
+          minHeight: "90vh",
         }}
       >
         {/* Header */}
@@ -92,6 +122,7 @@ export default function Dashboard() {
               title="Total Rooms"
               value={data.rooms}
               color={colors[0]}
+              loading={loading}
               icon={<HotelTwoTone fontSize="large" />}
             />
           </Grid>
@@ -100,6 +131,7 @@ export default function Dashboard() {
               title="Facilities"
               value={data.facilities}
               color={colors[1]}
+              loading={loading}
               icon={<StyleTwoTone fontSize="large" />}
             />
           </Grid>
@@ -108,6 +140,7 @@ export default function Dashboard() {
               title="Active Ads"
               value={data.ads}
               color={colors[2]}
+              loading={loading}
               icon={<CampaignTwoTone fontSize="large" />}
             />
           </Grid>
@@ -117,7 +150,7 @@ export default function Dashboard() {
 
         {/* Secondary Charts Row */}
         <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, lg: 6 }} sx={{ mb: 4 }}>
             <Paper
               elevation={0}
               sx={{
@@ -131,25 +164,44 @@ export default function Dashboard() {
                 User Distribution
               </Typography>
               <Divider sx={{ mb: 3 }} />
-              <Box sx={{ height: 300 }}>
-                <PieChart series={usersSeries} colors={[colors[1], colors[4]]}>
-                  <ChartsTooltip />
-                </PieChart>
-              </Box>
-              <Stack direction="row" justifyContent="center" spacing={4} mt={2}>
-                <LegendItem
-                  color={colors[1]}
-                  label={`Users (${data.users.user})`}
+              {loading ? (
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={300}
+                  sx={{ mb: 2 }}
                 />
-                <LegendItem
-                  color={colors[4]}
-                  label={`Admins (${data.users.admin})`}
-                />
-              </Stack>
+              ) : (
+                <>
+                  <Box sx={{ height: 300 }}>
+                    <PieChart
+                      series={usersSeries}
+                      colors={[colors[1], colors[4]]}
+                    >
+                      <ChartsTooltip />
+                    </PieChart>
+                  </Box>
+                  <Stack
+                    direction="row"
+                    justifyContent="center"
+                    spacing={4}
+                    mt={2}
+                  >
+                    <LegendItem
+                      color={colors[1]}
+                      label={`Users (${data.users.user})`}
+                    />
+                    <LegendItem
+                      color={colors[4]}
+                      label={`Admins (${data.users.admin})`}
+                    />
+                  </Stack>
+                </>
+              )}
             </Paper>
           </Grid>
 
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, lg: 6 }}>
             <Paper
               elevation={0}
               sx={{
@@ -164,23 +216,32 @@ export default function Dashboard() {
               </Typography>
               <Divider sx={{ mb: 3 }} />
               <Box sx={{ height: 400 }}>
-                <BarChart
-                  series={bookingsSeries}
-                  xAxis={[
-                    {
-                      scaleType: "band",
-                      data: ["Pending", "Completed"],
-                      label: "Booking Status",
-                    },
-                  ]}
-                  yAxis={[{ label: "Number of Bookings" }]}
-                  colors={[colors[0], colors[3]]}
-                  grid={{ vertical: true }}
-                >
-                  <ChartsAxis />
-                  <ChartsTooltip />
-                  <ChartsLegend />
-                </BarChart>
+                {loading ? (
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height="100%"
+                    animation="wave"
+                  />
+                ) : (
+                  <BarChart
+                    series={bookingsSeries}
+                    xAxis={[
+                      {
+                        scaleType: "band",
+                        data: ["Pending", "Completed"],
+                        label: "Booking Status",
+                      },
+                    ]}
+                    yAxis={[{ label: "Number of Bookings" }]}
+                    colors={[colors[0], colors[3]]}
+                    grid={{ vertical: true }}
+                  >
+                    <ChartsAxis />
+                    <ChartsTooltip />
+                    <ChartsLegend />
+                  </BarChart>
+                )}
               </Box>
             </Paper>
           </Grid>
@@ -196,11 +257,13 @@ const StatCard = ({
   value,
   color,
   icon,
+  loading,
 }: {
-  title: string;
-  value: number;
-  color: string;
-  icon: React.ReactNode;
+  title?: string;
+  value?: number;
+  color?: string;
+  icon?: React.ReactNode;
+  loading?: boolean;
 }) => (
   <Card
     sx={{
@@ -228,14 +291,22 @@ const StatCard = ({
             color: color, // This will style the two-tone icon
           }}
         >
-          {icon}
+          {/* circle Placeholder for the icon */}
+          {loading ? (
+            <Skeleton
+              variant="circular"
+              sx={{ width: "100%", height: "100%" }}
+            />
+          ) : (
+            icon
+          )}
         </Box>
         <Box>
           <Typography variant="subtitle2" color="text.secondary">
-            {title}
+            {loading ? <Skeleton width={100} /> : title}
           </Typography>
           <Typography variant="h4" fontWeight="bold" color={color}>
-            {value}
+            {loading ? <Skeleton width={100} /> : value}
           </Typography>
         </Box>
       </Stack>
