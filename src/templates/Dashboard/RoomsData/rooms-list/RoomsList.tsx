@@ -1,8 +1,8 @@
 import {
+  Autocomplete,
   Box,
   Button,
   Chip,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,6 +17,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useEffect, useState, useCallback } from "react";
@@ -35,12 +36,17 @@ export default function RoomsList() {
   const [viewList, setViewList] = useState<IroomList | null>(null);
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpen] = useState(false);
-
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [totalCount, setTotalCount] = useState<number>(0);
+  const [searchQuery, setSearchQuery] = useState(""); // search
+  const [filteredRooms, setFilteredRooms] = useState<IroomList[]>([]); // search
 
   const navigate = useNavigate();
+
+  {
+    /* =================== sweetaler2  ===================== */
+  }
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -50,12 +56,18 @@ export default function RoomsList() {
     buttonsStyling: false,
   });
 
+  {
+    /* =================== show room data list   ===================== */
+  }
+
   const fetchRoomsList = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(
         `${ADMIN_URLS.ROOM.GET_ALL_ROOMS}?page=${page + 1}&size=${rowsPerPage}`
       );
+      console.log(response.data.data.rooms);
+
       setRoomsList(response.data.data.rooms);
       setTotalCount(response.data.data.totalCount);
     } catch (error) {
@@ -64,6 +76,10 @@ export default function RoomsList() {
       setLoading(false);
     }
   }, [page, rowsPerPage]);
+
+  {
+    /* =================== delete room action  ===================== */
+  }
 
   const deleteRoomId = async (id: string) => {
     try {
@@ -75,6 +91,9 @@ export default function RoomsList() {
       console.error("Error deleting room:", error);
     }
   };
+  {
+    /* =================== show room action  ===================== */
+  }
 
   const showRoomDetails = async (_id: string) => {
     try {
@@ -84,6 +103,10 @@ export default function RoomsList() {
       console.log(error);
     }
   };
+
+  {
+    /* =================== dialog logic ( view function)  ===================== */
+  }
 
   const handleClickOpenDialog = async (id: string) => {
     await showRoomDetails(id);
@@ -102,13 +125,31 @@ export default function RoomsList() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  {
+    /* =================== use effrect   ===================== */
+  }
 
   useEffect(() => {
     fetchRoomsList();
   }, [fetchRoomsList]);
 
+  useEffect(() => {
+    // Filter whenever roomsList or searchQuery changes
+    if (searchQuery.trim() === "") {
+      setFilteredRooms(roomsList);
+    } else {
+      const lowerQuery = searchQuery.toLowerCase();
+      const filtered = roomsList.filter((room) =>
+        room.roomNumber.toString().toLowerCase().includes(lowerQuery)
+      );
+      setFilteredRooms(filtered);
+    }
+  }, [roomsList, searchQuery]);
+
   return (
     <>
+      {/* =================== rooms Header  ===================== */}
+
       <Box
         sx={{
           display: "flex",
@@ -126,10 +167,11 @@ export default function RoomsList() {
           component={RouterLink}
           to="/dashboard/room/add"
           sx={{
+            marginRight: "40px",
             padding: "10px 40px",
             bgcolor: "#203FC7",
             textTransform: "none",
-            '&:hover': {
+            "&:hover": {
               bgcolor: "#1a34a1",
             },
           }}
@@ -142,7 +184,11 @@ export default function RoomsList() {
       <Paper sx={{ width: "100%", overflow: "hidden", mt: "1rem" }}>
         {loading ? (
           [...Array(6)].map((_, idx) => (
-            <Skeleton key={idx} sx={{ padding: "1rem", mx: "0.5rem" }} height={40} />
+            <Skeleton
+              key={idx}
+              sx={{ padding: "1rem", mx: "0.5rem" }}
+              height={40}
+            />
           ))
         ) : roomsList.length === 0 ? (
           <Typography
@@ -157,12 +203,37 @@ export default function RoomsList() {
           </Typography>
         ) : (
           <>
+            {/* =================== search  ===================== */}
+            <Autocomplete
+              freeSolo
+              options={roomsList.map((room) => room.roomNumber.toString())}
+              onInputChange={(event, value) => setSearchQuery(value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Search Room Number"
+                  variant="outlined"
+                  size="small"
+                  sx={{
+                    marginBlock: "10px",
+                    borderRadius: "10px",
+                    width: 300,
+                    mb: 2,
+                    ml: "auto",
+                    mr: "30px",
+                  }}
+                />
+              )}
+            />
+            {/* =================== table container  ===================== */}
+
             <TableContainer sx={{ maxHeight: 700 }}>
               <Table stickyHeader aria-label="rooms table">
                 <TableHead>
                   <TableRow>
                     {[
                       "Room Number",
+                      "User Name",
                       "Image",
                       "Price",
                       "Discount",
@@ -177,76 +248,107 @@ export default function RoomsList() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {roomsList.map((room) => (
-                    <TableRow hover key={room._id}>
-                      <TableCell align="center">{room.roomNumber}</TableCell>
-                      <TableCell align="center">
-                        <Box
-                          component="img"
-                          src={
-                            room?.images?.[0] ?? "/profile.jpeg"
-                          }
-                          alt="Room"
-                          sx={{
-                            width: 60,
-                            height: 60,
-                            borderRadius: 1,
-                            objectFit: "cover",
-                            border: "1px solid #ccc",
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell align="center">${room.price}</TableCell>
-                      <TableCell align="center">
-                        <Chip
-                          label={`${room.discount}%`}
-                          color={room.discount > 0 ? "success" : "default"}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Chip label={room.capacity} color="info" />
-                      </TableCell>
-                      <TableCell align="center">
-                        {new Date(room.createdAt).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell align="center">
-                        <ActionBtn
-                          onView={() => handleClickOpenDialog(room._id)}
-                          onEdit={() => navigate(`/dashboard/room/edit/${room._id}`)}
-                          onDelete={() =>
-                            swalWithBootstrapButtons
-                              .fire({
-                                title: "Are you sure?",
-                                text: "You won't be able to revert this!",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonText: "Yes, delete it!",
-                                cancelButtonText: "No, cancel!",
-                                reverseButtons: true,
-                              })
-                              .then((result) => {
-                                if (result.isConfirmed) {
-                                  deleteRoomId(room._id);
-                                  swalWithBootstrapButtons.fire({
-                                    title: "Deleted!",
-                                    text: "Your Room has been deleted.",
-                                    icon: "success",
-                                  });
-                                } else if (
-                                  result.dismiss === Swal.DismissReason.cancel
-                                ) {
-                                  swalWithBootstrapButtons.fire({
-                                    title: "Cancelled",
-                                    text: "Your Room data is safe :)",
-                                    icon: "error",
-                                  });
-                                }
-                              })
-                          }
-                        />
+                  {filteredRooms.length > 0 ? (
+                    filteredRooms.map((room) => (
+                      <TableRow hover key={room._id}>
+                        {/* =================== Room number  ===================== */}
+                        <TableCell align="center">{room.roomNumber}</TableCell>
+
+                        {/* =================== user name   ===================== */}
+                        <TableCell sx={{ fontWeight: "bold" }} align="center">
+                          {room?.createdBy?.userName}
+                        </TableCell>
+
+                        {/* =================== image  ===================== */}
+                        <TableCell align="center">
+                          <Box
+                            component="img"
+                            src={
+                              room?.images?.[0] ??
+                              "/avatars-000303131841-ocbdii-t1080x1080.jpeg"
+                            }
+                            alt="Room"
+                            sx={{
+                              width: 60,
+                              height: 60,
+                              borderRadius: 1,
+                              objectFit: "cover",
+                              border: "1px solid #ccc",
+                            }}
+                          />
+                        </TableCell>
+
+                        {/* =================== price  ===================== */}
+                        <TableCell align="center">${room.price}</TableCell>
+
+                        {/* =================== discount  ===================== */}
+                        <TableCell align="center">
+                          <Chip
+                            label={`${room.discount}%`}
+                            color={room.discount > 0 ? "success" : "default"}
+                          />
+                        </TableCell>
+
+                        {/* =================== capacity  ===================== */}
+                        <TableCell align="center">
+                          <Chip label={room.capacity} color="info" />
+                        </TableCell>
+
+                        {/* =================== creation date  ===================== */}
+                        <TableCell align="center">
+                          {new Date(room.createdAt).toLocaleDateString()}
+                        </TableCell>
+
+                        {/* =================== actions  ===================== */}
+                        <TableCell align="center">
+                          <ActionBtn
+                            onView={() => handleClickOpenDialog(room._id)}
+                            onEdit={() =>
+                              navigate(`/dashboard/room/edit/${room._id}`)
+                            }
+                            onDelete={() =>
+                              swalWithBootstrapButtons
+                                .fire({
+                                  title: "Are you sure?",
+                                  text: "You won't be able to revert this!",
+                                  icon: "warning",
+                                  showCancelButton: true,
+                                  confirmButtonText: "Yes, delete it!",
+                                  cancelButtonText: "No, cancel!",
+                                  reverseButtons: true,
+                                })
+                                .then((result) => {
+                                  if (result.isConfirmed) {
+                                    deleteRoomId(room._id);
+                                    swalWithBootstrapButtons.fire({
+                                      title: "Deleted!",
+                                      text: "Your Room has been deleted.",
+                                      icon: "success",
+                                    });
+                                  } else if (
+                                    result.dismiss === Swal.DismissReason.cancel
+                                  ) {
+                                    swalWithBootstrapButtons.fire({
+                                      title: "Cancelled",
+                                      text: "Your Room data is safe :)",
+                                      icon: "error",
+                                    });
+                                  }
+                                })
+                            }
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={8} align="center">
+                        <Typography variant="body1" color="text.secondary">
+                          🔍 No rooms found matching your search.
+                        </Typography>
                       </TableCell>
                     </TableRow>
-                  ))}
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -279,18 +381,28 @@ export default function RoomsList() {
         }}
       >
         <DialogTitle sx={{ fontWeight: "bold", fontSize: 20, pb: 1 }}>
-          Room  Details
+          Room Details
         </DialogTitle>
 
         <DialogContent dividers>
           <Stack spacing={2} alignItems="center">
             <Typography variant="h6" color="text.secondary">
-              {viewList?.roomNumber}
+              ( {viewList?.roomNumber} )
+            </Typography>
+            <Typography
+              sx={{ fontWeight: "bold" }}
+              variant="h6"
+              color="primary"
+            >
+              {viewList?.createdBy?.userName}
             </Typography>
 
             <Box
               component="img"
-              src={viewList?.images?.[0] ?? "/profile.jpeg"}
+              src={
+                viewList?.images?.[0] ??
+                "/avatars-000303131841-ocbdii-t1080x1080.jpeg"
+              }
               alt="Room"
               sx={{
                 width: 100,
@@ -302,27 +414,32 @@ export default function RoomsList() {
             />
 
             <Typography variant="body1">💰 Price: {viewList?.price}</Typography>
-            <Typography variant="body1">🎁 Discount: {viewList?.discount}</Typography>
-            <Typography variant="body1">👥 Capacity: {viewList?.capacity}</Typography>
-            {Array.isArray(viewList?.facilities) && viewList.facilities.length > 0 && (
-  <Box
-    sx={{
-      display: "flex",
-      flexWrap: "wrap",
-      gap: 1,
-      justifyContent: "center",
-    }}
-  >
-    {viewList.facilities.map((facility) => (
-      <Chip
-        key={facility._id}
-        label={facility.name}
-        color="primary"
-        variant="outlined"
-      />
-    ))}
-  </Box>
-)}
+            <Typography variant="body1">
+              🎁 Discount: {viewList?.discount}
+            </Typography>
+            <Typography variant="body1">
+              👥 Capacity: {viewList?.capacity}
+            </Typography>
+            {Array.isArray(viewList?.facilities) &&
+              viewList.facilities.length > 0 && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 1,
+                    justifyContent: "center",
+                  }}
+                >
+                  {viewList.facilities.map((facility) => (
+                    <Chip
+                      key={facility._id}
+                      label={facility.name}
+                      color="primary"
+                      variant="outlined"
+                    />
+                  ))}
+                </Box>
+              )}
             <Typography variant="body2" color="text.secondary">
               Created At:{" "}
               {viewList?.createdAt &&
@@ -332,7 +449,11 @@ export default function RoomsList() {
         </DialogContent>
 
         <DialogActions sx={{ justifyContent: "center" }}>
-          <Button onClick={handleCloseDialog} variant="text">
+          <Button
+            className="mui-cancel-btn"
+            onClick={handleCloseDialog}
+            variant="outlined"
+          >
             Close
           </Button>
         </DialogActions>

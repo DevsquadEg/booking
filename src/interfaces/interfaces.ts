@@ -65,14 +65,19 @@ export interface IroomList {
 facilities: { _id: string; name: string }[]; 
   createdAt: string;
   _id: string;
+  createdBy: createdBy ;
   
 }
+export type createdBy = {
+ _id: string; userName: string
+};
 
  export interface Facility {
   _id: string;
   name: string;
   [key: string]: any; 
 }
+
 
 
 
