@@ -99,10 +99,11 @@ export default function Dashboard() {
       <Box
         sx={{
           my: 2,
+
           borderRadius: 3,
           p: { xs: 2, md: 4 },
           backgroundColor: theme.palette.background.default,
-          minHeight: "90vh",
+          // minHeight: "90vh",
         }}
       >
         {/* Header */}
