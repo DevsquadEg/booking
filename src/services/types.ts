@@ -80,3 +80,17 @@ export type BookingsType = {
   createdAt: Date | string;
   updatedAt: Date | string;
 };
+
+export type Dashboard_Charts = {
+  rooms: number;
+  facilities: number;
+  bookings: {
+    pending: number;
+    completed: number;
+  };
+  ads: number;
+  users: {
+    user: number;
+    admin: number;
+  };
+};
