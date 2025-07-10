@@ -25,11 +25,11 @@ export const ADMIN_URLS = {
     // Path to create a new room
     CREATE_ROOM: `${baseURL}/admin/rooms`,
     // Path to get details of a specific room by its ID
-    GET_ROOM: (id: number): string => `${baseURL}/admin/rooms/${id}`,
+    GET_ROOM: (id: string): string => `${baseURL}/admin/rooms/${id}`,
     // Path to update details of a specific room by its ID
-    UPDATE_ROOM: (id: number): string => `${baseURL}/admin/rooms/${id}`,
+    UPDATE_ROOM: (id: string): string => `${baseURL}/admin/rooms/${id}`,
     // Path to delete a specific room by its ID
-    DELETE_ROOM: (id: number): string => `${baseURL}/admin/rooms/${id}`,
+    DELETE_ROOM: (id: string): string => `${baseURL}/admin/rooms/${id}`,
     // Path to get all rooms (admin view, with filtering/pagination)
     GET_ALL_ROOMS: `${baseURL}/admin/rooms`,
     // Path to get room types/facilities

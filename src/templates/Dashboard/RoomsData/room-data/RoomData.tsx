@@ -4,7 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { FormProvider, useForm } from "react-hook-form";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import type { RoomFormInputs } from "@/services/types";
 import { ROOMS_LIST_PATH } from "../../../../services/paths";
 import { axiosInstance } from "../../../../services/axiosInstance";
@@ -19,7 +19,7 @@ export default function RoomData() {
       const fileInputRef = useRef<HTMLInputElement | null>(null);
       const navigate = useNavigate();
       const methods = useForm<RoomFormInputs>();
-      const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch } = methods;
+      const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch, reset } = methods;
       const file = watch("imgs"); 
 
 
@@ -45,7 +45,33 @@ export default function RoomData() {
 
 
 
+   // =========== fetch project data if id exists ==========
+  const fetchRoom = useCallback(async () => {
+  if (!id) {
+    toast.error("Room ID is missing");
+    return;
+  }
 
+  try {
+    const response = await axiosInstance.get(ADMIN_URLS.ROOM.GET_ROOM((id)));
+    console.log("fetch",response.data.data.room);
+    
+    const { roomNumber, price, capacity, discount, facilities } = response.data.data.room;
+
+    reset({
+      roomNumber: String(roomNumber),
+      price: String(price),
+      capacity: String(capacity),
+      discount: String(discount),
+facilities: facilities.map((f: any) => f._id),
+      // imgs: null // 
+    });
+  } catch (error) {
+    if (isAxiosError(error)) {
+      toast.error(error?.response?.data?.message || "Failed to load room data");
+    }
+  }
+}, [id, reset]);
 
 
         {/* =================== onSubmit function ===================== */}
@@ -56,7 +82,7 @@ export default function RoomData() {
           try {
             if (id) { 
               //update room
-            const response = await axiosInstance.put(ADMIN_URLS.ROOM.UPDATE_ROOM(Number(id)), formData);
+            const response = await axiosInstance.put(ADMIN_URLS.ROOM.UPDATE_ROOM(id), formData);
             console.log(response);
             toast.success("Task updated successfully");
             navigate(-1);
@@ -84,9 +110,16 @@ export default function RoomData() {
 
         }
 
-        useEffect(() => {
-        
-        }, [])
+       useEffect(
+    () => {
+      if (id) {
+        fetchRoom(); // Fetch project data if editing
+      } else {
+        reset(); // Reset form for new project
+      }
+    },
+    [fetchRoom, id, reset] // Run effect when id changes or on initial render
+  );
         
 
 
@@ -390,18 +423,21 @@ export default function RoomData() {
           {/* =================== Cancel btn ===================== */}
           
 
-    <Button onClick={() =>  navigate( ROOMS_LIST_PATH)} sx={{  color:"#3252DF", borderColor:"#3252DF", mr:"10px", borderRadius: "5px", marginTop: "2rem", p:"10px 30px"}} variant="outlined">Cancel</Button>
+    <Button className="mui-cancel-btn" onClick={() =>  navigate( ROOMS_LIST_PATH)} sx={{  color:"#3252DF", borderColor:"#3252DF", mr:"10px", borderRadius: "5px", marginTop: "2rem", p:"10px 30px"}} variant="outlined">Cancel</Button>
 
 
              {/* =================== submit btn ===================== */}
 
            <Button type="submit" sx={{ bgcolor: "#3252DF", borderRadius: "5px", marginTop: "2rem", p:"10px 50px"}} disabled={isSubmitting} variant="contained" >
-     {(isSubmitting && (
-       <Box sx={{ display: "flex" }}>
+     {(isSubmitting ? (
+        <Box sx={{ display: "flex" }}>
                <CircularProgress size="30px" />
              </Box>
-           )) ||
-           "Save"}
+           ) : id ? ( 
+           "Update" 
+           ) : (
+            "Save"
+           ))} 
     </Button>
            
 

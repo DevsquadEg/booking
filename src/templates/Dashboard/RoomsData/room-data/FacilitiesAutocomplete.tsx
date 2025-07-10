@@ -45,6 +45,11 @@ export default function FacilitiesAutocomplete() {
           getOptionLabel={(option) => option.name}
           filterSelectedOptions
           isOptionEqualToValue={(option, value) => option._id === value._id}
+          value={
+  faciliteList.length > 0 && field.value
+    ? faciliteList.filter((option) => field.value.includes(option._id))
+    : []
+}
           onChange={(event, selectedOptions) => {
             // Send only array of _id values to form
             const selectedIds = selectedOptions.map((item) => item._id);

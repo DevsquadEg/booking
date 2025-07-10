@@ -77,5 +77,6 @@ body {
 }
 
 .mui-cancel-btn:hover {
-  background-color: #c7c7c7;
+  color: white;
+  background-color: #1565c0;
 }

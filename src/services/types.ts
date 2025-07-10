@@ -43,7 +43,7 @@ export type RoomFormInputs = {
   price: string;
   discount: string;
   capacity: string;
-  facilities: string[1];
+  facilities: string[];
   imgs: File | null;
 
 };

@@ -62,8 +62,9 @@ export interface IroomList {
   discount: number;
   capacity: number;
   length: number | null;
+facilities: { _id: string; name: string }[]; 
   createdAt: string;
-  _id: number;
+  _id: string;
   
 }
 
