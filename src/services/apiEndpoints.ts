@@ -39,6 +39,10 @@ export const ADMIN_URLS = {
     // Path to delete a room facility
     DELETE_ROOM_FACILITY: (id: number): string =>
       `${baseURL}/admin/room-facilities/${id}`,
+
+GET_ALL_ROOMS_FOR_ADDS:`${baseURL}/admin/rooms?page=1&size=100`
+
+
   },
 
   // Booking Management Endpoints within Admin
@@ -66,11 +70,11 @@ export const ADMIN_URLS = {
     // Path to create a new ad
     CREATE_AD: `${baseURL}/admin/Ads`,
     // Path to get details of a specific ad by its ID
-    GET_AD: (id: number): string => `${baseURL}/admin/Ads/${id}`,
+    GET_AD: (id: string): string => `${baseURL}/admin/Ads/${id}`,
     // Path to update details of a specific ad by its ID
-    UPDATE_AD: (id: number): string => `${baseURL}/admin/Ads/${id}`,
+    UPDATE_AD: (id: string): string => `${baseURL}/admin/Ads/${id}`,
     // Path to delete a specific ad by its ID
-    DELETE_AD: (id: number): string => `${baseURL}/admin/Ads/${id}`,
+    DELETE_AD: (id: string): string => `${baseURL}/admin/Ads/${id}`,
     // Path to get all ads (admin view, with filtering/pagination)
     GET_ALL_ADS: `${baseURL}/admin/Ads`,
   },
