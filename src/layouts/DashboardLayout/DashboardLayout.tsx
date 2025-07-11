@@ -32,7 +32,7 @@ export default function DashboardLayout() {
           }}
         >
           <Navbar setAnchorElNav={setAnchorElNav} anchorElNav={anchorElNav} />
-          <Outlet />
+          <Outlet  />
         </Box>
       </Box>
     </>

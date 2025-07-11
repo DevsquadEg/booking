@@ -70,3 +70,26 @@ export interface Facility {
     userName: string;
   };
 }
+
+export interface IroomList {
+  roomNumber: number;
+  images: string[];
+  price: number;
+  discount: number;
+  capacity: number;
+  length: number | null;
+  facilities: { _id: string; name: string }[];
+  createdAt: string;
+  _id: string;
+  createdBy: createdBy;
+}
+export type createdBy = {
+  _id: string;
+  userName: string;
+};
+
+export interface Facility {
+  _id: string;
+  name: string;
+  [key: string]: any;
+}
