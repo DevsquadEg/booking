@@ -27,7 +27,7 @@ import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import ActionBtn from "./ActionBtn";
+import ActionBtn from "@/components/common/ActionBtn/ActionBtn";
 import type { IroomList } from "@/interfaces/interfaces";
 import type { MouseEvent } from "react";
 
@@ -260,10 +260,7 @@ export default function RoomsList() {
                         <TableCell align="center">
                           <Box
                             component="img"
-                            src={
-                              room?.images?.[0] ??
-                              "/avatars-000303131841-ocbdii-t1080x1080.jpeg"
-                            }
+                            src={room?.images?.[0] ?? "/noRoom.jpeg"}
                             alt="Room"
                             sx={{
                               width: 60,
@@ -396,10 +393,7 @@ export default function RoomsList() {
 
             <Box
               component="img"
-              src={
-                viewList?.images?.[0] ??
-                "/avatars-000303131841-ocbdii-t1080x1080.jpeg"
-              }
+              src={viewList?.images?.[0] ?? "/noRoom.jpeg"}
               alt="Room"
               sx={{
                 width: 100,
