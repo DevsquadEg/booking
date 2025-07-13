@@ -46,7 +46,6 @@ export type RoomFormInputs = {
   facilities: string[];
   imgs: File | null;
   oldImage?: string; // ✅ New field to store old image from API
-
 };
 
 export type UserType = {

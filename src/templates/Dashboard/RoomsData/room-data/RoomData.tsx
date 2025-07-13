@@ -1,5 +1,4 @@
 import {
-  Autocomplete,
   Box,
   Button,
   CircularProgress,
@@ -8,6 +7,7 @@ import {
   IconButton,
   InputLabel,
   OutlinedInput,
+  Skeleton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -17,7 +17,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { RoomFormInputs } from "@/services/types";
+import type { FacilityType, RoomFormInputs } from "@/services/types";
 import { ROOMS_LIST_PATH } from "../../../../services/paths";
 import { axiosInstance } from "../../../../services/axiosInstance";
 import { ADMIN_URLS } from "../../../../services/apiEndpoints";
@@ -29,6 +29,7 @@ export default function RoomData() {
   const { id } = useParams();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const methods = useForm<RoomFormInputs>();
   const {
     register,
@@ -88,6 +89,7 @@ export default function RoomData() {
     }
 
     try {
+      setLoading(true);
       const response = await axiosInstance.get(ADMIN_URLS.ROOM.GET_ROOM(id));
       console.log("fetch", response.data.data.room);
       const { images } = response.data.data.room;
@@ -100,7 +102,7 @@ export default function RoomData() {
         price: String(price),
         capacity: String(capacity),
         discount: String(discount),
-        facilities: facilities.map((f: any) => f._id),
+        facilities: facilities.map((f: FacilityType) => f._id),
         oldImage: images?.[0] || "", // ✅ store old image
         imgs: null, // default placeholder
       });
@@ -118,8 +120,10 @@ export default function RoomData() {
           error?.response?.data?.message || "Failed to load room data"
         );
       }
+    } finally {
+      setLoading(false);
     }
-  }, [id, reset]);
+  }, [id, reset, setValue]);
 
   {
     /* =================== onSubmit function ===================== */
@@ -243,13 +247,17 @@ export default function RoomData() {
                 }}
                 variant="standard"
               >
-                <OutlinedInput
-                  placeholder="Please type here ..."
-                  type={"text"}
-                  {...register("roomNumber", {
-                    required: "room Number is required",
-                  })}
-                />
+                {(loading && (
+                  <Skeleton variant="rectangular" sx={{ height: "60px" }} />
+                )) || (
+                  <OutlinedInput
+                    placeholder="Please type here ..."
+                    type={"text"}
+                    {...register("roomNumber", {
+                      required: "room Number is required",
+                    })}
+                  />
+                )}
               </FormControl>
               {errors.roomNumber && (
                 <FormHelperText error sx={{ fontSize: 13 }}>
@@ -277,13 +285,17 @@ export default function RoomData() {
                     }}
                     variant="standard"
                   >
-                    <OutlinedInput
-                      placeholder="Please type here ..."
-                      type={"number"}
-                      {...register("price", {
-                        required: "price is required",
-                      })}
-                    />
+                    {(loading && (
+                      <Skeleton variant="rectangular" sx={{ height: "60px" }} />
+                    )) || (
+                      <OutlinedInput
+                        placeholder="Please type here ..."
+                        type={"number"}
+                        {...register("price", {
+                          required: "price is required",
+                        })}
+                      />
+                    )}
                   </FormControl>
                   {errors.price && (
                     <FormHelperText error sx={{ fontSize: 13 }}>
@@ -310,13 +322,17 @@ export default function RoomData() {
                     }}
                     variant="standard"
                   >
-                    <OutlinedInput
-                      placeholder="Please type here ..."
-                      type={"number"}
-                      {...register("capacity", {
-                        required: "capacity is required",
-                      })}
-                    />
+                    {(loading && (
+                      <Skeleton variant="rectangular" sx={{ height: "60px" }} />
+                    )) || (
+                      <OutlinedInput
+                        placeholder="Please type here ..."
+                        type={"number"}
+                        {...register("capacity", {
+                          required: "capacity is required",
+                        })}
+                      />
+                    )}
                   </FormControl>
                   {errors.capacity && (
                     <FormHelperText error sx={{ fontSize: 13 }}>
@@ -345,13 +361,17 @@ export default function RoomData() {
                     }}
                     variant="standard"
                   >
-                    <OutlinedInput
-                      placeholder="Please type here ..."
-                      type={"number"}
-                      {...register("discount", {
-                        required: "discount is required",
-                      })}
-                    />
+                    {(loading && (
+                      <Skeleton variant="rectangular" sx={{ height: "60px" }} />
+                    )) || (
+                      <OutlinedInput
+                        placeholder="Please type here ..."
+                        type={"number"}
+                        {...register("discount", {
+                          required: "discount is required",
+                        })}
+                      />
+                    )}
                   </FormControl>
                   {errors.discount && (
                     <FormHelperText error sx={{ fontSize: 13 }}>
@@ -370,7 +390,12 @@ export default function RoomData() {
                   >
                     facilities
                   </InputLabel>
-                  <FacilitiesAutocomplete />
+                  {(loading && (
+                    <Skeleton
+                      variant="rectangular"
+                      sx={{ mt: "0.25rem", height: "60px" }}
+                    />
+                  )) || <FacilitiesAutocomplete />}
                 </Box>
               </Box>
               {/* =================== Room Image ===================== */}
