@@ -57,7 +57,7 @@ export interface submitBtnAuth {
 
 export interface IFacility {
   name: string;
-  _id: number;
+  _id: string;
 }
 
 export interface Facility {

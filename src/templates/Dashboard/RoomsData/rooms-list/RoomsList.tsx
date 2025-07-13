@@ -39,8 +39,8 @@ export default function RoomsList() {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const [searchQuery, setSearchQuery] = useState(""); // search
-  const [filteredRooms, setFilteredRooms] = useState<IroomList[]>([]); // search
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredRooms, setFilteredRooms] = useState<IroomList[]>([]);
 
   const navigate = useNavigate();
 
@@ -77,10 +77,7 @@ export default function RoomsList() {
     }
   }, [page, rowsPerPage]);
 
-  {
-    /* =================== delete room action  ===================== */
-  }
-
+  // =================== delete room action  =====================
   const deleteRoomId = async (id: string) => {
     try {
       await axiosInstance.delete(ADMIN_URLS.ROOM.DELETE_ROOM(id));

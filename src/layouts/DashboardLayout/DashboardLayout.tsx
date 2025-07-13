@@ -19,7 +19,7 @@ export default function DashboardLayout() {
   // }, []);
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", bgcolor: "#F2F2F2",height:"100vh" }}>
         <Sidebar anchorElNav={anchorElNav} />
         <Box
           component="main"
@@ -32,7 +32,7 @@ export default function DashboardLayout() {
           }}
         >
           <Navbar setAnchorElNav={setAnchorElNav} anchorElNav={anchorElNav} />
-          <Outlet  />
+          <Outlet />
         </Box>
       </Box>
     </>

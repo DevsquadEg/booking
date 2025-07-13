@@ -37,12 +37,10 @@ export const ADMIN_URLS = {
     // Path to add a new room facility
     ADD_ROOM_FACILITY: `${baseURL}/admin/room-facilities`,
     // Path to delete a room facility
-    DELETE_ROOM_FACILITY: (id: number): string =>
+    DELETE_ROOM_FACILITY: (id: string): string =>
       `${baseURL}/admin/room-facilities/${id}`,
-
-GET_ALL_ROOMS_FOR_ADDS:`${baseURL}/admin/rooms?page=1&size=100`
-
-
+    // Path to get all rooms for ads (admin view)
+    GET_ALL_ROOMS_FOR_ADDS: `${baseURL}/admin/rooms`,
   },
 
   // Booking Management Endpoints within Admin
