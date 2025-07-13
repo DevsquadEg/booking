@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 
 import Avatar from "@mui/material/Avatar";
 
-import { MenuOutlined, Search } from "@mui/icons-material";
+import { MailOutlined, MenuOutlined, NotificationsNoneOutlined, Search } from "@mui/icons-material";
 import { InputBase } from "@mui/material";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import { NavLink as RouterLink } from "react-router-dom";
@@ -86,14 +86,14 @@ function Navbar({ setAnchorElNav }: Props) {
             <MenuOutlined sx={{ color: "#555", fontSize: 22 }} />
           </IconButton>
           {/* Notification Icon */}
-          {/* <IconButton>
+          <IconButton>
             <NotificationsNoneOutlined sx={{ color: "#555", fontSize: 22 }} />
-          </IconButton> */}
+          </IconButton>
 
           {/* Mail Icon */}
-          {/* <IconButton>
+          <IconButton>
             <MailOutlined sx={{ color: "#555", fontSize: 22 }} />
-          </IconButton> */}
+          </IconButton>
 
           {/* User Info */}
           <IconButton
