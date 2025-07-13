@@ -14,9 +14,20 @@ import { Chip, Skeleton, Typography } from "@mui/material";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
 import SectionTitle from "@/components/dashboard/sectionTitle/SectionTitle";
-import ViewBtn from "@/components/dashboard/actionsBtn/viewBtn/ViewBtn";
 import { useNavigate } from "react-router-dom";
 import { BOOKING_DATA_PATH } from "@/services/paths";
+import ActionBtn from "@/components/common/ActionBtn/ActionBtn";
+import Swal from "sweetalert2";
+
+/* =================== sweetaler2  ===================== */
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "mui-confirm-btn",
+    cancelButton: "mui-cancel-btn",
+  },
+  buttonsStyling: false,
+});
 
 export default function BookingsList() {
   const [page, setPage] = useState<number>(0);
@@ -37,8 +48,49 @@ export default function BookingsList() {
   const handleView = (booking: BookingsType) => {
     navigate(`${BOOKING_DATA_PATH}/${booking._id}`, { state: { booking } });
   };
+  const handleDelete = (booking: BookingsType) => {
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          deleteBooking(booking._id);
+          swalWithBootstrapButtons.fire({
+            title: "Deleted!",
+            text: "Your Booking has been deleted.",
+            icon: "success",
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Your Booking data is safe :)",
+            icon: "error",
+          });
+        }
+      });
+  };
 
-  const featchAllBookings = useCallback(async () => {
+  const deleteBooking = async (id: string) => {
+    try {
+      await axiosInstance.delete(ADMIN_URLS.BOOKING.DELETE_BOOKING(id));
+      toast.success("Booking Deleted successfully");
+      fetchAllBookings(); // Refresh list after deletion
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Something went wrong!");
+        console.error("Error deleting booking:", error);
+      }
+    }
+  };
+
+  const fetchAllBookings = useCallback(async () => {
     setloading(true);
     try {
       const response = await axiosInstance.get(
@@ -58,7 +110,7 @@ export default function BookingsList() {
     }
   }, [page, rowsPerPage]);
 
-  const handleChangePage = (event: MouseEvent | null, newPage: number) => {
+  const handleChangePage = (_event: MouseEvent | null, newPage: number) => {
     setPage(newPage);
   };
 
@@ -70,8 +122,8 @@ export default function BookingsList() {
   };
 
   useEffect(() => {
-    featchAllBookings();
-  }, [featchAllBookings]);
+    fetchAllBookings();
+  }, [fetchAllBookings]);
 
   return (
     <>
@@ -151,10 +203,14 @@ export default function BookingsList() {
                                     dateOptions
                                   )
                                 ) : info === "actions" ? (
-                                  <ViewBtn
-                                    handleOnClick={() => {
-                                      handleView(booking);
-                                    }}
+                                  // <ViewBtn
+                                  //   handleOnClick={() => {
+                                  //     handleView(booking);
+                                  //   }}
+                                  // />
+                                  <ActionBtn
+                                    onView={() => handleView(booking)}
+                                    onDelete={() => handleDelete(booking)}
                                   />
                                 ) : info === "status" ? (
                                   <Chip

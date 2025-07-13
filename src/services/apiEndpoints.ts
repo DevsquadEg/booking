@@ -58,7 +58,7 @@ export const ADMIN_URLS = {
     CANCEL_BOOKING: (id: number): string =>
       `${baseURL}/admin/Booking/${id}/cancel`,
     // Path to delete a specific booking by its ID (admin view)
-    DELETE_BOOKING: (id: number): string => `${baseURL}/admin/Booking/${id}`,
+    DELETE_BOOKING: (id: string) => `${baseURL}/admin/booking/${id}`,
     // Path to get all bookings (admin view, with filtering/pagination)
     GET_ALL_BOOKINGS: "/admin/Booking",
     // Path to confirm a specific booking (admin action)

@@ -1,15 +1,16 @@
-import { useState, MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import {
   IconButton,
   Menu,
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Box,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { CircleOutlined, VisibilityOutlined } from "@mui/icons-material";
 
 interface ActionsMenuProps {
   onView?: () => void;
@@ -17,7 +18,11 @@ interface ActionsMenuProps {
   onDelete?: () => void;
 }
 
-export default function ActionBtn({ onView, onEdit, onDelete }: ActionsMenuProps) {
+export default function ActionBtn({
+  onView,
+  onEdit,
+  onDelete,
+}: ActionsMenuProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -40,18 +45,55 @@ export default function ActionBtn({ onView, onEdit, onDelete }: ActionsMenuProps
         <MoreVertIcon />
       </IconButton>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={() => handleAction(onView)}>
-          <ListItemIcon><VisibilityIcon fontSize="small" /></ListItemIcon>
-          <ListItemText>View</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={() => handleAction(onEdit)}>
-          <ListItemIcon><EditIcon fontSize="small" /></ListItemIcon>
-          <ListItemText>Edit</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={() => handleAction(onDelete)}>
-          <ListItemIcon><DeleteIcon fontSize="small" color="error" /></ListItemIcon>
-          <ListItemText>Delete</ListItemText>
-        </MenuItem>
+        {onView && (
+          <MenuItem onClick={() => handleAction(onView)}>
+            <ListItemIcon>
+              <Box
+                sx={{
+                  position: "relative",
+                  padding: "0.5rem",
+                  color: "var(--blue-color)",
+                }}
+              >
+                <CircleOutlined
+                  sx={{
+                    fontSize: "1.2rem",
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                />
+                <VisibilityOutlined
+                  sx={{
+                    fontSize: "0.7rem",
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                />
+              </Box>
+            </ListItemIcon>
+            <ListItemText>View</ListItemText>
+          </MenuItem>
+        )}
+        {onEdit && (
+          <MenuItem onClick={() => handleAction(onEdit)}>
+            <ListItemIcon>
+              <EditIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Edit</ListItemText>
+          </MenuItem>
+        )}
+        {onDelete && (
+          <MenuItem onClick={() => handleAction(onDelete)}>
+            <ListItemIcon>
+              <DeleteIcon fontSize="small" color="error" />
+            </ListItemIcon>
+            <ListItemText>Delete</ListItemText>
+          </MenuItem>
+        )}
       </Menu>
     </>
   );
