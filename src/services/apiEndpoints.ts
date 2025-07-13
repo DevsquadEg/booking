@@ -13,7 +13,7 @@ export const ADMIN_URLS = {
     // Path for admin to reset a user's password
     RESET_PASSWORD: `${baseURL}/admin/Users/reset-password`, // Assuming a dedicated admin reset endpoint
     // Path for admin to change a user's password
-    CHANGE_PASSWORD: `${baseURL}/admin/Users/change-password`, // Assuming a dedicated admin change endpoint
+    CHANGE_PASSWORD: `${baseURL}/admin/users/change-password`, // Assuming a dedicated admin change endpoint
     // Path for admin to login (if different from regular user login)
     LOGIN: `${baseURL}/admin/users/login`, // As seen in Postman screenshot
     // Path for admin to forget password (if different from regular user)
@@ -36,9 +36,14 @@ export const ADMIN_URLS = {
     GET_ROOM_FACILITIES: `${baseURL}/admin/room-facilities`, // As seen in Postman screenshot
     // Path to add a new room facility
     ADD_ROOM_FACILITY: `${baseURL}/admin/room-facilities`,
-    // Path to delete a room facility
-    DELETE_ROOM_FACILITY: (id: number): string =>
+    // Path to update a room facility
+    UPDATE_ROOM_FACILITY: (id: string): string =>
       `${baseURL}/admin/room-facilities/${id}`,
+    // Path to delete a room facility
+    DELETE_ROOM_FACILITY: (id: string): string =>
+      `${baseURL}/admin/room-facilities/${id}`,
+    // Path to get all rooms for ads (admin view)
+    GET_ALL_ROOMS_FOR_ADDS: `${baseURL}/admin/rooms`,
   },
 
   // Booking Management Endpoints within Admin
@@ -46,7 +51,7 @@ export const ADMIN_URLS = {
     // Path to create a new booking (admin can create bookings)
     CREATE_BOOKING: "/admin/Booking",
     // Path to get details of a specific booking by its ID (admin view)
-    GET_BOOKING: (id: number): string => `${baseURL}/admin/Booking/${id}`,
+    GET_BOOKING: (id: string): string => `${baseURL}/admin/booking/${id}`,
     // Path to update details of a specific booking by its ID (admin view)
     UPDATE_BOOKING: (id: number): string => `${baseURL}/admin/Booking/${id}`,
     // Path to cancel a specific booking by its ID (admin view)
@@ -66,11 +71,11 @@ export const ADMIN_URLS = {
     // Path to create a new ad
     CREATE_AD: `${baseURL}/admin/Ads`,
     // Path to get details of a specific ad by its ID
-    GET_AD: (id: number): string => `${baseURL}/admin/Ads/${id}`,
+    GET_AD: (id: string): string => `${baseURL}/admin/Ads/${id}`,
     // Path to update details of a specific ad by its ID
-    UPDATE_AD: (id: number): string => `${baseURL}/admin/Ads/${id}`,
+    UPDATE_AD: (id: string): string => `${baseURL}/admin/Ads/${id}`,
     // Path to delete a specific ad by its ID
-    DELETE_AD: (id: number): string => `${baseURL}/admin/Ads/${id}`,
+    DELETE_AD: (id: string): string => `${baseURL}/admin/Ads/${id}`,
     // Path to get all ads (admin view, with filtering/pagination)
     GET_ALL_ADS: `${baseURL}/admin/Ads`,
   },

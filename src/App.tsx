@@ -26,33 +26,7 @@ import FavList from "./templates/Main/Favorites/fav-list/FavList";
 import Confirmation from "./templates/Main/Booking/confirmation/Confirmation";
 import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
 import Payment from "./templates/Main/Booking/payment/Payment";
-import {
-  MAIN_PATH,
-  LOGIN_PATH,
-  REGISTER_PATH,
-  FORGET_PASS_PATH,
-  RESET_PASS_PATH,
-  VERIFY_ACCOUNT_PATH,
-  ROOMS_GRID_PATH,
-  ROOM_DETAILS_PATH,
-  FAV_LIST_PATH,
-  PAYMENT_PATH,
-  CONFIRMATION_PATH,
-  CHANGE_PASS_PATH,
-  DASHBOARD_PATH,
-  FACILITIES_LIST_PATH,
-  FACILITY_DATA_PATH,
-  ADS_LIST_PATH,
-  AD_ADD_PATH,
-  AD_EDIT_PATH,
-  ROOMS_LIST_PATH,
-  ROOM_ADD_PATH,
-  ROOM_EDIT_PATH,
-  BOOKINGS_LIST_PATH,
-  BOOKING_DATA_PATH,
-  USERS_LIST_PATH,
-  USER_DATA_PATH,
-} from "./services/paths";
+import PATHS from "./services/paths";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -63,18 +37,18 @@ function App() {
       element: <AuthLayout />,
       errorElement: <NotFound />,
       children: [
-        { path: LOGIN_PATH.replace(MAIN_PATH, ""), element: <Login /> },
-        { path: REGISTER_PATH.replace(MAIN_PATH, ""), element: <Register /> },
+        { path: PATHS.LOGIN_PATH, element: <Login /> },
+        { path: PATHS.REGISTER_PATH, element: <Register /> },
         {
-          path: FORGET_PASS_PATH.replace(MAIN_PATH, ""),
+          path: PATHS.FORGET_PASS_PATH,
           element: <ForgetPass />,
         },
         {
-          path: RESET_PASS_PATH.replace(MAIN_PATH, ""),
+          path: PATHS.RESET_PASS_PATH,
           element: <ResetPass />,
         },
         {
-          path: VERIFY_ACCOUNT_PATH.replace(MAIN_PATH, ""),
+          path: PATHS.VERIFY_ACCOUNT_PATH,
           element: <VerifyAccount />,
         },
       ],
@@ -82,27 +56,27 @@ function App() {
 
     // Main Routes
     {
-      path: MAIN_PATH,
+      path: PATHS.MAIN_PATH,
       element: <MainLayout />,
       errorElement: <NotFound />,
       children: [
         { index: true, element: <Home /> },
         {
-          path: ROOMS_GRID_PATH.replace(MAIN_PATH, ""),
+          path: PATHS.ROOMS_GRID_PATH,
           element: <RoomsGrid />,
         },
         {
-          path: ROOM_DETAILS_PATH.replace(MAIN_PATH, ""),
+          path: PATHS.ROOM_DETAILS_PATH,
           element: <RoomDetails />,
         },
-        { path: FAV_LIST_PATH.replace(MAIN_PATH, ""), element: <FavList /> },
-        { path: PAYMENT_PATH.replace(MAIN_PATH, ""), element: <Payment /> },
+        { path: PATHS.FAV_LIST_PATH, element: <FavList /> },
+        { path: PATHS.PAYMENT_PATH, element: <Payment /> },
         {
-          path: CONFIRMATION_PATH.replace(MAIN_PATH, ""),
+          path: PATHS.CONFIRMATION_PATH,
           element: <Confirmation />,
         },
         {
-          path: CHANGE_PASS_PATH.replace(MAIN_PATH, ""),
+          path: PATHS.CHANGE_PASS_PATH,
           element: <ChangePass />,
         },
       ],
@@ -110,57 +84,57 @@ function App() {
 
     // Dashboard Routes
     {
-      path: DASHBOARD_PATH,
+      path: PATHS.DASHBOARD_PATH,
       element: <DashboardLayout />,
       errorElement: <NotFound />,
       children: [
         { index: true, element: <Dashboard /> },
         {
-          path: FACILITIES_LIST_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.FACILITIES_LIST_PATH,
           element: <FacilitiesList />,
         },
         {
-          path: FACILITY_DATA_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.FACILITY_DATA_PATH,
           element: <FacilityData />,
         },
         {
-          path: ADS_LIST_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.ADS_LIST_PATH,
           element: <AdsList />,
         },
         {
-          path: AD_ADD_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.AD_ADD_PATH,
           element: <AdData />,
         },
         {
-          path: AD_EDIT_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.AD_EDIT_PATH,
           element: <AdData />,
         },
         {
-          path: ROOMS_LIST_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.ROOMS_LIST_PATH,
           element: <RoomsList />,
         },
         {
-          path: ROOM_ADD_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.ROOM_ADD_PATH,
           element: <RoomData />,
         },
         {
-          path: ROOM_EDIT_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.ROOM_EDIT_PATH,
           element: <RoomData />,
         },
         {
-          path: BOOKINGS_LIST_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.BOOKINGS_LIST_PATH,
           element: <BookingsList />,
         },
         {
-          path: BOOKING_DATA_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.BOOKING_DATA_PATH,
           element: <BookingData />,
         },
         {
-          path: USERS_LIST_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.USERS_LIST_PATH,
           element: <UsersList />,
         },
         {
-          path: USER_DATA_PATH.replace(`${DASHBOARD_PATH}/`, ""),
+          path: PATHS.USER_DATA_PATH,
           element: <UserData />,
         },
       ],

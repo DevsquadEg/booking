@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import loginBg from "../../../assets/imgs/reset-password.png";
+
 import axios, { isAxiosError } from "axios";
 import toast from "react-hot-toast";
 
