@@ -58,7 +58,7 @@ export default function BookingsList() {
     }
   }, [page, rowsPerPage]);
 
-  const handleChangePage = (event: MouseEvent | null, newPage: number) => {
+  const handleChangePage = (_event: MouseEvent | null, newPage: number) => {
     setPage(newPage);
   };
 

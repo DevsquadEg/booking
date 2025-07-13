@@ -115,7 +115,7 @@ export default function RoomsList() {
 
   const handleCloseDialog = () => setOpen(false);
 
-  const handleChangePage = (event: MouseEvent | null, newPage: number) => {
+  const handleChangePage = (_event: MouseEvent | null, newPage: number) => {
     setPage(newPage);
   };
 
@@ -207,7 +207,7 @@ export default function RoomsList() {
             <Autocomplete
               freeSolo
               options={roomsList.map((room) => room.roomNumber.toString())}
-              onInputChange={(event, value) => setSearchQuery(value)}
+              onInputChange={(_event, value) => setSearchQuery(value)}
               renderInput={(params) => (
                 <TextField
                   {...params}
