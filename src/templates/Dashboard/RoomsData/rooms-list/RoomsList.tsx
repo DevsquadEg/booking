@@ -37,7 +37,7 @@ export default function RoomsList() {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpen] = useState(false);
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState(""); // search
   const [filteredRooms, setFilteredRooms] = useState<IroomList[]>([]); // search
@@ -183,7 +183,7 @@ export default function RoomsList() {
 
       <Paper sx={{ width: "100%", overflow: "hidden", mt: "1rem" }}>
         {loading ? (
-          [...Array(6)].map((_, idx) => (
+          [...Array(10)].map((_, idx) => (
             <Skeleton
               key={idx}
               sx={{ padding: "1rem", mx: "0.5rem" }}
