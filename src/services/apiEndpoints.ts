@@ -36,6 +36,9 @@ export const ADMIN_URLS = {
     GET_ROOM_FACILITIES: `${baseURL}/admin/room-facilities`, // As seen in Postman screenshot
     // Path to add a new room facility
     ADD_ROOM_FACILITY: `${baseURL}/admin/room-facilities`,
+    // Path to update a room facility
+    UPDATE_ROOM_FACILITY: (id: string): string =>
+      `${baseURL}/admin/room-facilities/${id}`,
     // Path to delete a room facility
     DELETE_ROOM_FACILITY: (id: string): string =>
       `${baseURL}/admin/room-facilities/${id}`,

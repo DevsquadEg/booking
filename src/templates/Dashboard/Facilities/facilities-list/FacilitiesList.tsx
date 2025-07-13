@@ -4,11 +4,15 @@ import { axiosInstance } from "../../../../services/axiosInstance";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
+  Box,
+  Button,
+  FormControl,
   IconButton,
   Menu,
   MenuItem,
   // Box,
   Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -16,12 +20,22 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Typography,
 } from "@mui/material";
 import type { Facility } from "@/interfaces/interfaces";
-import { Delete, MoreHoriz } from "@mui/icons-material";
+import {
+  Add,
+  AddIcCallOutlined,
+  Delete,
+  FileUploadOutlined,
+  FilterAltOutlined,
+  MoreHoriz,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import ActionBtn from "@/components/common/ActionBtn/ActionBtn";
 import Swal from "sweetalert2";
+import SectionTitle from "@/components/dashboard/sectionTitle/SectionTitle";
+import FacilityFormCard from "../FacilityFormCard/FacilityFormCard";
 
 export default function FacilitiesList() {
   const [facilities, setFacilities] = useState<Facility[]>([]);
@@ -29,6 +43,12 @@ export default function FacilitiesList() {
   const [pageNumber, setPageNumber] = useState(1);
   const [loading, setLoading] = useState(false);
   const [facilitiesCount, setFacilitiesCount] = useState(0);
+  const [showAddCardForm, setShowCardForm] = useState(false);
+  const [addFormTitle, setAddFormTitle] = useState<string | null>(null);
+  const [selectedFacility, setSelectedFacility] = useState<Facility | null>(
+    null
+  );
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
@@ -97,6 +117,42 @@ export default function FacilitiesList() {
     buttonsStyling: false,
   });
 
+  //==================  handle add new facility =================
+  function handleShowAddsCardForm() {
+    setShowCardForm(true);
+    setAddFormTitle("Add New Facility");
+    setSelectedFacility(null); // مهم علشان الفورم يعرف إنها إضافة مش تعديل
+  }
+
+  const handleCreateNewFacility = async (data: { name: string }) => {
+    try {
+      await axiosInstance.post(ADMIN_URLS.ROOM.ADD_ROOM_FACILITY, data);
+      toast.success("Facility created successfully");
+      getAllFacilities();
+      setShowCardForm(false);
+      setAddFormTitle(null);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Something went wrong!");
+      setErrorMessage(error.response?.data?.message || "Something went wrong!");
+      console.error("Error creating facility:", error);
+    }
+  };
+
+  const handleUpdateFacility = async (id: string, data: { name: string }) => {
+    try {
+      await axiosInstance.put(ADMIN_URLS.ROOM.UPDATE_ROOM_FACILITY(id), data);
+      toast.success("Facility updated successfully");
+      getAllFacilities();
+      setShowCardForm(false);
+      setAddFormTitle(null);
+      setSelectedFacility(null);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Something went wrong!");
+      setErrorMessage(error.response?.data?.message || "Something went wrong!");
+      console.error("Error updating facility:", error);
+    }
+  };
+
   //==================  useEffect facilities =================
   useEffect(() => {
     setLoading(true);
@@ -105,16 +161,50 @@ export default function FacilitiesList() {
 
   return (
     <>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          my: 2,
+        }}
+      >
+        {/* Left: Title */}
+        <SectionTitle title="Facilities Table Details" />
+
+        {/* Right: Controls */}
+        <Box>
+          {/* Add New Product Button */}
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            size="large"
+            onClick={handleShowAddsCardForm}
+            sx={{
+              textTransform: "none",
+              borderRadius: "7px",
+              backgroundColor: "#3F5FFF",
+              "&:hover": {
+                backgroundColor: "#2d44d2",
+              },
+            }}
+          >
+            Add New Facility
+          </Button>
+        </Box>
+      </Box>
+      {/* ============================= */}
       <Paper
         sx={{
-          my: "1rem",
+          // my: "1rem",
           width: "100%",
           overflow: "hidden",
           borderRadius: "12px",
           boxShadow: 2,
         }}
       >
-        <TableContainer sx={{ maxHeight: "calc(100vh - 220px)" }}>
+        <TableContainer sx={{ maxHeight: "calc(100vh - 320px)" }}>
           <Table stickyHeader aria-label="facilities table">
             <TableHead>
               <TableRow>
@@ -146,9 +236,12 @@ export default function FacilitiesList() {
                   </TableCell>
                   <TableCell align="center">
                     <ActionBtn
-                      onEdit={() =>
-                        navigate(`/facilities/edit/${facility._id}`)
-                      }
+                      onEdit={() => {
+                        setSelectedFacility(facility);
+                        setAddFormTitle("Update Facility");
+                        setShowCardForm(true);
+                        setErrorMessage(null);
+                      }}
                       onDelete={() =>
                         swalWithBootstrapButtons
                           .fire({
@@ -231,6 +324,21 @@ export default function FacilitiesList() {
           }}
         />
       </Paper>
+      {showAddCardForm && addFormTitle && (
+        <FacilityFormCard
+          open={showAddCardForm}
+          title={addFormTitle}
+          selectedFacility={selectedFacility}
+          handleCreateNew={handleCreateNewFacility}
+          handleUpdate={handleUpdateFacility}
+          error={errorMessage}
+          onClose={() => {
+            setShowCardForm(false);
+            setAddFormTitle(null);
+            setSelectedFacility(null);
+          }}
+        />
+      )}
     </>
   );
 }
