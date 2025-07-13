@@ -69,7 +69,14 @@ export default function UsersList() {
   return (
     <>
       <SectionTitle title="Users Table Details" />
-      <Paper sx={{ width: "100%", overflow: "hidden", mt: "1rem" }}>
+      <Paper
+        sx={{
+          width: "100%",
+          overflow: "hidden",
+          borderRadius: "12px",
+          boxShadow: 2,
+        }}
+      >
         {(loading &&
           // make 6 skeleton rows
           [...Array(6)].map(() => (
@@ -91,7 +98,7 @@ export default function UsersList() {
             </Typography>
           )) || (
             <>
-              <TableContainer sx={{ maxHeight: 400 }}>
+              <TableContainer sx={{ maxHeight: "calc(100vh - 320px)" }}>
                 <Table stickyHeader aria-label="sticky table">
                   <TableHead>
                     <TableRow>
@@ -129,8 +136,8 @@ export default function UsersList() {
                                   {info === "profileImage" ? (
                                     <Avatar
                                       sx={{
-                                        width: "5rem",
-                                        height: "5rem",
+                                        width: "3rem",
+                                        height: "3rem",
                                         mx: "auto",
                                       }}
                                       src={value}
