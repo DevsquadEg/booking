@@ -99,10 +99,11 @@ export default function Dashboard() {
       <Box
         sx={{
           my: 2,
-
+          mx: "auto",
           borderRadius: 3,
           p: { xs: 2, md: 4 },
           backgroundColor: theme.palette.background.default,
+          maxWidth: "60vw",
           // minHeight: "90vh",
         }}
       >
@@ -151,7 +152,7 @@ export default function Dashboard() {
 
         {/* Secondary Charts Row */}
         <Grid container spacing={3}>
-          <Grid size={{ xs: 12, lg: 6 }} sx={{ mb: 4 }}>
+          <Grid size={{ xs: 12, lg: 6 }} sx={{ mb: 4, maxWidth: "100%" }}>
             <Paper
               elevation={0}
               sx={{
@@ -159,6 +160,7 @@ export default function Dashboard() {
                 height: "100%",
                 borderRadius: 4,
                 backgroundColor: theme.palette.background.paper,
+                width: "90%",
               }}
             >
               <Typography variant="h6" fontWeight="bold" gutterBottom>
@@ -210,6 +212,7 @@ export default function Dashboard() {
                 mb: 4,
                 borderRadius: 4,
                 backgroundColor: theme.palette.background.paper,
+                width: "90%",
               }}
             >
               <Typography variant="h6" fontWeight="bold" gutterBottom>

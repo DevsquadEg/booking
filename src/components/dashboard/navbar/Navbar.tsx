@@ -7,29 +7,23 @@ import Typography from "@mui/material/Typography";
 
 import Avatar from "@mui/material/Avatar";
 
-import {
-  KeyboardArrowDownOutlined,
-  MailOutlined,
-  NotificationsNoneOutlined,
-  Search,
-} from "@mui/icons-material";
-import { InputBase, type PopoverVirtualElement } from "@mui/material";
+import { MenuOutlined, Search } from "@mui/icons-material";
+import { InputBase } from "@mui/material";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import { NavLink as RouterLink } from "react-router-dom";
 
-const settings = [
-  {
-    label: "Profile",
-    path: "",
-  },
-];
+// const settings = [
+//   {
+//     label: "Profile",
+//     path: "",
+//   },
+// ];
 
 type Props = {
   setAnchorElNav: React.Dispatch<React.SetStateAction<boolean>>;
-  anchorElNav: boolean;
 };
 
-function Navbar() {
+function Navbar({ setAnchorElNav }: Props) {
   const [search, setSearch] = useState("");
   const { fullUserData } = useAuth();
 
@@ -80,15 +74,26 @@ function Navbar() {
             gap: 2,
           }}
         >
-          {/* Notification Icon */}
-          <IconButton>
-            <NotificationsNoneOutlined sx={{ color: "#555", fontSize: 22 }} />
+          {/* menu toggle icon */}
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={() => setAnchorElNav((prev) => !prev)}
+            sx={{ mr: 2, display: { md: "none" } }}
+          >
+            <MenuOutlined sx={{ color: "#555", fontSize: 22 }} />
           </IconButton>
+          {/* Notification Icon */}
+          {/* <IconButton>
+            <NotificationsNoneOutlined sx={{ color: "#555", fontSize: 22 }} />
+          </IconButton> */}
 
           {/* Mail Icon */}
-          <IconButton>
+          {/* <IconButton>
             <MailOutlined sx={{ color: "#555", fontSize: 22 }} />
-          </IconButton>
+          </IconButton> */}
 
           {/* User Info */}
           <IconButton
