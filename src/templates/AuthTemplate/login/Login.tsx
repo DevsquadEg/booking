@@ -141,6 +141,7 @@ export default function Login() {
                       background: "#f5f6f8",
                     }}
                     type={showPassword ? "text" : "password"}
+                     placeholder="Enter your Password"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
