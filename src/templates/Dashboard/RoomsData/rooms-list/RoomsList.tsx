@@ -30,6 +30,7 @@ import toast from "react-hot-toast";
 import ActionBtn from "@/components/common/ActionBtn/ActionBtn";
 import type { IroomList } from "@/interfaces/interfaces";
 import type { MouseEvent } from "react";
+import { isAxiosError } from "axios";
 
 export default function RoomsList() {
   const [roomsList, setRoomsList] = useState<IroomList[]>([]);
@@ -83,9 +84,11 @@ export default function RoomsList() {
       await axiosInstance.delete(ADMIN_URLS.ROOM.DELETE_ROOM(id));
       toast.success("Room Deleted successfully");
       fetchRoomsList(); // Refresh list after deletion
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Something went wrong!");
-      console.error("Error deleting room:", error);
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Something went wrong!");
+        // console.error("Error deleting room:", error);
+      }
     }
   };
   {
@@ -298,7 +301,9 @@ export default function RoomsList() {
                           <ActionBtn
                             onView={() => handleClickOpenDialog(room._id)}
                             onEdit={() =>
-                              navigate(`/dashboard/room/edit/${room._id}`)
+                              navigate(`/dashboard/room/edit/${room._id}`, {
+                                state: { room },
+                              })
                             }
                             onDelete={() =>
                               swalWithBootstrapButtons
