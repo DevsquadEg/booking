@@ -181,6 +181,34 @@ export default function RoomsList() {
         </Button>
       </Box>
 
+      {/* =================== search  ===================== */}
+      {loading || roomsList.length === 0 ? (
+        ""
+      ) : (
+        <Autocomplete
+          freeSolo
+          options={roomsList.map((room) => room.roomNumber.toString())}
+          onInputChange={(_event, value) => setSearchQuery(value)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search Room Number"
+              variant="outlined"
+              size="small"
+              sx={{
+                marginBlock: "10px",
+                borderRadius: "10px",
+                width: 300,
+                bgcolor: "#fff",
+                my: 2,
+                ml: "auto",
+                mr: "30px",
+              }}
+            />
+          )}
+        />
+      )}
+
       <Paper sx={{ width: "100%", overflow: "hidden", mt: "1rem" }}>
         {loading ? (
           [...Array(10)].map((_, idx) => (
@@ -203,28 +231,6 @@ export default function RoomsList() {
           </Typography>
         ) : (
           <>
-            {/* =================== search  ===================== */}
-            <Autocomplete
-              freeSolo
-              options={roomsList.map((room) => room.roomNumber.toString())}
-              onInputChange={(_event, value) => setSearchQuery(value)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Search Room Number"
-                  variant="outlined"
-                  size="small"
-                  sx={{
-                    marginBlock: "10px",
-                    borderRadius: "10px",
-                    width: 300,
-                    mb: 2,
-                    ml: "auto",
-                    mr: "30px",
-                  }}
-                />
-              )}
-            />
             {/* =================== table container  ===================== */}
 
             <TableContainer sx={{ maxHeight: 700 }}>
