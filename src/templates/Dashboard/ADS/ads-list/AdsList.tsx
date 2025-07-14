@@ -329,16 +329,17 @@ export default function AdsList() {
   if (!addsList) return <Loading />;
 
   return (
-    <Box component={"section"} overflow={"hidden"}>
+    <Box component={"section"}>
       {/* header */}
       <Grid
         container
         justifyContent={"space-between"}
+        alignItems={"center"}
         flexWrap={"wrap"}
         spacing={3}
       >
-        <SectionTitle title="Adds Table Details" />
-        <Grid>
+        <SectionTitle title="Ads Table Details" />
+        <Box>
           <Button
             variant="contained"
             startIcon={<Add />}
@@ -353,28 +354,29 @@ export default function AdsList() {
               },
             }}
           >
-            Add New Facility
+            Add New Ad
           </Button>
-        </Grid>
+        </Box>
       </Grid>
 
       {/*  Booking table */}
 
-      <Grid container justifyContent={"center"}>
-        <Grid size={{ sm: 12, md: 10 }}>
-          <Paper sx={{ width: "100%", mt: 8, textAlign: "center" }}>
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              initialState={{ pagination: { paginationModel } }}
-              pageSizeOptions={[5, 10]}
-              getRowId={(rows) => rows._id}
-              onRowClick={(params) => setSelectedAdd(params.row)}
-              sx={{ border: 0, textAlign: "center", width: "100%" }}
-            />
-          </Paper>
-        </Grid>
-      </Grid>
+      <Paper
+        sx={{
+          mx: "auto",
+          textAlign: "center",
+        }}
+      >
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{ pagination: { paginationModel } }}
+          pageSizeOptions={[5, 10]}
+          getRowId={(rows) => rows._id}
+          onRowClick={(params) => setSelectedAdd(params.row)}
+          sx={{ border: 0, textAlign: "center" }}
+        />
+      </Paper>
 
       {/* Book Details Pop Up */}
 
