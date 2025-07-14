@@ -97,8 +97,8 @@ function Navbar({ setAnchorElNav }: Props) {
 
           {/* User Info */}
           <IconButton
-            component={RouterLink}
-            to="/profile"
+            // component={RouterLink}
+            // to="/dashboard"
             sx={{
               display: "flex",
               alignItems: "center",

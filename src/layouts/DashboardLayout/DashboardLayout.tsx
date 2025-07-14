@@ -5,7 +5,8 @@ import Navbar from "../../components/dashboard/navbar/Navbar";
 import { useEffect, useState } from "react";
 
 export default function DashboardLayout() {
-  const [anchorElNav, setAnchorElNav] = useState(false);
+  const [anchorElNav, setAnchorElNav] = useState<boolean>(false);
+
   // hide sidebar by default in small screens and toggle by click on menu icon in navbar
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
