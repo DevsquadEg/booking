@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
@@ -34,6 +34,7 @@ export default function AdsList() {
   const [showAddCardForm, setShowCardForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showDeletModal, setShowDeletModal] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const rows = useMemo(
@@ -184,6 +185,7 @@ export default function AdsList() {
   // fetch adds
   const fetchAdds = useCallback(async function fetchAdds() {
     try {
+      setLoading(true);
       const { data } = await axiosInstance.get(ADMIN_URLS.ADS.GET_ALL_ADS);
       if (data.success) {
         setAddsList(data.data.ads);
@@ -191,6 +193,8 @@ export default function AdsList() {
     } catch (error) {
       if (isAxiosError(error))
         toast.error(error.response?.data.message || "Some Thing Go Wrong");
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -209,7 +213,7 @@ export default function AdsList() {
 
         const { data } = await axiosInstance.request(options);
         if (data.success) {
-          toast.success(data.message || "Add Created Successfully !");
+          toast.success(data.message || "Ad Created Successfully !");
           setErrorMessage(null);
           fetchAdds();
           setTimeout(() => {
@@ -249,7 +253,7 @@ export default function AdsList() {
 
         const { data } = await axiosInstance.request(options);
         if (data.success) {
-          toast.success(data.message || "Add Updated Successfully !");
+          toast.success(data.message || "Ad Updated Successfully !");
           setErrorMessage(null);
           fetchAdds();
           setTimeout(() => {
@@ -283,7 +287,7 @@ export default function AdsList() {
 
         const { data } = await axiosInstance.request(options);
         if (data.success) {
-          toast.success(data.message || "Add Deleted Successfully !");
+          toast.success(data.message || "Ad Deleted Successfully !");
           fetchAdds();
           setTimeout(() => {
             setShowDeletModal(false);
@@ -314,19 +318,20 @@ export default function AdsList() {
 
   function handleEditAdd() {
     setShowCardForm(true);
-    setAddFormTitle("Update Add");
+    setAddFormTitle("Update Ad");
   }
 
   function handleShowAddsCardForm() {
     setShowCardForm(true);
-    setAddFormTitle("Add New Add");
+    setSelectedAdd(null);
+    setAddFormTitle("Add New Ad");
   }
 
   const handleClickOpenDeletModal = () => {
     setShowDeletModal(true);
   };
 
-  if (!addsList) return <Loading />;
+  // if (!addsList) return <Loading />;
 
   return (
     <Box component={"section"}>
@@ -367,15 +372,23 @@ export default function AdsList() {
           textAlign: "center",
         }}
       >
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
-          getRowId={(rows) => rows._id}
-          onRowClick={(params) => setSelectedAdd(params.row)}
-          sx={{ border: 0, textAlign: "center" }}
-        />
+        {(loading &&
+          [...Array(6)].map(() => (
+            <Skeleton
+              sx={{ padding: "1rem", mx: "0.5rem" }}
+              height={40}
+            ></Skeleton>
+          ))) || (
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{ pagination: { paginationModel } }}
+            pageSizeOptions={[5, 10]}
+            getRowId={(rows) => rows._id}
+            onRowClick={(params) => setSelectedAdd(params.row)}
+            sx={{ border: 0, textAlign: "center" }}
+          />
+        )}
       </Paper>
 
       {/* Book Details Pop Up */}
@@ -409,10 +422,10 @@ export default function AdsList() {
         />
       )}
 
-      {/*  Delet Model */}
+      {/*  Delete Model */}
       {showDeletModal && selectedAdd && (
         <DeleteModal
-          message="Are you sure you want to delete this Add"
+          message="Are you sure you want to delete this Ad"
           currentData={selectedAdd}
           onDelete={handleDeleteCurrentAdd}
           loading={isLoading}
