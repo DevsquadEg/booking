@@ -103,6 +103,7 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
       sx={{
         width: collapsed ? 60 : drawerWidth,
         flexShrink: 0,
+        transition: "all 0.3s",
         "& .MuiDrawer-paper": {
           width: collapsed ? 60 : drawerWidth,
           boxSizing: "border-box",
