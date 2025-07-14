@@ -23,10 +23,7 @@ const settings = [
   },
 ];
 
-type Props = {
-  setAnchorElNav: React.Dispatch<React.SetStateAction<boolean>>;
-  anchorElNav: boolean;
-};
+
 
 function Navbar() {
   const [search, setSearch] = useState("");

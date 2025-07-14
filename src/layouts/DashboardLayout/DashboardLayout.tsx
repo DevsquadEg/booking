@@ -5,8 +5,7 @@ import Navbar from "../../components/dashboard/navbar/Navbar";
 import { useState } from "react";
 
 export default function DashboardLayout() {
-  const [anchorElNav, setAnchorElNav] = useState(false);
-    const [search, setSearch] = useState("");
+  const [anchorElNav, setAnchorElNav] = useState<boolean>(false);
 
   // hide sidebar by default in small screens and toggle by click on menu icon in navbar
   // useEffect(() => {
@@ -33,13 +32,8 @@ export default function DashboardLayout() {
             px: 4,
           }}
         >
-          <Navbar
-            search={search}
-            setSearch={setSearch}
-            setAnchorElNav={setAnchorElNav}
-            anchorElNav={anchorElNav}
-          />
-          <Outlet context={{ search }} />
+          <Navbar  />
+          <Outlet />
         </Box>
       </Box>
     </>
