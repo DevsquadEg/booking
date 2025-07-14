@@ -1,4 +1,3 @@
-
 import {
   Box,
   Dialog,
@@ -17,25 +16,22 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { RoomDetailsProps } from "../../../../Interfaces/Adds.interface";
 import { useMemo } from "react";
 
-export default function AddsDetails({ open, onClose, room }: RoomDetailsProps) {
-
-
-
+export default function AddsDetails({
+  open,
+  onClose,
+  room: adItem,
+}: RoomDetailsProps) {
   // check type of created By Property
-const displayCreator = useMemo(function(){
-  return typeof room?.createdBy === "string" ? room.createdBy : room?.createdBy?.userName
-},[room?.createdBy])
-
-
-
-
-
- 
-
-
-
-
- if (!room) return null;
+  const displayCreator = useMemo(
+    function () {
+      return typeof adItem?.createdBy === "string"
+        ? adItem.createdBy
+        : adItem?.createdBy?.userName;
+    },
+    [adItem?.createdBy]
+  );
+  console.log("ad details", adItem);
+  if (!adItem) return null;
 
   return (
     <Dialog
@@ -54,15 +50,15 @@ const displayCreator = useMemo(function(){
       {/* Top image */}
       <Box sx={{ position: "relative" }}>
         <img
-  src={room.images}
-  alt={room.roomNumber}
-  style={{
-    width: "100%",
-    height: "auto",
-    maxHeight: "200px",
-    objectFit: "cover",
-  }}
-/>
+          src={adItem.images || "/noRoom.jpeg"}
+          alt={adItem.roomNumber}
+          style={{
+            width: "100%",
+            height: "auto",
+            maxHeight: "200px",
+            objectFit: "cover",
+          }}
+        />
         <IconButton
           onClick={onClose}
           sx={{
@@ -71,7 +67,7 @@ const displayCreator = useMemo(function(){
             right: 8,
             bgcolor: "background.paper",
             boxShadow: 1,
-            "&:hover": { bgcolor: "error.main", color: "#fff" }
+            "&:hover": { bgcolor: "error.main", color: "#fff" },
           }}
         >
           <CloseIcon />
@@ -81,28 +77,28 @@ const displayCreator = useMemo(function(){
       <DialogContent sx={{ px: { xs: 2, sm: 3 }, py: 2 }}>
         <Box display="flex" alignItems="center" gap={1} mb={2}>
           <MeetingRoomIcon color="primary" />
-          <Typography variant="h6">Room: {room.roomNumber}</Typography>
+          <Typography variant="h6">Room: {adItem.roomNumber}</Typography>
         </Box>
 
         <Divider sx={{ my: 2 }} />
 
         <Box display="flex" alignItems="center" gap={1} mb={1}>
           <MonetizationOnIcon color="success" />
-          <Typography>Price: ${room.price}</Typography>
+          <Typography>Price: ${adItem.price}</Typography>
         </Box>
 
         <Box display="flex" alignItems="center" gap={1} mb={1}>
           <GroupIcon color="info" />
-          <Typography>Capacity: {room.capacity}</Typography>
+          <Typography>Capacity: {adItem.capacity}</Typography>
         </Box>
 
         <Box display="flex" alignItems="center" gap={1} mb={1}>
           <DiscountIcon color="warning" />
-          <Typography>Discount: {room.discount}%</Typography>
+          <Typography>Discount: {adItem.discount}%</Typography>
         </Box>
 
         <Box display="flex" alignItems="center" gap={1} mb={1}>
-          {room.isActive ? (
+          {adItem.isActive ? (
             <>
               <CheckCircleIcon color="success" />
               <Typography>Status: Active</Typography>
@@ -115,28 +111,13 @@ const displayCreator = useMemo(function(){
           )}
         </Box>
 
-       
-
         <Divider sx={{ my: 2 }} />
 
         <Typography variant="caption" color="text.secondary">
-          Created by: {displayCreator}
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          Created at: {new Date(room.createdAt).toLocaleString()}
+          {`Created by: ${displayCreator} 
+          Created at: ${new Date(adItem.createdAt).toLocaleString()}`}
         </Typography>
       </DialogContent>
     </Dialog>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
