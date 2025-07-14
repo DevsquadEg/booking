@@ -28,6 +28,9 @@ import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
 import Payment from "./templates/Main/Booking/payment/Payment";
 import PATHS from "./services/paths";
 import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "@emotion/react";
+import type {} from "@mui/x-data-grid/themeAugmentation";
+import theme from "./services/theme";
 
 function App() {
   const routes = createBrowserRouter([
@@ -140,10 +143,14 @@ function App() {
       ],
     },
   ]);
+
+  const mode = "light";
   return (
     <>
-      <RouterProvider router={routes}></RouterProvider>
-      <Toaster />
+      <ThemeProvider theme={theme(mode)}>
+        <RouterProvider router={routes}></RouterProvider>
+        <Toaster />
+      </ThemeProvider>
     </>
   );
 }
