@@ -11,12 +11,13 @@ import {
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardContent,
   Chip,
   Divider,
   Grid,
-  IconButton,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -31,6 +32,7 @@ export default function UserData() {
   const navigate = useNavigate();
   const data = useLocation();
   const [currentUser, setCurrentUser] = useState<UserType>(data.state?.user);
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const dateOptions: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -42,6 +44,7 @@ export default function UserData() {
 
   const getUserProfile = useCallback(async () => {
     try {
+      setLoading(true);
       const response = await axiosInstance.get(
         ADMIN_URLS.USER.GET_USER_PROFILE(id!)
       );
@@ -50,6 +53,8 @@ export default function UserData() {
       if (isAxiosError(error)) {
         toast.error(error?.response?.data?.message || "Something went wrong");
       }
+    } finally {
+      setLoading(false);
     }
   }, [id]);
   useEffect(() => {
@@ -66,9 +71,16 @@ export default function UserData() {
   return (
     <>
       <Box>
-        <IconButton aria-label="back" onClick={() => navigate(-1)}>
-          <NavigateBeforeOutlined />
-        </IconButton>
+        <Button
+          startIcon={<NavigateBeforeOutlined />}
+          aria-label="back"
+          sx={{ color: "GrayText" }}
+          onClick={() => navigate(-1)}
+        >
+          <Typography color="inherit" variant="body2">
+            Back to previous page
+          </Typography>
+        </Button>
       </Box>
       <Box sx={{ maxWidth: 900, mx: "auto", p: 3 }}>
         <Card elevation={3} sx={{ borderRadius: 4 }}>
@@ -86,110 +98,147 @@ export default function UserData() {
           {/* Profile Section */}
           <CardContent sx={{ position: "relative", mt: -8 }}>
             <Stack direction="row" spacing={2} alignItems="flex-end">
-              <Avatar
-                src={currentUser.profileImage}
-                sx={{
-                  width: 120,
-                  height: 120,
-                  border: "4px solid white",
-                  boxShadow: 3,
-                }}
-              />
-              <Box sx={{ flexGrow: 1 }}>
-                <Stack direction="row" alignItems="center" spacing={2}>
-                  <Typography variant="h4" fontWeight="bold">
-                    {currentUser.userName}
-                  </Typography>
-                  {currentUser.verified && (
+              {(loading && (
+                <Skeleton
+                  animation="wave"
+                  variant="circular"
+                  width={120}
+                  height={120}
+                />
+              )) || (
+                <Avatar
+                  src={currentUser.profileImage}
+                  sx={{
+                    width: 120,
+                    height: 120,
+                    border: "4px solid white",
+                    boxShadow: 3,
+                  }}
+                />
+              )}
+              {(loading && (
+                <Skeleton
+                  animation="wave"
+                  variant="rectangular"
+                  width={"50vw"}
+                  height={40}
+                />
+              )) || (
+                <Box sx={{ flexGrow: 1 }}>
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <Typography variant="h4" fontWeight="bold">
+                      {currentUser.userName}
+                    </Typography>
+                    {currentUser.verified && (
+                      <Chip
+                        icon={<VerifiedUser fontSize="small" />}
+                        label="Verified"
+                        color="success"
+                        size="small"
+                      />
+                    )}
                     <Chip
-                      icon={<VerifiedUser fontSize="small" />}
-                      label="Verified"
-                      color="success"
-                      size="small"
+                      label={currentUser?.role.toUpperCase()}
+                      color={
+                        currentUser?.role === "admin" ? "secondary" : "default"
+                      }
+                      sx={{ textTransform: "uppercase" }}
                     />
-                  )}
-                  <Chip
-                    label={currentUser.role.toUpperCase()}
-                    color={
-                      currentUser.role === "admin" ? "secondary" : "default"
-                    }
-                    sx={{ textTransform: "uppercase" }}
-                  />
-                </Stack>
+                  </Stack>
 
-                <Typography color="text.secondary" mt={1}>
-                  Member since{" "}
-                  {new Date(currentUser.createdAt).toLocaleString(
-                    "en-US",
-                    dateOptions
-                  )}
-                </Typography>
-              </Box>
+                  <Typography color="text.secondary" mt={1}>
+                    Member since{" "}
+                    {new Date(currentUser?.createdAt).toLocaleString(
+                      "en-US",
+                      dateOptions
+                    )}
+                  </Typography>
+                </Box>
+              )}
             </Stack>
 
             <Divider sx={{ my: 3 }} />
 
             {/* Details Grid */}
-            <Grid container spacing={3}>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <DetailItem
-                  icon={<Email color="primary" />}
-                  label="Email"
-                  value={currentUser.email}
-                />
-              </Grid>
+            {(loading && (
+              <Skeleton animation="wave" variant="rectangular" height={200} />
+            )) || (
+              <Grid container spacing={3}>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <DetailItem
+                    icon={<Email color="primary" />}
+                    label="Email"
+                    value={currentUser.email}
+                  />
+                </Grid>
 
-              <Grid size={{ xs: 12, md: 6 }}>
-                <DetailItem
-                  icon={<Phone color="primary" />}
-                  label="Phone"
-                  value={`0${currentUser.phoneNumber}`}
-                />
-              </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <DetailItem
+                    icon={<Phone color="primary" />}
+                    label="Phone"
+                    value={`0${currentUser.phoneNumber}`}
+                  />
+                </Grid>
 
-              <Grid size={{ xs: 12, md: 6 }}>
-                <DetailItem
-                  icon={<Public color="primary" />}
-                  label="Country"
-                  value={currentUser.country}
-                />
-              </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <DetailItem
+                    icon={<Public color="primary" />}
+                    label="Country"
+                    value={currentUser.country}
+                  />
+                </Grid>
 
-              <Grid size={{ xs: 12, md: 6 }}>
-                <DetailItem
-                  icon={<CalendarToday color="primary" />}
-                  label="Joined"
-                  value={new Date(currentUser.createdAt).toLocaleString(
-                    "en-US",
-                    dateOptions
-                  )}
-                />
-              </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <DetailItem
+                    icon={<CalendarToday color="primary" />}
+                    label="Joined"
+                    value={new Date(currentUser.createdAt).toLocaleString(
+                      "en-US",
+                      dateOptions
+                    )}
+                  />
+                </Grid>
 
-              <Grid size={{ xs: 12, md: 6 }}>
-                <DetailItem
-                  icon={<Update color="primary" />}
-                  label="Last Updated"
-                  value={new Date(currentUser.updatedAt).toLocaleString(
-                    "en-US",
-                    dateOptions
-                  )}
-                />
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <DetailItem
+                    icon={<Update color="primary" />}
+                    label="Last Updated"
+                    value={new Date(currentUser.updatedAt).toLocaleString(
+                      "en-US",
+                      dateOptions
+                    )}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
+            )}
           </CardContent>
         </Card>
 
         {/* Stats Section (Optional) */}
         <Grid container spacing={3} mt={2}>
           <Grid size={{ xs: 12, md: 4 }}>
-            <StatCard title="Bookings" value="24" color="#4e79a7" />
+            <StatCard
+              title="Bookings"
+              value="24"
+              color="#4e79a7"
+              loading={loading}
+            />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <StatCard title="Reviews" value="16" color="#e15759" />
+            <StatCard
+              title="Reviews"
+              value="16"
+              color="#e15759"
+              loading={loading}
+            />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <StatCard title="Favorites" value="8" color="#59a14f" />
+            <StatCard
+              title="Favorites"
+              value="8"
+              color="#59a14f"
+              loading={loading}
+            />
           </Grid>
         </Grid>
       </Box>
@@ -223,17 +272,25 @@ const StatCard = ({
   title,
   value,
   color,
+  loading,
 }: {
   title: string;
   value: string;
   color: string;
+  loading: boolean;
 }) => (
   <Card elevation={2} sx={{ p: 2, borderRadius: 3 }}>
-    <Typography variant="body2" color="text.secondary">
-      {title}
-    </Typography>
-    <Typography variant="h4" fontWeight="bold" sx={{ color }}>
-      {value}
-    </Typography>
+    {(loading && (
+      <Skeleton animation="wave" variant="rectangular" height={80} />
+    )) || (
+      <>
+        <Typography variant="body2" color="text.secondary">
+          {title}
+        </Typography>
+        <Typography variant="h4" fontWeight="bold" sx={{ color }}>
+          {value}
+        </Typography>
+      </>
+    )}
   </Card>
 );

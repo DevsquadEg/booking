@@ -11,6 +11,7 @@ import { MenuOutlined, Search } from "@mui/icons-material";
 import { InputBase } from "@mui/material";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import { NavLink as RouterLink } from "react-router-dom";
+import { USER_DATA_PATH } from "@/services/paths";
 
 // const settings = [
 //   {
@@ -97,8 +98,8 @@ function Navbar({ setAnchorElNav }: Props) {
 
           {/* User Info */}
           <IconButton
-            // component={RouterLink}
-            // to="/dashboard"
+            component={RouterLink}
+            to={USER_DATA_PATH + "/" + fullUserData?._id}
             sx={{
               display: "flex",
               alignItems: "center",
