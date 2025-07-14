@@ -36,6 +36,17 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import toast from "react-hot-toast";
 import { ChangePasswordModal } from "../../common/changePasswordModal/ChangePasswordModal";
+import Swal from "sweetalert2";
+
+/* =================== sweetaler2  ===================== */
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "mui-confirm-btn",
+    cancelButton: "mui-cancel-btn",
+  },
+  buttonsStyling: false,
+});
 
 const drawerWidth = 240;
 
@@ -75,15 +86,12 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
     { label: "Rooms", icon: <HotelOutlined />, path: ROOMS_LIST_PATH },
     { label: "ADS", icon: <AdUnitsOutlined />, path: ADS_LIST_PATH },
     { label: "Bookings", icon: <Assignment />, path: BOOKINGS_LIST_PATH },
-
     {
       label: "Logout",
       icon: <LogoutOutlined />,
       onClick: () => {
-        navigate(LOGIN_PATH, { replace: true });
-        logOutUser();
-        toast.success("Logout success!");
-        navigate(LOGIN_PATH);
+        handleLogoutBtn();
+        // navigate(LOGIN_PATH);
       },
       // path: LOGIN_PATH,
     },
@@ -96,6 +104,30 @@ const Sidebar = ({ anchorElNav }: { anchorElNav: boolean }) => {
       },
     },
   ];
+
+  const handleLogout = () => {
+    navigate(LOGIN_PATH, { replace: true });
+    logOutUser();
+    toast.success("Logout success!");
+  };
+
+  const handleLogoutBtn = () => {
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "Do you want to logout?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Logout!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          handleLogout();
+        }
+      });
+  };
 
   return (
     <Drawer
