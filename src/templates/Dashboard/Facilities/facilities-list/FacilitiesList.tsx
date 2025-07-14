@@ -6,13 +6,12 @@ import toast from "react-hot-toast";
 import {
   Box,
   Button,
-  FormControl,
-  IconButton,
+
   Menu,
   MenuItem,
   // Box,
   Paper,
-  Select,
+
   Table,
   TableBody,
   TableCell,
@@ -20,17 +19,9 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
 } from "@mui/material";
 import type { Facility } from "@/interfaces/interfaces";
-import {
-  Add,
-  AddIcCallOutlined,
-  Delete,
-  FileUploadOutlined,
-  FilterAltOutlined,
-  MoreHoriz,
-} from "@mui/icons-material";
+import { Add, Delete } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import ActionBtn from "@/components/common/ActionBtn/ActionBtn";
 import Swal from "sweetalert2";
@@ -95,7 +86,7 @@ export default function FacilitiesList() {
   );
 
   //==================  delete facility ====================
-  const deleteFacility = async (id: string) => {
+  const deleteFacility = async (id: string | null) => {
     if (!id) return;
     try {
       await axiosInstance.delete(ADMIN_URLS.ROOM.DELETE_ROOM_FACILITY(id));
@@ -317,7 +308,7 @@ export default function FacilitiesList() {
           count={facilitiesCount}
           rowsPerPage={pageSize}
           page={pageNumber}
-          onPageChange={(e, newPage) => setPageNumber(newPage + 1)}
+          onPageChange={(_, newPage) => setPageNumber(newPage + 1)}
           onRowsPerPageChange={(e) => {
             setPageSize(parseInt(e.target.value, 10));
             setPageNumber(1);

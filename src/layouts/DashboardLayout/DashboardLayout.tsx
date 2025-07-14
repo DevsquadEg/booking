@@ -6,6 +6,8 @@ import { useState } from "react";
 
 export default function DashboardLayout() {
   const [anchorElNav, setAnchorElNav] = useState(false);
+    const [search, setSearch] = useState("");
+
   // hide sidebar by default in small screens and toggle by click on menu icon in navbar
   // useEffect(() => {
   //   const mediaQuery = window.matchMedia("(max-width: 768px)");
@@ -19,7 +21,7 @@ export default function DashboardLayout() {
   // }, []);
   return (
     <>
-      <Box sx={{ display: "flex", bgcolor: "#F2F2F2",height:"100vh" }}>
+      <Box sx={{ display: "flex", bgcolor: "#F2F2F2", height: "100vh" }}>
         <Sidebar anchorElNav={anchorElNav} />
         <Box
           component="main"
@@ -31,8 +33,13 @@ export default function DashboardLayout() {
             px: 4,
           }}
         >
-          <Navbar setAnchorElNav={setAnchorElNav} anchorElNav={anchorElNav} />
-          <Outlet />
+          <Navbar
+            search={search}
+            setSearch={setSearch}
+            setAnchorElNav={setAnchorElNav}
+            anchorElNav={anchorElNav}
+          />
+          <Outlet context={{ search }} />
         </Box>
       </Box>
     </>

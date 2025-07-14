@@ -20,7 +20,6 @@ import { NavLink as RouterLink } from "react-router-dom";
 const settings = [
   {
     label: "Profile",
-    path: "",
   },
 ];
 
@@ -92,8 +91,8 @@ function Navbar() {
 
           {/* User Info */}
           <IconButton
-            component={RouterLink}
-            to="/profile"
+            // component={RouterLink}
+            // to="/dashboard"
             sx={{
               display: "flex",
               alignItems: "center",
