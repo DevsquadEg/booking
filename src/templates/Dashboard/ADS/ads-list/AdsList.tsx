@@ -24,6 +24,17 @@ import AddsFormCard from "@/components/common/AddsFormCard/AddsFormCard";
 import DeleteModal from "@/components/common/DeleteModal/DeleteModal";
 import SectionTitle from "@/components/dashboard/sectionTitle/SectionTitle";
 import { Add } from "@mui/icons-material";
+import Swal from "sweetalert2";
+
+/* =================== sweetaler2  ===================== */
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "mui-confirm-btn",
+    cancelButton: "mui-cancel-btn",
+  },
+  buttonsStyling: false,
+});
 
 const paginationModel = { page: 0, pageSize: 5 };
 export default function AdsList() {
@@ -173,7 +184,7 @@ export default function AdsList() {
           <ActionBtn
             onView={handleShowAddsDetails}
             onEdit={handleEditAdd}
-            onDelete={handleClickOpenDeletModal}
+            onDelete={handleDelete}
           />
         ),
         sortable: false,
@@ -327,11 +338,40 @@ export default function AdsList() {
     setAddFormTitle("Add New Ad");
   }
 
-  const handleClickOpenDeletModal = () => {
-    setShowDeletModal(true);
-  };
+  // const handleClickOpenDeletModal = () => {
+  //   setShowDeletModal(true);
+  // };
 
   // if (!addsList) return <Loading />;
+
+  const handleDelete = () => {
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          handleDeleteCurrentAdd(selectedAdd!._id);
+          swalWithBootstrapButtons.fire({
+            title: "Deleted!",
+            text: "Your Ad has been deleted.",
+            icon: "success",
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Your Ad data is safe :)",
+            icon: "error",
+          });
+        }
+      });
+  };
 
   return (
     <Box component={"section"}>
@@ -423,7 +463,7 @@ export default function AdsList() {
       )}
 
       {/*  Delete Model */}
-      {showDeletModal && selectedAdd && (
+      {/* {showDeletModal && selectedAdd && (
         <DeleteModal
           message="Are you sure you want to delete this Ad"
           currentData={selectedAdd}
@@ -435,7 +475,7 @@ export default function AdsList() {
             setSelectedAdd(null);
           }}
         />
-      )}
+      )} */}
     </Box>
   );
 }
