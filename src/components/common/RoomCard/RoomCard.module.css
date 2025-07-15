@@ -1,0 +1,9 @@
+.cardOverlay{
+    bottom: 800px;
+    transition: bottom .4s;
+}
+
+
+.cardWrapper:hover .cardOverlay{
+    bottom: 0px;
+}

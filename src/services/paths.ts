@@ -9,7 +9,7 @@ export const VERIFY_ACCOUNT_PATH = `${MAIN_PATH}verify-account`;
 // ------------------ Main Layout Routes ------------------
 export const HOME_PATH = MAIN_PATH;
 export const ROOMS_GRID_PATH = `${MAIN_PATH}rooms`;
-export const ROOM_DETAILS_PATH = `${MAIN_PATH}room-details`;
+export const ROOM_DETAILS_PATH =`${MAIN_PATH}room-details/:id`;
 export const FAV_LIST_PATH = `${MAIN_PATH}fav-list`;
 export const PAYMENT_PATH = `${MAIN_PATH}payment`;
 export const CONFIRMATION_PATH = `${MAIN_PATH}confirmation`;

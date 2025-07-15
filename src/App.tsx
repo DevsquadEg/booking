@@ -28,6 +28,7 @@ import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
 import Payment from "./templates/Main/Booking/payment/Payment";
 import PATHS from "./services/paths";
 import { Toaster } from "react-hot-toast";
+import RoomContextProvider from "./store/RoomsContext/Rooms.context";
 
 function App() {
   const routes = createBrowserRouter([
@@ -65,6 +66,7 @@ function App() {
           path: PATHS.ROOMS_GRID_PATH,
           element: <RoomsGrid />,
         },
+       
         {
           path: PATHS.ROOM_DETAILS_PATH,
           element: <RoomDetails />,
@@ -142,7 +144,9 @@ function App() {
   ]);
   return (
     <>
-      <RouterProvider router={routes}></RouterProvider>
+    <RoomContextProvider>
+            <RouterProvider router={routes}></RouterProvider>
+    </RoomContextProvider>
       <Toaster />
     </>
   );

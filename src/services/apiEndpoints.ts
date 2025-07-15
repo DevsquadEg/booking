@@ -137,6 +137,8 @@ export const PORTAL_URLS = {
       `${baseURL}/portal/Room-reviews/${roomId}`, // As seen in Postman screenshot
     // Path to add a review to a room
     ADD_ROOM_REVIEW: `${baseURL}/portal/Room-reviews`,
+      GET_ALL_ROOMS_FILTER:(pageNumber:number,pageSize:number,startDate:string,endDate:string ,capacity:number)=>`${baseURL}/portal/rooms/available?page=${pageNumber}&size=${pageSize}${startDate &&`&startDate=${startDate}`}${endDate &&`&endDate=${endDate}`}${capacity &&`&capacity=${capacity}`}`
+
   },
 
   // Booking Endpoints within Portal

@@ -1,3 +1,12 @@
+import HeaderHomeXplore from "@/components/common/HeaderHomeXplore/HeaderHomeXplore";
+import { Box } from "@mui/material";
+
 export default function Home() {
-  return <div>Home</div>;
+  return <Box>
+<HeaderHomeXplore/>
+
+
+
+
+  </Box>;
 }
