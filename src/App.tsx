@@ -66,7 +66,7 @@ function App() {
           path: PATHS.ROOMS_GRID_PATH,
           element: <RoomsGrid />,
         },
-       
+
         {
           path: PATHS.ROOM_DETAILS_PATH,
           element: <RoomDetails />,
@@ -144,9 +144,9 @@ function App() {
   ]);
   return (
     <>
-    <RoomContextProvider>
-            <RouterProvider router={routes}></RouterProvider>
-    </RoomContextProvider>
+      <RoomContextProvider>
+        <RouterProvider router={routes}></RouterProvider>
+      </RoomContextProvider>
       <Toaster />
     </>
   );
