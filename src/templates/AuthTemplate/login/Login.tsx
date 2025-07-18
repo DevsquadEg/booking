@@ -44,8 +44,8 @@ export default function Login() {
       // await saveLoginData();
       // await getCurrentUser();
       toast.success("Login success!");
-      if (loginData?.role == "user") {
-              navigate(DASHBOARD_PATH);
+      if (loginData?.role == "admin") {
+              navigate("/dashboard");
       } else {
               navigate("/");
 
