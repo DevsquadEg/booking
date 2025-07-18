@@ -32,6 +32,7 @@ import { ThemeProvider } from "@emotion/react";
 import type {} from "@mui/x-data-grid/themeAugmentation";
 import theme from "./services/theme";
 
+
 function App() {
   const routes = createBrowserRouter([
     // Auth Routes

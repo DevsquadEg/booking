@@ -37,6 +37,9 @@ export default function Login() {
     try {
       const response = await axiosInstance.post(ADMIN_URLS.USER.LOGIN, data);
       localStorage.setItem("token", response?.data.data.token);
+      console.log("ana",response.data.data);
+      
+      
       saveLoginData();
       // await saveLoginData();
       // await getCurrentUser();
@@ -141,6 +144,7 @@ export default function Login() {
                       background: "#f5f6f8",
                     }}
                     type={showPassword ? "text" : "password"}
+                     placeholder="Enter your Password"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
