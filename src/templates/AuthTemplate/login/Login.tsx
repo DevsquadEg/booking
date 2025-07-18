@@ -37,6 +37,9 @@ export default function Login() {
     try {
       const response = await axiosInstance.post(ADMIN_URLS.USER.LOGIN, data);
       localStorage.setItem("token", response?.data.data.token);
+      console.log("ana",response.data.data);
+      
+      
       saveLoginData();
       // await saveLoginData();
       // await getCurrentUser();

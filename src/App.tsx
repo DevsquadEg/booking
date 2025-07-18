@@ -29,6 +29,7 @@ import Payment from "./templates/Main/Booking/payment/Payment";
 import PATHS from "./services/paths";
 import { Toaster } from "react-hot-toast";
 
+
 function App() {
   const routes = createBrowserRouter([
     // Auth Routes
