@@ -30,7 +30,7 @@ export default function Login() {
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm<LoginProps>();
-  const { saveLoginData } = useAuth();
+  const { saveLoginData,loginData } = useAuth();
 
   // =========== submit login ========
   const onSubmit = async (data: LoginProps) => {
@@ -44,7 +44,12 @@ export default function Login() {
       // await saveLoginData();
       // await getCurrentUser();
       toast.success("Login success!");
-      navigate(DASHBOARD_PATH);
+      if (loginData?.role == "user") {
+              navigate(DASHBOARD_PATH);
+      } else {
+              navigate("/");
+
+      }
     } catch (error) {
       // console.log(error?.response?.data?.message);
       if (isAxiosError(error)) {
