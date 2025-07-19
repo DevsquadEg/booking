@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
@@ -24,6 +24,17 @@ import AddsFormCard from "@/components/common/AddsFormCard/AddsFormCard";
 import DeleteModal from "@/components/common/DeleteModal/DeleteModal";
 import SectionTitle from "@/components/dashboard/sectionTitle/SectionTitle";
 import { Add } from "@mui/icons-material";
+import Swal from "sweetalert2";
+
+/* =================== sweetaler2  ===================== */
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "mui-confirm-btn",
+    cancelButton: "mui-cancel-btn",
+  },
+  buttonsStyling: false,
+});
 
 const paginationModel = { page: 0, pageSize: 5 };
 export default function AdsList() {
@@ -34,6 +45,7 @@ export default function AdsList() {
   const [showAddCardForm, setShowCardForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showDeletModal, setShowDeletModal] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const rows = useMemo(
@@ -172,7 +184,7 @@ export default function AdsList() {
           <ActionBtn
             onView={handleShowAddsDetails}
             onEdit={handleEditAdd}
-            onDelete={handleClickOpenDeletModal}
+            onDelete={handleDelete}
           />
         ),
         sortable: false,
@@ -184,6 +196,7 @@ export default function AdsList() {
   // fetch adds
   const fetchAdds = useCallback(async function fetchAdds() {
     try {
+      setLoading(true);
       const { data } = await axiosInstance.get(ADMIN_URLS.ADS.GET_ALL_ADS);
       if (data.success) {
         setAddsList(data.data.ads);
@@ -191,6 +204,8 @@ export default function AdsList() {
     } catch (error) {
       if (isAxiosError(error))
         toast.error(error.response?.data.message || "Some Thing Go Wrong");
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -209,7 +224,7 @@ export default function AdsList() {
 
         const { data } = await axiosInstance.request(options);
         if (data.success) {
-          toast.success(data.message || "Add Created Successfully !");
+          toast.success(data.message || "Ad Created Successfully !");
           setErrorMessage(null);
           fetchAdds();
           setTimeout(() => {
@@ -249,7 +264,7 @@ export default function AdsList() {
 
         const { data } = await axiosInstance.request(options);
         if (data.success) {
-          toast.success(data.message || "Add Updated Successfully !");
+          toast.success(data.message || "Ad Updated Successfully !");
           setErrorMessage(null);
           fetchAdds();
           setTimeout(() => {
@@ -283,7 +298,7 @@ export default function AdsList() {
 
         const { data } = await axiosInstance.request(options);
         if (data.success) {
-          toast.success(data.message || "Add Deleted Successfully !");
+          toast.success(data.message || "Ad Deleted Successfully !");
           fetchAdds();
           setTimeout(() => {
             setShowDeletModal(false);
@@ -314,31 +329,62 @@ export default function AdsList() {
 
   function handleEditAdd() {
     setShowCardForm(true);
-    setAddFormTitle("Update Add");
+    setAddFormTitle("Update Ad");
   }
 
   function handleShowAddsCardForm() {
     setShowCardForm(true);
-    setAddFormTitle("Add New Add");
+    setSelectedAdd(null);
+    setAddFormTitle("Add New Ad");
   }
 
-  const handleClickOpenDeletModal = () => {
-    setShowDeletModal(true);
+  // const handleClickOpenDeletModal = () => {
+  //   setShowDeletModal(true);
+  // };
+
+  // if (!addsList) return <Loading />;
+
+  const handleDelete = () => {
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          handleDeleteCurrentAdd(selectedAdd!._id);
+          swalWithBootstrapButtons.fire({
+            title: "Deleted!",
+            text: "Your Ad has been deleted.",
+            icon: "success",
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Your Ad data is safe :)",
+            icon: "error",
+          });
+        }
+      });
   };
 
-  if (!addsList) return <Loading />;
-
   return (
-    <Box component={"section"} overflow={"hidden"}>
+    <Box component={"section"}>
       {/* header */}
       <Grid
         container
         justifyContent={"space-between"}
+        alignItems={"center"}
         flexWrap={"wrap"}
         spacing={3}
       >
-        <SectionTitle title="Adds Table Details" />
-        <Grid>
+        <SectionTitle title="Ads Table Details" />
+        <Box>
           <Button
             variant="contained"
             startIcon={<Add />}
@@ -353,28 +399,37 @@ export default function AdsList() {
               },
             }}
           >
-            Add New Facility
+            Add New Ad
           </Button>
-        </Grid>
+        </Box>
       </Grid>
 
       {/*  Booking table */}
 
-      <Grid container justifyContent={"center"}>
-        <Grid size={{ sm: 12, md: 10 }}>
-          <Paper sx={{ width: "100%", mt: 8, textAlign: "center" }}>
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              initialState={{ pagination: { paginationModel } }}
-              pageSizeOptions={[5, 10]}
-              getRowId={(rows) => rows._id}
-              onRowClick={(params) => setSelectedAdd(params.row)}
-              sx={{ border: 0, textAlign: "center", width: "100%" }}
-            />
-          </Paper>
-        </Grid>
-      </Grid>
+      <Paper
+        sx={{
+          mx: "auto",
+          textAlign: "center",
+        }}
+      >
+        {(loading &&
+          [...Array(6)].map(() => (
+            <Skeleton
+              sx={{ padding: "1rem", mx: "0.5rem" }}
+              height={40}
+            ></Skeleton>
+          ))) || (
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{ pagination: { paginationModel } }}
+            pageSizeOptions={[5, 10]}
+            getRowId={(rows) => rows._id}
+            onRowClick={(params) => setSelectedAdd(params.row)}
+            sx={{ border: 0, textAlign: "center" }}
+          />
+        )}
+      </Paper>
 
       {/* Book Details Pop Up */}
 
@@ -407,10 +462,10 @@ export default function AdsList() {
         />
       )}
 
-      {/*  Delet Model */}
-      {showDeletModal && selectedAdd && (
+      {/*  Delete Model */}
+      {/* {showDeletModal && selectedAdd && (
         <DeleteModal
-          message="Are you sure you want to delete this Add"
+          message="Are you sure you want to delete this Ad"
           currentData={selectedAdd}
           onDelete={handleDeleteCurrentAdd}
           loading={isLoading}
@@ -420,7 +475,7 @@ export default function AdsList() {
             setSelectedAdd(null);
           }}
         />
-      )}
+      )} */}
     </Box>
   );
 }

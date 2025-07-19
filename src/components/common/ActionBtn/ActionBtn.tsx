@@ -5,12 +5,12 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Box,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { on } from "events";
+import { CircleOutlined, VisibilityOutlined } from "@mui/icons-material";
 
 interface ActionsMenuProps {
   onView?: () => void;
@@ -48,7 +48,32 @@ export default function ActionBtn({
         {onView && (
           <MenuItem onClick={() => handleAction(onView)}>
             <ListItemIcon>
-              <VisibilityIcon fontSize="small" />
+              <Box
+                sx={{
+                  position: "relative",
+                  padding: "0.5rem",
+                  color: "var(--blue-color)",
+                }}
+              >
+                <CircleOutlined
+                  sx={{
+                    fontSize: "1.2rem",
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                />
+                <VisibilityOutlined
+                  sx={{
+                    fontSize: "0.7rem",
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                />
+              </Box>
             </ListItemIcon>
             <ListItemText>View</ListItemText>
           </MenuItem>
