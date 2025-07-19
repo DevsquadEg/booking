@@ -15,7 +15,7 @@ import RightSideImage from "../../../components/AuthComponents/rightSideImage/Ri
 import Logo from "../../../components/AuthComponents/Logo/Logo";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
-import { DASHBOARD_PATH, FORGET_PASS_PATH } from "../../../services/paths";
+import { DASHBOARD_PATH, FORGET_PASS_PATH , MAIN_PATH } from "../../../services/paths";
 import validation from "../../../services/validation";
 import type { LoginProps } from "../../../interfaces/interfaces";
 
@@ -44,9 +44,9 @@ export default function Login() {
       // await saveLoginData();
       // await getCurrentUser();
       toast.success("Login success!");
-      if (loginData?.role == "user") {
+      if (loginData?.role != "user") {
               navigate(DASHBOARD_PATH);
-      } else {
+      } else  {
               navigate("/");
 
       }
