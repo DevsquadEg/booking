@@ -22,9 +22,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/en-gb";
 import type { DateRange } from "node_modules/@mui/x-date-pickers-pro/esm/models/range";
+import { useAuth } from "@/store/AuthContext/AuthContext";
 
 export default function RoomDetails() {
   const { id } = useParams<string>();
+  const { loginData } = useAuth();
+  console.log("Login Data:", loginData?.role);
 
   const [rating, setRating] = useState<number | null>(4.5);
   const [message, setMessage] = useState("");
@@ -147,7 +150,7 @@ export default function RoomDetails() {
                   >
                     {/* الأيقونة */}
                     <Box color="primary.main">
-                      {facility.icon || <BedOutlined sx={{ fontSize: 40 }} />}
+                      <BedOutlined sx={{ fontSize: 40 }} />
                     </Box>
 
                     {/* الاسم */}
@@ -199,24 +202,20 @@ export default function RoomDetails() {
                   per night
                 </Typography>
               </Typography>
-
               {room?.discount && (
                 <Typography color="error" mb={4} mt={1} fontSize={14}>
                   Discount {room?.discount || 0}% Off
                 </Typography>
               )}
-
               {/* Pick a Date */}
               <Typography variant="subtitle2" color="text.secondary" mb={0.5}>
                 Pick a Date
               </Typography>
-
               <Box
                 display="flex"
                 // alignItems="center"
                 gap={1}
                 sx={{
-                  bgcolor: "darkblue",
                   borderRadius: 1,
                   // px: 2,
                   // pt: 1,
@@ -277,116 +276,117 @@ export default function RoomDetails() {
           </Grid>
         </Grid>
         {/* Rating and Comment Section */}
+        {loginData?.role && (
+          <Grid
+            container
+            spacing={4}
+            alignItems="flex-start"
+            display={{ xs: "block", md: "flex" }}
+            border={"1px solid #e0e0e0"}
+            borderRadius={3}
+            p={4}
+            mt={4}
+          >
+            {/* Left Side: Rating & Message */}
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Typography mb={1}>Rate</Typography>
+              <Rating
+                name="rating"
+                value={rating}
+                precision={0.5}
+                onChange={(_, value) => setRating(value)}
+                sx={{ color: "#f4c150" }}
+              />
 
-        <Grid
-          container
-          spacing={4}
-          alignItems="flex-start"
-          display={{ xs: "block", md: "flex" }}
-          border={"1px solid #e0e0e0"}
-          borderRadius={3}
-          p={4}
-          mt={4}
-        >
-          {/* Left Side: Rating & Message */}
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Typography mb={1}>Rate</Typography>
-            <Rating
-              name="rating"
-              value={rating}
-              precision={0.5}
-              onChange={(_, value) => setRating(value)}
-              sx={{ color: "#f4c150" }}
+              <Typography mt={3} mb={1}>
+                Message
+              </Typography>
+              <TextField
+                fullWidth
+                multiline
+                minRows={4}
+                variant="outlined"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                sx={{
+                  "& fieldset": {
+                    borderColor: "#ddd",
+                  },
+                  borderRadius: "10px",
+                }}
+              />
+
+              <Button
+                size="large"
+                variant="contained"
+                sx={{
+                  borderRadius: 1,
+                  textTransform: "none",
+                  bgcolor: "var(--blue-color)",
+                  px: 6,
+                  py: 1,
+                  mt: 2,
+                  transition: "all 0.5s ease",
+                  "&:hover": {
+                    bgcolor: "#1a73e8",
+                    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+                  },
+                }}
+              >
+                Rate
+              </Button>
+            </Grid>
+
+            {/* Vertical Divider */}
+            <Divider
+              // orientation={{ xs: "horizontal", md: "vertical" }}
+              orientation="vertical"
+              sx={{ mt: { xs: 4, md: 0 } }}
+              variant="middle"
+              flexItem
             />
 
-            <Typography mt={3} mb={1}>
-              Message
-            </Typography>
-            <TextField
-              fullWidth
-              multiline
-              minRows={4}
-              variant="outlined"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              sx={{
-                "& fieldset": {
-                  borderColor: "#ddd",
-                },
-                borderRadius: "10px",
-              }}
-            />
+            {/* Right Side: Comment */}
+            <Grid size={{ xs: 12, md: 5.5 }} sx={{ mt: { xs: 4, md: 0 } }}>
+              <Typography mb={1}>Add Your Comment</Typography>
+              <TextField
+                fullWidth
+                multiline
+                minRows={6}
+                variant="outlined"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                sx={{
+                  mt: 2,
+                  "& fieldset": {
+                    borderColor: "#ddd",
+                  },
+                  borderRadius: "10px",
+                }}
+              />
 
-            <Button
-              size="large"
-              variant="contained"
-              sx={{
-                borderRadius: 1,
-                textTransform: "none",
-                bgcolor: "var(--blue-color)",
-                px: 6,
-                py: 1,
-                mt: 2,
-                transition: "all 0.5s ease",
-                "&:hover": {
-                  bgcolor: "#1a73e8",
-                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-                },
-              }}
-            >
-              Rate
-            </Button>
+              <Button
+                size="large"
+                variant="contained"
+                sx={{
+                  borderRadius: 1,
+                  textTransform: "none",
+                  bgcolor: "var(--blue-color)",
+                  px: 6,
+                  py: 1,
+                  mt: 2,
+                  transition: "all 0.5s ease",
+                  "&:hover": {
+                    bgcolor: "#1a73e8",
+                    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+                  },
+                }}
+              >
+                Send
+              </Button>
+            </Grid>
           </Grid>
-
-          {/* Vertical Divider */}
-          <Divider
-            // orientation={{ xs: "horizontal", md: "vertical" }}
-            orientation="vertical"
-            sx={{ mt: { xs: 4, md: 0 } }}
-            variant="middle"
-            flexItem
-          />
-
-          {/* Right Side: Comment */}
-          <Grid size={{ xs: 12, md: 5.5 }} sx={{ mt: { xs: 4, md: 0 } }}>
-            <Typography mb={1}>Add Your Comment</Typography>
-            <TextField
-              fullWidth
-              multiline
-              minRows={6}
-              variant="outlined"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              sx={{
-                mt: 2,
-                "& fieldset": {
-                  borderColor: "#ddd",
-                },
-                borderRadius: "10px",
-              }}
-            />
-
-            <Button
-              size="large"
-              variant="contained"
-              sx={{
-                borderRadius: 1,
-                textTransform: "none",
-                bgcolor: "var(--blue-color)",
-                px: 6,
-                py: 1,
-                mt: 2,
-                transition: "all 0.5s ease",
-                "&:hover": {
-                  bgcolor: "#1a73e8",
-                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-                },
-              }}
-            >
-              Send
-            </Button>
-          </Grid>
-        </Grid>
+        )}
       </Container>
     </>
   );
