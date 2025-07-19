@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import RoomHeader from "../RoomHeader/RoomHeader";
-import { BedOutlined, CalendarMonth } from "@mui/icons-material";
+import { Add, BedOutlined, CalendarMonth, Remove } from "@mui/icons-material";
 import { axiosInstance } from "@/services/axiosInstance";
 import { PORTAL_URLS } from "@/services/apiEndpoints";
 import { useEffect, useState } from "react";
@@ -34,6 +34,7 @@ export default function RoomDetails() {
   const [comment, setComment] = useState("");
   const [room, setRoom] = useState<IRoom>();
   const [value, setValue] = useState<DateRange<Dayjs>>([null, null]);
+  const [capacityValue, setCapacityValue] = useState(1);
   const fallbackImages = [
     "https://i.pinimg.com/736x/e6/30/db/e630db9e931df9ea09a6090cf5dbfa89.jpg",
     "https://i.pinimg.com/736x/11/0f/f5/110ff583b861e803f37bdf48380c0c4d.jpg",
@@ -245,6 +246,54 @@ export default function RoomDetails() {
                     />
                   </DemoContainer>
                 </LocalizationProvider>
+              </Box>
+
+              {/* capacity input */}
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                mb={0.5}
+                mt={3}
+              >
+                Number Of Person
+              </Typography>
+              <Box component={"footer"} display={"flex"} gap={1} mt={1} mb={2}>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setCapacityValue((current) => current - 1);
+                  }}
+                  disabled={capacityValue === 1}
+                  color="warning"
+                >
+                  <Remove />
+                </Button>
+                <TextField
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      textAlign: "center", // Center the input text
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#ccc", // default border
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#1976d2", // your custom hover color
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#1976d2", // focused state border color
+                      },
+                    },
+                  }}
+                  fullWidth
+                  value={capacityValue}
+                ></TextField>
+                <Button
+                  variant="contained"
+                  onClick={() => setCapacityValue((current) => current + 1)}
+                >
+                  <Add />
+                </Button>
               </Box>
 
               <Typography color="text.secondary" mb={2}>
