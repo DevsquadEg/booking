@@ -93,3 +93,13 @@ export interface Facility {
   name: string;
   // [key: string]: any;
 }
+
+export interface IRoom {
+  roomNumber: number;
+  images: string[];
+  price: number;
+  discount: number;
+  capacity: number;
+  length: number | null;
+  facilities: Facility[];
+}

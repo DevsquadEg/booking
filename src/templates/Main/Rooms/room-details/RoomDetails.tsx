@@ -1,17 +1,41 @@
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Rating,
+  TextField,
+  Typography,
+} from "@mui/material";
 import RoomHeader from "../RoomHeader/RoomHeader";
-import { Bed, CalendarMonth } from "@mui/icons-material";
+import { BedOutlined, CalendarMonth } from "@mui/icons-material";
 import { axiosInstance } from "@/services/axiosInstance";
 import { PORTAL_URLS } from "@/services/apiEndpoints";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import type { IRoom } from "@/interfaces/interfaces";
 
 export default function RoomDetails() {
   const { id } = useParams<string>();
 
-  const [room, setRoom] = useState<string>();
+  const [rating, setRating] = useState<number | null>(4.5);
+  const [message, setMessage] = useState("");
+  const [comment, setComment] = useState("");
+  const [room, setRoom] = useState<IRoom>();
+  const fallbackImages = [
+    "https://i.pinimg.com/736x/e6/30/db/e630db9e931df9ea09a6090cf5dbfa89.jpg",
+    "https://i.pinimg.com/736x/11/0f/f5/110ff583b861e803f37bdf48380c0c4d.jpg",
+    "https://i.pinimg.com/736x/3c/0f/1e/3c0f1e2b6d8a4b5d7f9a2c4b5c8f6b7d.jpg",
+    "https://i.pinimg.com/736x/5c/0f/1e/5c0f1e2b6d8a4b5d7f9a2c4b5c8f6b7d.jpg",
+    "https://i.pinimg.com/736x/7c/0f/1e/7c0f1e2b6d8a4b5d7f9a2c4b5c8f6b7d.jpg",
+  ];
 
   async function getRoomDetails() {
+    if (!id) {
+      console.error("Room ID is not provided");
+      return;
+    }
     try {
       const res = await axiosInstance.get(
         PORTAL_URLS.ROOMS.GET_ROOM_DETAILS(id)
@@ -37,7 +61,7 @@ export default function RoomDetails() {
           <Grid size={{ xs: 12, md: 7.5 }}>
             <Box
               component="img"
-              src={room?.images?.[0] || "/fallback.jpg"}
+              src={room?.images?.[0] || fallbackImages[0]}
               alt="Main Room"
               sx={{
                 width: "100%",
@@ -48,7 +72,7 @@ export default function RoomDetails() {
             />
           </Grid>
 
-          {/* الصورتين الجانبيتين */}
+          {/* === Right Side: Additional Images === */}
           <Grid size={{ xs: 12, md: 4.5 }}>
             <Box
               sx={{
@@ -63,10 +87,7 @@ export default function RoomDetails() {
                 <Box
                   key={index}
                   component="img"
-                  src={
-                    room?.images?.[index] ||
-                    "/public/photo-1497436072909-60f360e1d4b1.jpeg"
-                  }
+                  src={room?.images?.[index] || fallbackImages[index - 1]}
                   alt={`Room Image ${index + 1}`}
                   sx={{
                     width: "100%",
@@ -99,14 +120,36 @@ export default function RoomDetails() {
             </Typography>
 
             {/* // Room features */}
-            <Grid container spacing={2} mt={2}>
-              {room?.facilities.map((item, index) => (
+            <Grid
+              container
+              spacing={2}
+              mt={2}
+              bgcolor={"#f5f5f5"}
+              py={4}
+              borderRadius={3}
+            >
+              {room?.facilities.map((facility, index) => (
                 <Grid key={index} size={{ xs: 6, sm: 4, md: 3 }}>
-                  <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
-                    <Typography fontSize={24}>
-                      {item.icon || <Bed />}
-                    </Typography>{" "}
-                    <Typography>{item.name}</Typography>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    textAlign="center"
+                    gap={1}
+                  >
+                    {/* الأيقونة */}
+                    <Box color="primary.main">
+                      {facility.icon || <BedOutlined sx={{ fontSize: 40 }} />}
+                    </Box>
+
+                    {/* الاسم */}
+                    <Typography
+                      fontWeight="500"
+                      color="#152C5B"
+                      textTransform={"capitalize"}
+                    >
+                      {facility.name}
+                    </Typography>
                   </Box>
                 </Grid>
               ))}
@@ -149,9 +192,11 @@ export default function RoomDetails() {
                 </Typography>
               </Typography>
 
-              <Typography color="error" mb={4} mt={1} fontSize={14}>
-                Discount 20% Off
-              </Typography>
+              {room?.discount && (
+                <Typography color="error" mb={4} mt={1} fontSize={14}>
+                  Discount {room?.discount || 0}% Off
+                </Typography>
+              )}
 
               {/* Pick a Date */}
               <Typography variant="subtitle2" color="text.secondary" mb={0.5}>
@@ -186,7 +231,19 @@ export default function RoomDetails() {
                 <Button
                   size="large"
                   variant="contained"
-                  sx={{ borderRadius: 2, textTransform: "none" }}
+                  sx={{
+                    borderRadius: 1,
+                    textTransform: "none",
+                    bgcolor: "var(--blue-color)",
+                    px: 6,
+                    py: 1.5,
+                    mt: 2,
+                    transition: "all 0.5s ease",
+                    "&:hover": {
+                      bgcolor: "#1a73e8",
+                      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+                    },
+                  }}
                 >
                   Continue Book
                 </Button>
@@ -194,6 +251,119 @@ export default function RoomDetails() {
             </Box>
           </Grid>
         </Grid>
+        {/* Rating and Comment Section */}
+        
+        <Grid
+          container
+          spacing={4}
+          alignItems="flex-start"
+          display={{ xs: "block", md: "flex" }}
+          border={"1px solid #e0e0e0"}
+          borderRadius={3}
+          p={4}
+          mt={4}
+        >
+          {/* Left Side: Rating & Message */}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Typography mb={1}>Rate</Typography>
+            <Rating
+              name="rating"
+              value={rating}
+              precision={0.5}
+              onChange={(_, value) => setRating(value)}
+              sx={{ color: "#f4c150" }}
+            />
+
+            <Typography mt={3} mb={1}>
+              Message
+            </Typography>
+            <TextField
+              fullWidth
+              multiline
+              minRows={4}
+              variant="outlined"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              sx={{
+                "& fieldset": {
+                  borderColor: "#ddd",
+                },
+                borderRadius: "10px",
+              }}
+            />
+
+            <Button
+              size="large"
+              variant="contained"
+              sx={{
+                borderRadius: 1,
+                textTransform: "none",
+                bgcolor: "var(--blue-color)",
+                px: 6,
+                py: 1,
+                mt: 2,
+                transition: "all 0.5s ease",
+                "&:hover": {
+                  bgcolor: "#1a73e8",
+                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+                },
+              }}
+            >
+              Rate
+            </Button>
+          </Grid>
+
+          {/* Vertical Divider */}
+          <Divider
+            // orientation={{ xs: "horizontal", md: "vertical" }}
+            orientation="vertical"
+            sx={{ mt: { xs: 4, md: 0 } }}
+            variant="middle"
+            flexItem
+          />
+
+          {/* Right Side: Comment */}
+          <Grid size={{ xs: 12, md: 5.5 }} sx={{ mt: { xs: 4, md: 0 } }}>
+            <Typography mb={1}>Add Your Comment</Typography>
+            <TextField
+              fullWidth
+              multiline
+              minRows={6}
+              variant="outlined"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              sx={{
+                mt: 2,
+                "& fieldset": {
+                  borderColor: "#ddd",
+                },
+                borderRadius: "10px",
+              }}
+            />
+
+            <Button
+              size="large"
+              variant="contained"
+              sx={{
+                borderRadius: 1,
+                textTransform: "none",
+                bgcolor: "var(--blue-color)",
+                px: 6,
+                py: 1,
+                mt: 2,
+                transition: "all 0.5s ease",
+                "&:hover": {
+                  bgcolor: "#1a73e8",
+                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+                },
+              }}
+            >
+              Send
+            </Button>
+          </Grid>
+        </Grid>
+
+        
       </Container>
     </>
   );
