@@ -58,7 +58,7 @@ export const ADMIN_URLS = {
     CANCEL_BOOKING: (id: number): string =>
       `${baseURL}/admin/Booking/${id}/cancel`,
     // Path to delete a specific booking by its ID (admin view)
-    DELETE_BOOKING: (id: number): string => `${baseURL}/admin/Booking/${id}`,
+    DELETE_BOOKING: (id: string) => `${baseURL}/admin/booking/${id}`,
     // Path to get all bookings (admin view, with filtering/pagination)
     GET_ALL_BOOKINGS: "/admin/Booking",
     // Path to confirm a specific booking (admin action)
@@ -117,16 +117,15 @@ export const PORTAL_URLS = {
   // Rooms Endpoints within Portal
   ROOMS: {
     // Path to get all available rooms for booking (portal view)
-    GET_ALL_ROOMS: `${baseURL}/portal/Rooms`,
+    GET_ALL_ROOMS: `${baseURL}/portal/rooms`,
     // Path to get details of a specific room by its ID (portal view)
-    GET_ROOM_DETAILS: (id: number): string => `${baseURL}/portal/Rooms/${id}`,
+    GET_ROOM_DETAILS: (id: string) => `${baseURL}/portal/rooms/${id}`,
     // Path to get favorite rooms for the current user
-    GET_FAVORITE_ROOMS: `${baseURL}/portal/Favorite-rooms`, // As seen in Postman screenshot
+    GET_FAVORITE_ROOMS: `${baseURL}/portal/favorite-rooms`, // As seen in Postman screenshot
     // Path to add a room to favorites
-    ADD_TO_FAVORITES: `${baseURL}/portal/Favorite-rooms`,
+    ADD_TO_FAVORITES: `${baseURL}/portal/favorite-rooms`,
     // Path to remove a room from favorites
-    REMOVE_FROM_FAVORITES: (roomId: number): string =>
-      `${baseURL}/portal/Favorite-rooms/${roomId}`,
+   REMOVE_FROM_FAVORITES: (roomId: string): string =>`${baseURL}/portal/favorite-rooms/${roomId}`,
     // Path to get comments for a specific room
     GET_ROOM_COMMENTS: (roomId: number): string =>
       `${baseURL}/portal/Room-comments/${roomId}`, // As seen in Postman screenshot

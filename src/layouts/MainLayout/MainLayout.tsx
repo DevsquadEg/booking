@@ -1,12 +1,13 @@
-import { Box } from "@mui/material";
+import Footer from "@/components/common/footer/Footer";
+import Navbar from "@/components/common/navbar/Navbar";
 import { Outlet } from "react-router-dom";
 
 export default function MainLayout() {
   return (
     <>
-      <Box px={2}>
-        <Outlet />
-      </Box>
+      <Navbar />
+      <Outlet />
+      <Footer />
     </>
   );
 }

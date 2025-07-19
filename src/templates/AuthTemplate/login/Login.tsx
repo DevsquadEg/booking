@@ -30,18 +30,26 @@ export default function Login() {
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm<LoginProps>();
-  const { saveLoginData } = useAuth();
+  const { saveLoginData,loginData } = useAuth();
 
   // =========== submit login ========
   const onSubmit = async (data: LoginProps) => {
     try {
       const response = await axiosInstance.post(ADMIN_URLS.USER.LOGIN, data);
       localStorage.setItem("token", response?.data.data.token);
+      console.log("ana",response.data.data);
+      
+      
       saveLoginData();
       // await saveLoginData();
       // await getCurrentUser();
       toast.success("Login success!");
-      navigate(DASHBOARD_PATH);
+      if (loginData?.role == "user") {
+              navigate(DASHBOARD_PATH);
+      } else {
+              navigate("/");
+
+      }
     } catch (error) {
       // console.log(error?.response?.data?.message);
       if (isAxiosError(error)) {
@@ -141,6 +149,7 @@ export default function Login() {
                       background: "#f5f6f8",
                     }}
                     type={showPassword ? "text" : "password"}
+                     placeholder="Enter your Password"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton

@@ -29,6 +29,9 @@ import Payment from "./templates/Main/Booking/payment/Payment";
 import PATHS from "./services/paths";
 import { Toaster } from "react-hot-toast";
 import RoomContextProvider from "./store/RoomsContext/Rooms.context";
+import { ThemeProvider } from "@emotion/react";
+import type {} from "@mui/x-data-grid/themeAugmentation";
+import theme from "./services/theme";
 
 function App() {
   const routes = createBrowserRouter([
@@ -142,11 +145,15 @@ function App() {
       ],
     },
   ]);
+
+  const mode = "light";
   return (
     <>
-      <RoomContextProvider>
-        <RouterProvider router={routes}></RouterProvider>
-      </RoomContextProvider>
+      <ThemeProvider theme={theme(mode)}>
+        <RoomContextProvider>
+          <RouterProvider router={routes}></RouterProvider>
+        </RoomContextProvider>
+      </ThemeProvider>
       <Toaster />
     </>
   );

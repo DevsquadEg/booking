@@ -27,9 +27,10 @@ import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import ActionBtn from "./ActionBtn";
+import ActionBtn from "@/components/common/ActionBtn/ActionBtn";
 import type { IroomList } from "@/interfaces/interfaces";
 import type { MouseEvent } from "react";
+import { isAxiosError } from "axios";
 
 export default function RoomsList() {
   const [roomsList, setRoomsList] = useState<IroomList[]>([]);
@@ -37,7 +38,7 @@ export default function RoomsList() {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpen] = useState(false);
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRooms, setFilteredRooms] = useState<IroomList[]>([]);
@@ -83,9 +84,11 @@ export default function RoomsList() {
       await axiosInstance.delete(ADMIN_URLS.ROOM.DELETE_ROOM(id));
       toast.success("Room Deleted successfully");
       fetchRoomsList(); // Refresh list after deletion
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Something went wrong!");
-      console.error("Error deleting room:", error);
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Something went wrong!");
+        // console.error("Error deleting room:", error);
+      }
     }
   };
   {
@@ -112,7 +115,7 @@ export default function RoomsList() {
 
   const handleCloseDialog = () => setOpen(false);
 
-  const handleChangePage = (event: MouseEvent | null, newPage: number) => {
+  const handleChangePage = (_event: MouseEvent | null, newPage: number) => {
     setPage(newPage);
   };
 
@@ -178,9 +181,37 @@ export default function RoomsList() {
         </Button>
       </Box>
 
+      {/* =================== search  ===================== */}
+      {loading || roomsList.length === 0 ? (
+        ""
+      ) : (
+        <Autocomplete
+          freeSolo
+          options={roomsList.map((room) => room.roomNumber.toString())}
+          onInputChange={(_event, value) => setSearchQuery(value)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search Room Number"
+              variant="outlined"
+              size="small"
+              sx={{
+                marginBlock: "10px",
+                borderRadius: "10px",
+                width: 300,
+                bgcolor: "#fff",
+                my: 2,
+                ml: "auto",
+                mr: "30px",
+              }}
+            />
+          )}
+        />
+      )}
+
       <Paper sx={{ width: "100%", overflow: "hidden", mt: "1rem" }}>
         {loading ? (
-          [...Array(6)].map((_, idx) => (
+          [...Array(10)].map((_, idx) => (
             <Skeleton
               key={idx}
               sx={{ padding: "1rem", mx: "0.5rem" }}
@@ -200,28 +231,6 @@ export default function RoomsList() {
           </Typography>
         ) : (
           <>
-            {/* =================== search  ===================== */}
-            <Autocomplete
-              freeSolo
-              options={roomsList.map((room) => room.roomNumber.toString())}
-              onInputChange={(event, value) => setSearchQuery(value)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Search Room Number"
-                  variant="outlined"
-                  size="small"
-                  sx={{
-                    marginBlock: "10px",
-                    borderRadius: "10px",
-                    width: 300,
-                    mb: 2,
-                    ml: "auto",
-                    mr: "30px",
-                  }}
-                />
-              )}
-            />
             {/* =================== table container  ===================== */}
 
             <TableContainer sx={{ maxHeight: 700 }}>
@@ -260,10 +269,7 @@ export default function RoomsList() {
                         <TableCell align="center">
                           <Box
                             component="img"
-                            src={
-                              room?.images?.[0] ??
-                              "/avatars-000303131841-ocbdii-t1080x1080.jpeg"
-                            }
+                            src={room?.images?.[0] ?? "/noRoom.jpeg"}
                             alt="Room"
                             sx={{
                               width: 60,
@@ -301,7 +307,9 @@ export default function RoomsList() {
                           <ActionBtn
                             onView={() => handleClickOpenDialog(room._id)}
                             onEdit={() =>
-                              navigate(`/dashboard/room/edit/${room._id}`)
+                              navigate(`/dashboard/room/edit/${room._id}`, {
+                                state: { room },
+                              })
                             }
                             onDelete={() =>
                               swalWithBootstrapButtons
@@ -396,10 +404,7 @@ export default function RoomsList() {
 
             <Box
               component="img"
-              src={
-                viewList?.images?.[0] ??
-                "/avatars-000303131841-ocbdii-t1080x1080.jpeg"
-              }
+              src={viewList?.images?.[0] ?? "/noRoom.jpeg"}
               alt="Room"
               sx={{
                 width: 100,

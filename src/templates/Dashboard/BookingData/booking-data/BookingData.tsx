@@ -24,7 +24,6 @@ import {
   Chip,
   Divider,
   Grid,
-  IconButton,
   LinearProgress,
   Paper,
   Stack,
@@ -34,6 +33,7 @@ import { isAxiosError } from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { BOOKINGS_LIST_PATH } from "@/services/paths";
 
 export default function BookingData() {
   const navigate = useNavigate();
@@ -108,9 +108,14 @@ export default function BookingData() {
   return (
     <>
       <Box>
-        <IconButton aria-label="back" onClick={() => navigate(-1)}>
+        <Button
+          aria-label="back"
+          onClick={() => navigate(BOOKINGS_LIST_PATH)}
+          sx={{ color: "grey", textTransform: "none" }}
+        >
           <NavigateBeforeOutlined />
-        </IconButton>
+          View all Bookings
+        </Button>
       </Box>
       <Box sx={{ maxWidth: 1200, mx: "auto", p: 3 }}>
         <Stack
