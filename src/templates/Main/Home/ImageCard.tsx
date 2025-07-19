@@ -93,7 +93,6 @@ const ImageCard = ({
       </Box>
 
       <Box
-        
         className="overlay"
         sx={{
           position: "absolute",
