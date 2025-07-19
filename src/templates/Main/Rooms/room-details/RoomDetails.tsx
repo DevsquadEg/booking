@@ -15,6 +15,9 @@ import { PORTAL_URLS } from "@/services/apiEndpoints";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { IRoom } from "@/interfaces/interfaces";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 
 export default function RoomDetails() {
   const { id } = useParams<string>();
@@ -216,7 +219,17 @@ export default function RoomDetails() {
                 }}
               >
                 <CalendarMonth />
-                <Typography>20 Jan - 22 Jan</Typography>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={["DateRangePicker"]}>
+                    <DateRangePicker
+                      format="YYYY-MM-DD"
+                      value={value}
+                      minDate={dayjs()}
+                      onChange={(newValue) => setValue(newValue)}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+
                 {/* <Typography>
                   {dayjs(startDate).format("DD MMM")} -{" "}
                   {dayjs(endDate).format("DD MMM")}
@@ -252,7 +265,7 @@ export default function RoomDetails() {
           </Grid>
         </Grid>
         {/* Rating and Comment Section */}
-        
+
         <Grid
           container
           spacing={4}
@@ -362,8 +375,6 @@ export default function RoomDetails() {
             </Button>
           </Grid>
         </Grid>
-
-        
       </Container>
     </>
   );
