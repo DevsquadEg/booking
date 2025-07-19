@@ -14,7 +14,7 @@ import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import Add from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-import photo from "../../../assets/imgs/explor.jpg";
+import photo from "../../../assets/imgs/explor1.svg";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -72,6 +72,7 @@ export default function HeaderHomeXplore() {
       spacing={2}
       justifyContent={"space-between"}
       alignItems={"center"}
+      my={4}
     >
       {/* left box */}
       <Grid size={{ xs: 12, md: 5 }}>
@@ -123,10 +124,8 @@ export default function HeaderHomeXplore() {
         )}
 
         {/* capacity input */}
-
         <Typography component={"p"} variant="h5" mt={4}>
-          {" "}
-          No Of Persone
+          Number Of Persone
         </Typography>
         <Box component={"footer"} display={"flex"} gap={1} mt={1}>
           <Button
@@ -136,8 +135,9 @@ export default function HeaderHomeXplore() {
             }}
             disabled={capacityValue === 1}
             color="warning"
-            startIcon={<RemoveIcon />}
-          ></Button>
+          >
+            <RemoveIcon />
+          </Button>
           <TextField
             sx={{
               "& .MuiInputBase-input": {
@@ -161,8 +161,9 @@ export default function HeaderHomeXplore() {
           <Button
             variant="contained"
             onClick={() => setCapacityValue((current) => current + 1)}
-            startIcon={<Add />}
-          ></Button>
+          >
+            <Add />
+          </Button>
         </Box>
         <Button
           variant="contained"
