@@ -15,7 +15,11 @@ import RightSideImage from "../../../components/AuthComponents/rightSideImage/Ri
 import Logo from "../../../components/AuthComponents/Logo/Logo";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
-import { DASHBOARD_PATH, FORGET_PASS_PATH , MAIN_PATH } from "../../../services/paths";
+import {
+  DASHBOARD_PATH,
+  FORGET_PASS_PATH,
+  MAIN_PATH,
+} from "../../../services/paths";
 import validation from "../../../services/validation";
 import type { LoginProps } from "../../../interfaces/interfaces";
 
@@ -30,27 +34,25 @@ export default function Login() {
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm<LoginProps>();
-  const { saveLoginData,loginData } = useAuth();
+  const { saveLoginData, loginData } = useAuth();
 
   // =========== submit login ========
   const onSubmit = async (data: LoginProps) => {
     try {
       const response = await axiosInstance.post(ADMIN_URLS.USER.LOGIN, data);
       localStorage.setItem("token", response?.data.data.token);
-      console.log("ana",response.data.data);
-      if (loginData?.role != "user") {
-        
-            navigate(DASHBOARD_PATH);
-      } else  {
-              navigate("/");
+      console.log("ana", response.data.data);
 
+      if (response?.data.data?.user.role != "user") {
+        navigate(DASHBOARD_PATH);
+      } else {
+        navigate("/");
       }
-      
+
       saveLoginData();
       // await saveLoginData();
       // await getCurrentUser();
       toast.success("Login success!");
-      
     } catch (error) {
       // console.log(error?.response?.data?.message);
       if (isAxiosError(error)) {
@@ -150,7 +152,7 @@ export default function Login() {
                       background: "#f5f6f8",
                     }}
                     type={showPassword ? "text" : "password"}
-                     placeholder="Enter your Password"
+                    placeholder="Enter your Password"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton

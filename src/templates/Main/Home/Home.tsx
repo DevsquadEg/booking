@@ -162,6 +162,7 @@ const Home = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
+        mt={4}
         mb={2}
       >
         <Typography color="#152C5B" variant="h5" fontWeight={600}>

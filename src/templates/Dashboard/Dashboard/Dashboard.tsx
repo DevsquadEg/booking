@@ -56,7 +56,7 @@ export default function Dashboard() {
       setloading(false);
     } catch (error) {
       if (isAxiosError(error)) {
-        toast.error(error?.response?.data?.message || "Sit omething went wrong");
+        toast.error(error?.response?.data?.message || "Something went wrong");
       }
     }
   }, []);
