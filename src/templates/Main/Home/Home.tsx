@@ -10,11 +10,9 @@ import toast from "react-hot-toast";
 import { useFavorite } from "@/store/AuthContext/FavoriteContext";
 import { useNavigate } from "react-router-dom";
 import { ROOM_DETAILS_PATH } from "@/services/paths";
-import HeaderHomeXplore from "@/components/common/HeaderHomeXplore/HeaderHomeXplore";import {  Link as MUILink } from "@mui/material";
+import HeaderHomeXplore from "@/components/common/HeaderHomeXplore/HeaderHomeXplore";
+import { Link as MUILink } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-
-
-
 
 interface Room {
   _id: string;
@@ -169,9 +167,14 @@ const Home = () => {
         <Typography color="#152C5B" variant="h5" fontWeight={600}>
           Most popular ads
         </Typography>
-        <MUILink underline="none" sx={{ textDecoration: 'none', color: 'red', fontWeight: 500 }} component={RouterLink} to="/rooms">
-            more
-          </MUILink>
+        <MUILink
+          underline="none"
+          sx={{ textDecoration: "none", color: "red", fontWeight: 500 }}
+          component={RouterLink}
+          to="/rooms"
+        >
+          more
+        </MUILink>
       </Box>
 
       {loading ? (
@@ -233,7 +236,12 @@ const Home = () => {
           <Typography color="#152C5B" variant="h5" fontWeight={600}>
             Houses with beauty backyard
           </Typography>
-          <MUILink underline="none" sx={{ textDecoration: 'none', color: 'red', fontWeight: 500 }} component={RouterLink} to="/rooms">
+          <MUILink
+            underline="none"
+            sx={{ textDecoration: "none", color: "red", fontWeight: 500 }}
+            component={RouterLink}
+            to="/rooms"
+          >
             more
           </MUILink>
         </Box>
@@ -304,7 +312,12 @@ const Home = () => {
           <Typography color="#152C5B" variant="h5" fontWeight={600}>
             Hotels with large living room
           </Typography>
-         <MUILink underline="none" sx={{ textDecoration: 'none', color: 'red', fontWeight: 500 }} component={RouterLink} to="/rooms">
+          <MUILink
+            underline="none"
+            sx={{ textDecoration: "none", color: "red", fontWeight: 500 }}
+            component={RouterLink}
+            to="/rooms"
+          >
             more
           </MUILink>
         </Box>
@@ -379,7 +392,12 @@ const Home = () => {
           <Typography color="#152C5B" variant="h5" fontWeight={600}>
             Ads
           </Typography>
-           <MUILink underline="none" sx={{ textDecoration: 'none', color: 'red', fontWeight: 500 }} component={RouterLink} to="/rooms">
+          <MUILink
+            underline="none"
+            sx={{ textDecoration: "none", color: "red", fontWeight: 500 }}
+            component={RouterLink}
+            to="/rooms"
+          >
             more
           </MUILink>
         </Box>
