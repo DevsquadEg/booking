@@ -15,7 +15,7 @@ import RightSideImage from "../../../components/AuthComponents/rightSideImage/Ri
 import Logo from "../../../components/AuthComponents/Logo/Logo";
 import { useAuth } from "../../../store/AuthContext/AuthContext";
 import SubmitBtn from "../../../layouts/AuthLayout/submitBtn";
-import { DASHBOARD_PATH, FORGET_PASS_PATH } from "../../../services/paths";
+import { DASHBOARD_PATH, FORGET_PASS_PATH , MAIN_PATH } from "../../../services/paths";
 import validation from "../../../services/validation";
 import type { LoginProps } from "../../../interfaces/interfaces";
 
@@ -38,18 +38,19 @@ export default function Login() {
       const response = await axiosInstance.post(ADMIN_URLS.USER.LOGIN, data);
       localStorage.setItem("token", response?.data.data.token);
       console.log("ana",response.data.data);
-      
+      if (loginData?.role != "user") {
+        
+            navigate(DASHBOARD_PATH);
+      } else  {
+              navigate("/");
+
+      }
       
       saveLoginData();
       // await saveLoginData();
       // await getCurrentUser();
       toast.success("Login success!");
-      if (loginData?.role == "user") {
-              navigate(DASHBOARD_PATH);
-      } else {
-              navigate("/");
-
-      }
+      
     } catch (error) {
       // console.log(error?.response?.data?.message);
       if (isAxiosError(error)) {

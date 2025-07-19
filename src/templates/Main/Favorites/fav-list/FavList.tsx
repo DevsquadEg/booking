@@ -29,7 +29,12 @@ const FavoritesList = () => {
       {/* Page Heading */}
       <Typography
         variant="h4"
-        sx={{ textAlign: "center", color: "#152C5B", mt: "20px", fontWeight: "bold" }}
+        sx={{
+          textAlign: "center",
+          color: "#152C5B",
+          mt: "20px",
+          fontWeight: "bold",
+        }}
       >
         Your Favorites
       </Typography>
@@ -39,7 +44,9 @@ const FavoritesList = () => {
         <MUILink underline="none" color="#B0B0B0" component={RouterLink} to="/">
           Home
         </MUILink>
-        <Typography sx={{ color: "#152C5B", fontWeight: "500" }}>Favorites</Typography>
+        <Typography sx={{ color: "#152C5B", fontWeight: "500" }}>
+          Favorites
+        </Typography>
       </Breadcrumbs>
 
       {/* Section Title */}
@@ -59,7 +66,11 @@ const FavoritesList = () => {
           <Box
             display="grid"
             gap={2}
-            gridTemplateColumns={{ xs: "1fr", sm: "1fr 1fr", md: "repeat(4, 1fr)" }}
+            gridTemplateColumns={{
+              xs: "1fr",
+              sm: "1fr 1fr",
+              md: "repeat(4, 1fr)",
+            }}
           >
             {[...Array(4)].map((_, idx) => (
               <Skeleton
@@ -70,11 +81,11 @@ const FavoritesList = () => {
               />
             ))}
           </Box>
-        ) : favList.length === 0 ?(
+        ) : favList.length === 0 ? (
           <Typography
             sx={{
               padding: "1rem",
-              paddingTop:"2rem",
+              paddingTop: "2rem",
               fontSize: "32px",
               color: "text.primary",
               textAlign: "center",
@@ -86,26 +97,30 @@ const FavoritesList = () => {
           <Box
             display="grid"
             gap={2}
-            gridTemplateColumns={{ xs: "1fr", sm: "1fr 1fr", md: "repeat(4, 1fr)" }}
+            gridTemplateColumns={{
+              xs: "1fr",
+              sm: "1fr 1fr",
+              md: "repeat(4, 1fr)",
+            }}
           >
             {favList.map((room) => (
               <Box key={room._id}>
-               <ImageCard
-  roomId={room._id}
-  image={room.images?.[0]}
-  title={room.roomNumber}
-  price={room.price}
-   isFirst={false}
-   gridStyles={{ width: "100%", height: 250 }}
-  isFavorite={favoriteIds.includes(room._id)}
-  onToggleFavorite={(id) => {
-    if (favoriteIds.includes(id)) {
-      deleteFromFavs(id);
-    } else {
-      addToFavs(id);
-    }
-  }}
-/>
+                <ImageCard
+                  roomId={room._id}
+                  image={room.images?.[0]}
+                  title={room.roomNumber}
+                  price={room.price}
+                  isFirst={false}
+                  gridStyles={{ width: "100%", height: 250 }}
+                  isFavorite={favoriteIds.includes(room._id)}
+                  onToggleFavorite={(id) => {
+                    if (favoriteIds.includes(id)) {
+                      deleteFromFavs(id);
+                    } else {
+                      addToFavs(id);
+                    }
+                  }}
+                />
               </Box>
             ))}
           </Box>
