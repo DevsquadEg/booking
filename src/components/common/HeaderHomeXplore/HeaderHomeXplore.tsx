@@ -169,7 +169,20 @@ export default function HeaderHomeXplore() {
           loading={isLoading}
           onClick={handleExploreBtnAction}
           fullWidth
-          sx={{ mt: 4 }}
+          size="large"
+          sx={{
+            borderRadius: 1,
+            textTransform: "none",
+            bgcolor: "var(--blue-color)",
+            px: 6,
+            py: 1.5,
+            mt: 3,
+            transition: "all 0.5s ease",
+            "&:hover": {
+              bgcolor: "#1a73e8",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+            },
+          }}
         >
           Explore
         </Button>

@@ -46,7 +46,6 @@ const ImageCard = ({
 
   return (
     <Box
-      onClick={onClick}
       sx={{
         ...gridStyles,
         position: "relative",
@@ -94,7 +93,7 @@ const ImageCard = ({
       </Box>
 
       <Box
-        onClick={onClick}
+        
         className="overlay"
         sx={{
           position: "absolute",
