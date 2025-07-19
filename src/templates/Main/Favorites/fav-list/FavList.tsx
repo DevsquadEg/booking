@@ -6,11 +6,13 @@ import {
   Breadcrumbs,
   Link as MUILink,
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import ImageCard from "../../Home/ImageCard";
 import { useFavorite } from "@/store/AuthContext/FavoriteContext";
+import { ROOM_DETAILS_PATH } from "@/services/paths";
 
 const FavoritesList = () => {
+  const navigate = useNavigate();
   const {
     favList,
     favoriteIds,
@@ -18,9 +20,11 @@ const FavoritesList = () => {
     getFavsList,
     addToFavs,
     deleteFromFavs,
+    refreshFavorites,
   } = useFavorite();
 
   useEffect(() => {
+    
     getFavsList();
   }, []);
 
@@ -106,6 +110,7 @@ const FavoritesList = () => {
             {favList.map((room) => (
               <Box key={room._id}>
                 <ImageCard
+                  onClick={() => navigate(`${ROOM_DETAILS_PATH}/${room._id}`)}
                   roomId={room._id}
                   image={room.images?.[0]}
                   title={room.roomNumber}
