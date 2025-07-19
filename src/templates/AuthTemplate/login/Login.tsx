@@ -38,18 +38,19 @@ export default function Login() {
       const response = await axiosInstance.post(ADMIN_URLS.USER.LOGIN, data);
       localStorage.setItem("token", response?.data.data.token);
       console.log("ana",response.data.data);
-      
+      if (loginData?.role != "user") {
+        
+            navigate(DASHBOARD_PATH);
+      } else  {
+              navigate("/");
+
+      }
       
       saveLoginData();
       // await saveLoginData();
       // await getCurrentUser();
       toast.success("Login success!");
-      if (loginData?.role != "user") {
-              navigate(DASHBOARD_PATH);
-      } else  {
-              navigate("/");
-
-      }
+      
     } catch (error) {
       // console.log(error?.response?.data?.message);
       if (isAxiosError(error)) {

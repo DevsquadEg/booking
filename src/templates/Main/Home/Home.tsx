@@ -13,6 +13,10 @@ import { Autoplay } from "swiper/modules";
 import ReviewSection from "./ReviewSection ";
 import toast from "react-hot-toast";
 import { useFavorite } from "@/store/AuthContext/FavoriteContext";
+import {  Link as MUILink } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+
+
 
 
 interface Room {
@@ -158,9 +162,9 @@ const deleteFromFavs = async (roomId: string) => {
         <Typography color="#152C5B" variant="h5" fontWeight={600}>
           Most popular ads
         </Typography>
-        <Link href="/rooms" color="error" underline="none" fontWeight={500}>
-          more
-        </Link>
+        <MUILink underline="none" sx={{ textDecoration: 'none', color: 'red', fontWeight: 500 }} component={RouterLink} to="/rooms">
+            more
+          </MUILink>
       </Box>
 
       {loading ? renderSkeletonGrid() : (
@@ -212,9 +216,9 @@ const deleteFromFavs = async (roomId: string) => {
           <Typography color="#152C5B" variant="h5" fontWeight={600}>
             Houses with beauty backyard
           </Typography>
-          <Link href="/rooms" color="error" underline="none" fontWeight={500}>
+          <MUILink underline="none" sx={{ textDecoration: 'none', color: 'red', fontWeight: 500 }} component={RouterLink} to="/rooms">
             more
-          </Link>
+          </MUILink>
         </Box>
 
         {loading ? renderSkeletonSlider() : (
@@ -270,9 +274,9 @@ const deleteFromFavs = async (roomId: string) => {
           <Typography color="#152C5B" variant="h5" fontWeight={600}>
             Hotels with large living room
           </Typography>
-          <Link href="/rooms" color="error" underline="none" fontWeight={500}>
+         <MUILink underline="none" sx={{ textDecoration: 'none', color: 'red', fontWeight: 500 }} component={RouterLink} to="/rooms">
             more
-          </Link>
+          </MUILink>
         </Box>
 
         {loading ? renderSkeletonSlider() : (
@@ -328,9 +332,9 @@ const deleteFromFavs = async (roomId: string) => {
           <Typography color="#152C5B" variant="h5" fontWeight={600}>
             Ads
           </Typography>
-          <Link href="/rooms" color="error" underline="none" fontWeight={500}>
+           <MUILink underline="none" sx={{ textDecoration: 'none', color: 'red', fontWeight: 500 }} component={RouterLink} to="/rooms">
             more
-          </Link>
+          </MUILink>
         </Box>
 
         {loading ? renderSkeletonSlider() : (

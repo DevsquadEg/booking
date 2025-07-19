@@ -16,6 +16,10 @@ export type DecodedTokenPayload = {
   _id: string;
 };
 
+export type setLogin ={
+  userName: string;
+}
+
 export type FullUserDataType = {
   country: string;
   createdAt: Date | string;
