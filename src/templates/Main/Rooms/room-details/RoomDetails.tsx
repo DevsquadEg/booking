@@ -18,6 +18,10 @@ import type { IRoom } from "@/interfaces/interfaces";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
+import "dayjs/locale/en-gb";
+import type { DateRange } from "node_modules/@mui/x-date-pickers-pro/esm/models/range";
 
 export default function RoomDetails() {
   const { id } = useParams<string>();
@@ -26,6 +30,7 @@ export default function RoomDetails() {
   const [message, setMessage] = useState("");
   const [comment, setComment] = useState("");
   const [room, setRoom] = useState<IRoom>();
+  const [value, setValue] = useState<DateRange<Dayjs>>([null, null]);
   const fallbackImages = [
     "https://i.pinimg.com/736x/e6/30/db/e630db9e931df9ea09a6090cf5dbfa89.jpg",
     "https://i.pinimg.com/736x/11/0f/f5/110ff583b861e803f37bdf48380c0c4d.jpg",
@@ -208,32 +213,39 @@ export default function RoomDetails() {
 
               <Box
                 display="flex"
-                alignItems="center"
+                // alignItems="center"
                 gap={1}
                 sx={{
-                  bgcolor: "#f5f5f5",
+                  bgcolor: "darkblue",
                   borderRadius: 1,
-                  px: 2,
-                  py: 1,
+                  // px: 2,
+                  // pt: 1,
                   mb: 2,
                 }}
               >
-                <CalendarMonth />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={["DateRangePicker"]}>
                     <DateRangePicker
-                      format="YYYY-MM-DD"
+                      sx={{
+                        bgcolor: "#f5f5f5",
+                        width: "100%",
+                        "& .MuiInputAdornment-root": {
+                          order: -1,
+                          marginRight: "16px",
+                          marginLeft: 0,
+                          bgcolor: "#f5f5f5",
+                        },
+                        "& input": {
+                          textAlign: "center",
+                        },
+                      }}
+                      format="DD MMM"
                       value={value}
                       minDate={dayjs()}
                       onChange={(newValue) => setValue(newValue)}
                     />
                   </DemoContainer>
                 </LocalizationProvider>
-
-                {/* <Typography>
-                  {dayjs(startDate).format("DD MMM")} -{" "}
-                  {dayjs(endDate).format("DD MMM")}
-                </Typography> */}
               </Box>
 
               <Typography color="text.secondary" mb={2}>
