@@ -119,7 +119,7 @@ export const PORTAL_URLS = {
     // Path to get all available rooms for booking (portal view)
     GET_ALL_ROOMS: `${baseURL}/portal/rooms`,
     // Path to get details of a specific room by its ID (portal view)
-    GET_ROOM_DETAILS: (id: string): string => `${baseURL}/portal/Rooms/${id}`,
+    GET_ROOM_DETAILS: (id: string): string => `${baseURL}/portal/rooms/${id}`,
     // Path to get favorite rooms for the current user
     GET_FAVORITE_ROOMS: `${baseURL}/portal/favorite-rooms`, // As seen in Postman screenshot
     // Path to add a room to favorites

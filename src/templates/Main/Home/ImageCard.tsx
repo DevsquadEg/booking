@@ -1,5 +1,5 @@
 import { Box, Typography, IconButton } from "@mui/material";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Visibility } from "@mui/icons-material";
 import Swal from "sweetalert2"; // ✅ Import SweetAlert
 import { useAuth } from "@/store/AuthContext/AuthContext";
@@ -13,6 +13,7 @@ interface ImageCardProps {
   roomId?: string;
   isFavorite?: boolean;
   onToggleFavorite?: (roomId: string) => void;
+  onClick?: () => void;
 }
 
 const ImageCard = ({
@@ -24,17 +25,18 @@ const ImageCard = ({
   roomId = "",
   isFavorite = false,
   onToggleFavorite = () => {},
+  onClick,
 }: ImageCardProps) => {
-    const { loginData } = useAuth();
-  
-    // Check for token to confirm login
+  const { loginData } = useAuth();
+
+  // Check for token to confirm login
   const handleFavoriteClick = () => {
-    if (!localStorage.getItem("token") || loginData?.role != "user" ) {
+    if (!localStorage.getItem("token") || loginData?.role != "user") {
       Swal.fire({
         title: "You are not logged in",
         text: "Please log in to add items to your favorites.",
         icon: "warning",
-        confirmButtonText: "OK"
+        confirmButtonText: "OK",
       });
       return;
     }
@@ -44,6 +46,7 @@ const ImageCard = ({
 
   return (
     <Box
+      onClick={onClick}
       sx={{
         ...gridStyles,
         position: "relative",
@@ -91,6 +94,7 @@ const ImageCard = ({
       </Box>
 
       <Box
+        onClick={onClick}
         className="overlay"
         sx={{
           position: "absolute",
@@ -107,14 +111,13 @@ const ImageCard = ({
           alignItems: "center",
         }}
       >
-        
         <IconButton
-          onClick={handleFavoriteClick} 
+          onClick={handleFavoriteClick}
           sx={{ color: isFavorite ? "#ff1744" : "white", fontSize: 32 }}
         >
           <FavoriteIcon fontSize="inherit" />
         </IconButton>
-        <IconButton sx={{ color: "white", fontSize: 32 }}>
+        <IconButton onClick={onClick} sx={{ color: "white", fontSize: 32 }}>
           <Visibility fontSize="inherit" />
         </IconButton>
       </Box>

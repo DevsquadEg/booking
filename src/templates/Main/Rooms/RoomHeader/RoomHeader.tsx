@@ -40,11 +40,11 @@ export default function RoomHeader({ roomName, city }: any) {
       >
         <Typography
           variant="h4"
-          fontWeight={700}
+          fontWeight={600}
           color="#11235A"
           sx={{ mb: 0.5 }}
         >
-          {roomName}
+          Room Number {roomName}
         </Typography>
         <Typography variant="body1" color="text.secondary">
           {city}

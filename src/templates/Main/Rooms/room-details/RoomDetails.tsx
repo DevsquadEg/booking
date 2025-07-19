@@ -1,19 +1,23 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import RoomHeader from "../RoomHeader/RoomHeader";
-import { CalendarMonth } from "@mui/icons-material";
+import { Bed, CalendarMonth } from "@mui/icons-material";
 import { axiosInstance } from "@/services/axiosInstance";
 import { PORTAL_URLS } from "@/services/apiEndpoints";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export default function RoomDetails() {
-  const [roomId, setRoomId] = useState<string>("68775283ccc448ef859fed51");
+  const { id } = useParams<string>();
+
+  const [room, setRoom] = useState<string>();
 
   async function getRoomDetails() {
     try {
       const res = await axiosInstance.get(
-        PORTAL_URLS.ROOMS.GET_ROOM_DETAILS(roomId)
+        PORTAL_URLS.ROOMS.GET_ROOM_DETAILS(id)
       );
-      setRoomId(res.data.data.room); // ✅ حطينا room في state
+      setRoom(res.data.data.room);
+      console.log("Room details:", res.data.data.room);
     } catch (error) {
       console.error("Error fetching room details:", error);
     }
@@ -26,54 +30,56 @@ export default function RoomDetails() {
   return (
     <>
       <Container maxWidth="lg" sx={{ my: 4 }}>
-        <RoomHeader roomName="Village Angga" city="New York / USA" />
+        <RoomHeader roomName={room?.roomNumber} />
         {/* Room details content goes here */}
-        <Grid spacing={2} size={{ xs: 12 }} container>
-          <Box
-            component="img"
-            src={"/public/Rectangle1 5.svg"}
-            sx={{
-              width: { xs: "100%", md: "60%" },
-              borderRadius: "16px",
-              objectFit: "cover",
-              height: "100%",
-            }}
-          />
+        <Grid container spacing={2}>
+          {/* الصورة الكبيرة */}
+          <Grid size={{ xs: 12, md: 7.5 }}>
+            <Box
+              component="img"
+              src={room?.images?.[0] || "/fallback.jpg"}
+              alt="Main Room"
+              sx={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "16px",
+                objectFit: "cover",
+              }}
+            />
+          </Grid>
 
-          {/* Placeholder for additional images */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              width: { xs: "100%", md: "38%" },
-              gap: 2,
-            }}
-          >
+          {/* الصورتين الجانبيتين */}
+          <Grid size={{ xs: 12, md: 4.5 }}>
             <Box
-              component="img"
-              src={"/public/small2.svg"}
-              alt="Room Image 1"
               sx={{
-                width: "100%",
-                height: "calc(50% - 4px)",
-                borderRadius: "16px",
-                objectFit: "cover",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                height: "100%",
+                gap: 2,
               }}
-            />
-            <Box
-              component="img"
-              src={"/public/small3.svg"}
-              alt="Room Image 2"
-              sx={{
-                width: "100%",
-                height: "calc(50% - 4px)",
-                borderRadius: "16px",
-                objectFit: "cover",
-              }}
-            />
-          </Box>
+            >
+              {[1, 2].map((index) => (
+                <Box
+                  key={index}
+                  component="img"
+                  src={
+                    room?.images?.[index] ||
+                    "/public/photo-1497436072909-60f360e1d4b1.jpeg"
+                  }
+                  alt={`Room Image ${index + 1}`}
+                  sx={{
+                    width: "100%",
+                    height: "calc(50% - 4px)",
+                    borderRadius: "16px",
+                    objectFit: "cover",
+                  }}
+                />
+              ))}
+            </Box>
+          </Grid>
         </Grid>
+
         <Grid container spacing={6} mt={4}>
           {/* // Room description and features */}
           <Grid size={{ xs: 12, md: 7 }}>
@@ -94,21 +100,13 @@ export default function RoomDetails() {
 
             {/* // Room features */}
             <Grid container spacing={2} mt={2}>
-             
-              {[
-                { icon: "🛏️", label: ` bedroom` },
-                { icon: "🛋️", label: `living room` },
-                { icon: "🛁", label: `bathroom` },
-                { icon: "🍽️", label: ` dining room` },
-                { icon: "📶", label: ` mbp/s` },
-                { icon: "🔧", label: `unit ready` },
-                { icon: "🧊", label: ` refrigerator` },
-                { icon: "📺", label: ` television` },
-              ].map((item, index) => (
+              {room?.facilities.map((item, index) => (
                 <Grid key={index} size={{ xs: 6, sm: 4, md: 3 }}>
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <Typography fontSize={24}>{item.icon}</Typography>
-                    <Typography>{item.label}</Typography>
+                  <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
+                    <Typography fontSize={24}>
+                      {item.icon || <Bed />}
+                    </Typography>{" "}
+                    <Typography>{item.name}</Typography>
                   </Box>
                 </Grid>
               ))}
@@ -140,7 +138,7 @@ export default function RoomDetails() {
                 fontSize={36}
                 fontWeight={600}
               >
-                $280
+                ${room?.price || 0}
                 <Typography
                   mx={2}
                   fontSize={36}
@@ -174,10 +172,10 @@ export default function RoomDetails() {
               >
                 <CalendarMonth />
                 <Typography>20 Jan - 22 Jan</Typography>
-                <Typography>
+                {/* <Typography>
                   {dayjs(startDate).format("DD MMM")} -{" "}
                   {dayjs(endDate).format("DD MMM")}
-                </Typography>
+                </Typography> */}
               </Box>
 
               <Typography color="text.secondary" mb={2}>
