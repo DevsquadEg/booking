@@ -103,3 +103,13 @@ export interface IRoom {
   length: number | null;
   facilities: Facility[];
 }
+
+export interface UpdateCommentData {
+  comment: string;
+}
+
+export interface ReviewData {
+  rating: number;
+  message: string;
+  room: string;
+}

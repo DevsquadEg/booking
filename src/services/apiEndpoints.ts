@@ -125,32 +125,43 @@ export const PORTAL_URLS = {
     // Path to add a room to favorites
     ADD_TO_FAVORITES: `${baseURL}/portal/favorite-rooms`,
     // Path to remove a room from favorites
-   REMOVE_FROM_FAVORITES: (roomId: string): string =>`${baseURL}/portal/favorite-rooms/${roomId}`,
+    REMOVE_FROM_FAVORITES: (roomId: string) =>
+      `${baseURL}/portal/favorite-rooms/${roomId}`,
     // Path to get comments for a specific room
-    GET_ROOM_COMMENTS: (roomId: number): string =>
+    GET_ROOM_COMMENTS: (roomId: string) =>
       `${baseURL}/portal/Room-comments/${roomId}`, // As seen in Postman screenshot
     // Path to add a comment to a room
-    ADD_ROOM_COMMENT: `${baseURL}/portal/Room-comments`,
+    ADD_ROOM_COMMENT: (roomId: string) =>
+      `${baseURL}/portal/room-comments/${roomId}`,
     // Path to get reviews for a specific room
-    GET_ROOM_REVIEWS: (roomId: number): string =>
+    GET_ROOM_REVIEWS: (roomId: string) =>
       `${baseURL}/portal/Room-reviews/${roomId}`, // As seen in Postman screenshot
     // Path to add a review to a room
     ADD_ROOM_REVIEW: `${baseURL}/portal/Room-reviews`,
-      GET_ALL_ROOMS_FILTER:(pageNumber:number,pageSize:number,startDate:string,endDate:string ,capacity:number)=>`${baseURL}/portal/rooms/available?page=${pageNumber}&size=${pageSize}${startDate &&`&startDate=${startDate}`}${endDate &&`&endDate=${endDate}`}${capacity &&`&capacity=${capacity}`}`
-
+    GET_ALL_ROOMS_FILTER: (
+      pageNumber: number,
+      pageSize: number,
+      startDate: string,
+      endDate: string,
+      capacity: number
+    ) =>
+      `${baseURL}/portal/rooms/available?page=${pageNumber}&size=${pageSize}${
+        startDate && `&startDate=${startDate}`
+      }${endDate && `&endDate=${endDate}`}${
+        capacity && `&capacity=${capacity}`
+      }`,
   },
 
   // Booking Endpoints within Portal
-    BOOKING : {
+  BOOKING: {
     // Path to create a new booking by a portal user
     CREATE_BOOKING: `${baseURL}/portal/Booking`,
     // Path to get details of a specific booking by its ID for a portal user
-    GET_BOOKING: (id: number): string => `${baseURL}/portal/Booking/${id}`,
+    GET_BOOKING: (id: string) => `${baseURL}/portal/Booking/${id}`,
     // Path to update details of a specific booking by its ID for a portal user
-    UPDATE_BOOKING: (id: number): string => `${baseURL}/portal/Booking/${id}`,
+    UPDATE_BOOKING: (id: string) => `${baseURL}/portal/Booking/${id}`,
     // Path to cancel a specific booking by its ID for a portal user
-    CANCEL_BOOKING: (id: number): string =>
-      `${baseURL}/portal/Booking/${id}/cancel`,
+    CANCEL_BOOKING: (id: string) => `${baseURL}/portal/Booking/${id}/cancel`,
     // Path to get all bookings for the current portal user
     GET_MY_BOOKINGS: `${baseURL}/portal/Booking/my-bookings`, // Assuming a dedicated endpoint for user's own bookings
   },
@@ -160,13 +171,13 @@ export const PORTAL_URLS = {
     // Path to get all active ads for portal users
     GET_ALL_ADS: `${baseURL}/portal/Ads`,
     // Path to get a specific ad by its ID for portal users
-    GET_AD: (id: number): string => `${baseURL}/portal/Ads/${id}`,
+    GET_AD: (id: string) => `${baseURL}/portal/Ads/${id}`,
   },
 };
 
 // -----------------------------------------------------------------------------
 
- export const  PAYMENT = (bookingId:string)=>`${baseURL}/portal/booking/${bookingId}/pay`
-
+export const PAYMENT = (bookingId: string) =>
+  `${baseURL}/portal/booking/${bookingId}/pay`;
 
 export const PING_URL: string = `${baseURL}/Misc/Ping`; // Check if service is working

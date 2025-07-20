@@ -14,7 +14,7 @@ import { axiosInstance } from "@/services/axiosInstance";
 import { PORTAL_URLS } from "@/services/apiEndpoints";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { IRoom } from "@/interfaces/interfaces";
+import type { IRoom, UpdateCommentData } from "@/interfaces/interfaces";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
@@ -36,16 +36,10 @@ export default function RoomDetails() {
   const [comment, setComment] = useState("");
   const [room, setRoom] = useState<IRoom>();
   const [value, setValue] = useState<DateRange<Dayjs>>([null, null]);
-  const [capacityValue, setCapacityValue] = useState(1);
-  const [errorMessage , setErrorMessage] = useState<string | null>(null)
-   const[isLoading , setIsLoading] = useState(false)
-  const [capacityNumber , setCapacityNumber] = useState(1)
-const navigate = useNavigate()
-
-
-
-
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [capacityNumber, setCapacityNumber] = useState(1);
+  const navigate = useNavigate();
 
   const fallbackImages = [
     "https://i.pinimg.com/736x/e6/30/db/e630db9e931df9ea09a6090cf5dbfa89.jpg",
@@ -71,79 +65,90 @@ const navigate = useNavigate()
     }
   }
 
+  // =========== send comment ===========
+  const addRoomComment = async () => {
+    if (!id || !comment.trim()) return;
+
+    try {
+      const res = await axiosInstance.patch(
+        PORTAL_URLS.ROOMS.ADD_ROOM_COMMENT(id),
+        { comment }
+      );
+      console.log(res);
+      
+      toast.success("Comment sent successfully");
+      setComment(""); // امسح الـ input بعد الإرسال
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      toast.error("Failed to send comment");
+    }
+  };
+
+  // ============= payment ===========
+  const handlePaymentRoom = useCallback(
+    async function (e: React.FormEvent<HTMLFormElement>) {
+      console.log("hello");
+      e.preventDefault();
+      if (!loginData) {
+        toast("You Must Login First");
+        return;
+      }
+
+      if (!room || !value[0] || !value[1]) {
+        setErrorMessage("Please choose a valid date range.");
+        return;
+      }
+
+      const sDate = value[0].format("YYYY-MM-DD");
+      const eDate = value[1].format("YYYY-MM-DD");
+
+      const toastId = toast.loading("Waiting.....");
+      try {
+        setIsLoading(true);
+        const options = {
+          method: "POST",
+          url: PORTAL_URLS.BOOKING.CREATE_BOOKING,
+          data: {
+            startDate: sDate,
+            endDate: eDate,
+            room: id,
+            totalPrice: room.price * capacityNumber,
+          },
+        };
+
+        const { data } = await axiosInstance.request(options);
+
+        if (data.success) {
+          toast.success(data.message);
+          setErrorMessage(null);
+
+          setTimeout(() => {
+            navigate("/checkout", {
+              state: {
+                bookingId: data.data.booking._id,
+                userId: data.data.booking.user,
+              },
+            });
+          }, 1500);
+        }
+      } catch (error) {
+        if (isAxiosError(error)) {
+          toast.error(error?.response?.data.message || "Some thing go wrong ");
+          setErrorMessage(
+            error?.response?.data.message || "Some thing go wrong "
+          );
+        }
+      } finally {
+        setIsLoading(false);
+        toast.dismiss(toastId);
+      }
+    },
+    [room, capacityNumber, navigate, value, loginData, id]
+  );
+
   useEffect(() => {
     getRoomDetails();
   }, []);
-
-
-
-const handlePaymentRoom = useCallback( async function(e: React.FormEvent<HTMLFormElement>){
-  console.log("hello")
-  e.preventDefault()
-  if(!loginData){
-    toast("You Must Login First")
-    return;
-  }
-
-    if (!room || !value[0] || !value[1]) {
-    setErrorMessage("Please choose a valid date range.");
-    return;
-  }
-
- const sDate = value[0].format("YYYY-MM-DD");
-  const eDate = value[1].format("YYYY-MM-DD");
-
-
-      const toastId = toast.loading("Waiting.....")
-    try {
-     
-          setIsLoading(true)
-        const options = {
-          method:"POST",
-          url:PORTAL_URLS.BOOKING.CREATE_BOOKING,
-          data:{
-            "startDate":sDate,
-            "endDate": eDate,
-            "room": id,
-            "totalPrice": room.price * capacityNumber
-          }
-        }
-       
-        const {data} = await axiosInstance.request(options)
-
-                 if(data.success){
-                 toast.success(data.message)
-                     setErrorMessage(null)
-                                  
-                     setTimeout(() => {
-                    navigate("/checkout" , {state:{bookingId:data.data.booking._id ,userId:data.data.booking.user}})
-                 }, 1500);
-                 
-}
-
-              
-    } catch (error) {
-      if(isAxiosError(error)){
-       toast.error(error?.response?.data.message || "Some thing go wrong ")
-       setErrorMessage(error?.response?.data.message || "Some thing go wrong ")
-
-      }
-    }finally{
-      setIsLoading(false)
-      toast.dismiss(toastId)
-    }
-
-},[room  , capacityNumber ,navigate,value , loginData ,id])
-
-
-
-
-
-
-
-
-
-
 
   return (
     <>
@@ -291,66 +296,99 @@ const handlePaymentRoom = useCallback( async function(e: React.FormEvent<HTMLFor
                 </Typography>
               )}
               {/* Pick a Date */}
-              
+
               <Typography variant="subtitle2" color="text.secondary" mb={0.5}>
                 Pick a Date
               </Typography>
-<Box onSubmit={(e)=>{
-    handlePaymentRoom(e)
-}} component={"form"} textAlign={"center"}>
-  <Typography component={"label"}> Pick A Date</Typography>
-   <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DateRangePicker']}>
-       
-          <DateRangePicker
-        
-          format="YYYY-MM-DD"
-            value={value}
-            minDate={dayjs()}
-            onChange={(newValue) => setValue(newValue)}
-          />
-      </DemoContainer>
-    </LocalizationProvider>
+              <Box
+                onSubmit={(e) => {
+                  handlePaymentRoom(e);
+                }}
+                component={"form"}
+                textAlign={"center"}
+              >
+                <Typography component={"label"}> Pick A Date</Typography>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={["DateRangePicker"]}>
+                    <DateRangePicker
+                      format="YYYY-MM-DD"
+                      value={value}
+                      minDate={dayjs()}
+                      onChange={(newValue) => setValue(newValue)}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
 
-<Box component={"footer"} display={"flex"} gap={1} mt={1}>
-<Button  onClick={()=>{setCapacityNumber((current)=>current -1)}} disabled={capacityNumber === 1 || isLoading} color="warning" variant="contained"  sx={{fontSize:"30px" ,fontWeight:700}}>-</Button>
-    <TextField
-      sx={{
-    '& .MuiInputBase-input': {
-      textAlign: 'center', // Center the input text
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: '#ccc', // default border
-      },
-      '&:hover fieldset': {
-        borderColor: '#1976d2', // your custom hover color
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#1976d2', // focused state border color
-      },
-    },
-  }}
-    
-    
-     fullWidth value={capacityNumber}></TextField>
-<Button disabled={isLoading} variant="contained" onClick={()=> setCapacityNumber((current)=> current + 1)} sx={{fontSize:"30px" ,fontWeight:700}}>+</Button>
+                <Box component={"footer"} display={"flex"} gap={1} mt={1}>
+                  <Button
+                    onClick={() => {
+                      setCapacityNumber((current) => current - 1);
+                    }}
+                    disabled={capacityNumber === 1 || isLoading}
+                    color="warning"
+                    variant="contained"
+                    sx={{ fontSize: "30px", fontWeight: 700 }}
+                  >
+                    -
+                  </Button>
+                  <TextField
+                    sx={{
+                      "& .MuiInputBase-input": {
+                        textAlign: "center", // Center the input text
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "#ccc", // default border
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#1976d2", // your custom hover color
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#1976d2", // focused state border color
+                        },
+                      },
+                    }}
+                    fullWidth
+                    value={capacityNumber}
+                  ></TextField>
+                  <Button
+                    disabled={isLoading}
+                    variant="contained"
+                    onClick={() => setCapacityNumber((current) => current + 1)}
+                    sx={{ fontSize: "30px", fontWeight: 700 }}
+                  >
+                    +
+                  </Button>
+                </Box>
 
-</Box>
+                <Typography mt={4} component={"p"} color="#B0B0B0">
+                  {" "}
+                  You Will Pay{" "}
+                  <Typography component={"span"} color="#152C5B">
+                    {" "}
+                    {room && room.price * capacityNumber} $ USD
+                  </Typography>{" "}
+                  Per
+                  <Typography component={"span"} color="#152C5B">
+                    {" "}
+                    {capacityNumber} Persone
+                  </Typography>
+                </Typography>
 
-
-
-
-
-
-    <Typography mt={4} component={"p"} color="#B0B0B0"> You Will Pay <Typography component={"span"} color="#152C5B"> {room&& room.price * capacityNumber} $ USD</Typography> Per 
-    <Typography component={"span"} color="#152C5B"> {capacityNumber} Persone</Typography>
-    </Typography>
-
-    {errorMessage && <Typography mt={4} component={"p"} color="#B0B0B0">{errorMessage}</Typography>}
-   <Button disabled={isLoading} type="submit" variant="contained" sx={{mt:"6px"}}>Continue Book</Button>
-</Box>
-
+                {errorMessage && (
+                  <Typography mt={4} component={"p"} color="#B0B0B0">
+                    {errorMessage}
+                  </Typography>
+                )}
+                <Button
+                  disabled={isLoading}
+                  type="submit"
+                  variant="contained"
+                  sx={{ mt: "6px" }}
+                >
+                  Continue Book
+                </Button>
+              </Box>
             </Box>
           </Grid>
         </Grid>
@@ -445,6 +483,7 @@ const handlePaymentRoom = useCallback( async function(e: React.FormEvent<HTMLFor
               />
 
               <Button
+                onClick={addRoomComment}
                 size="large"
                 variant="contained"
                 sx={{
