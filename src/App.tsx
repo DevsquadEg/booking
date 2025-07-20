@@ -32,6 +32,17 @@ import RoomContextProvider from "./store/RoomsContext/Rooms.context";
 import { ThemeProvider } from "@emotion/react";
 import type {} from "@mui/x-data-grid/themeAugmentation";
 import theme from "./services/theme";
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+import CheckOut from "./components/CheckOut/CheckOut";
+import  SuccessPayment from "./components/common/SuccessPayment/SuccessPayment";
+
+
+
+const stripePromise = loadStripe('pk_test_51OTjURBQWp069pqTmqhKZHNNd3kMf9TTynJtLJQIJDOSYcGM7xz3DabzCzE7bTxvuYMY0IX96OHBjsysHEKIrwCK006Mu7mKw8');
+
+
+
 
 function App() {
   const routes = createBrowserRouter([
@@ -73,6 +84,14 @@ function App() {
         {
           path: PATHS.ROOM_DETAILS_PATH,
           element: <RoomDetails />,
+        },
+        {
+          path:"/checkout",
+          element: <CheckOut/>,
+        },
+        {
+          path:"/success-payment",
+          element: <SuccessPayment/>,
         },
         { path: PATHS.FAV_LIST_PATH, element: <FavList /> },
         { path: PATHS.PAYMENT_PATH, element: <Payment /> },
@@ -151,7 +170,10 @@ function App() {
     <>
       <ThemeProvider theme={theme(mode)}>
         <RoomContextProvider>
+           <Elements stripe={stripePromise}>
+
           <RouterProvider router={routes}></RouterProvider>
+          </Elements>
         </RoomContextProvider>
       </ThemeProvider>
       <Toaster />

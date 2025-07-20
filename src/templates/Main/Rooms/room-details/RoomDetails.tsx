@@ -12,8 +12,8 @@ import RoomHeader from "../RoomHeader/RoomHeader";
 import { Add, BedOutlined, CalendarMonth, Remove } from "@mui/icons-material";
 import { axiosInstance } from "@/services/axiosInstance";
 import { PORTAL_URLS } from "@/services/apiEndpoints";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import type { IRoom } from "@/interfaces/interfaces";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -23,6 +23,8 @@ import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/en-gb";
 import type { DateRange } from "node_modules/@mui/x-date-pickers-pro/esm/models/range";
 import { useAuth } from "@/store/AuthContext/AuthContext";
+import toast from "react-hot-toast";
+import { isAxiosError } from "axios";
 
 export default function RoomDetails() {
   const { id } = useParams<string>();
@@ -35,6 +37,16 @@ export default function RoomDetails() {
   const [room, setRoom] = useState<IRoom>();
   const [value, setValue] = useState<DateRange<Dayjs>>([null, null]);
   const [capacityValue, setCapacityValue] = useState(1);
+  const [errorMessage , setErrorMessage] = useState<string | null>(null)
+   const[isLoading , setIsLoading] = useState(false)
+  const [capacityNumber , setCapacityNumber] = useState(1)
+const navigate = useNavigate()
+
+
+
+
+
+
   const fallbackImages = [
     "https://i.pinimg.com/736x/e6/30/db/e630db9e931df9ea09a6090cf5dbfa89.jpg",
     "https://i.pinimg.com/736x/11/0f/f5/110ff583b861e803f37bdf48380c0c4d.jpg",
@@ -62,6 +74,76 @@ export default function RoomDetails() {
   useEffect(() => {
     getRoomDetails();
   }, []);
+
+
+
+const handlePaymentRoom = useCallback( async function(e: React.FormEvent<HTMLFormElement>){
+  console.log("hello")
+  e.preventDefault()
+  if(!loginData){
+    toast("You Must Login First")
+    return;
+  }
+
+    if (!room || !value[0] || !value[1]) {
+    setErrorMessage("Please choose a valid date range.");
+    return;
+  }
+
+ const sDate = value[0].format("YYYY-MM-DD");
+  const eDate = value[1].format("YYYY-MM-DD");
+
+
+      const toastId = toast.loading("Waiting.....")
+    try {
+     
+          setIsLoading(true)
+        const options = {
+          method:"POST",
+          url:PORTAL_URLS.BOOKING.CREATE_BOOKING,
+          data:{
+            "startDate":sDate,
+            "endDate": eDate,
+            "room": id,
+            "totalPrice": room.price * capacityNumber
+          }
+        }
+       
+        const {data} = await axiosInstance.request(options)
+
+                 if(data.success){
+                 toast.success(data.message)
+                     setErrorMessage(null)
+                                  
+                     setTimeout(() => {
+                    navigate("/checkout" , {state:{bookingId:data.data.booking._id ,userId:data.data.booking.user}})
+                 }, 1500);
+                 
+}
+
+              
+    } catch (error) {
+      if(isAxiosError(error)){
+       toast.error(error?.response?.data.message || "Some thing go wrong ")
+       setErrorMessage(error?.response?.data.message || "Some thing go wrong ")
+
+      }
+    }finally{
+      setIsLoading(false)
+      toast.dismiss(toastId)
+    }
+
+},[room  , capacityNumber ,navigate,value , loginData ,id])
+
+
+
+
+
+
+
+
+
+
 
   return (
     <>
@@ -209,118 +291,66 @@ export default function RoomDetails() {
                 </Typography>
               )}
               {/* Pick a Date */}
+              
               <Typography variant="subtitle2" color="text.secondary" mb={0.5}>
                 Pick a Date
               </Typography>
-              <Box
-                display="flex"
-                // alignItems="center"
-                gap={1}
-                sx={{
-                  borderRadius: 1,
-                  // px: 2,
-                  // pt: 1,
-                  mb: 2,
-                }}
-              >
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={["DateRangePicker"]}>
-                    <DateRangePicker
-                      sx={{
-                        bgcolor: "#f5f5f5",
-                        width: "100%",
-                        "& .MuiInputAdornment-root": {
-                          order: -1,
-                          marginRight: "16px",
-                          marginLeft: 0,
-                          bgcolor: "#f5f5f5",
-                        },
-                        "& input": {
-                          textAlign: "center",
-                        },
-                      }}
-                      format="DD MMM"
-                      value={value}
-                      minDate={dayjs()}
-                      onChange={(newValue) => setValue(newValue)}
-                    />
-                  </DemoContainer>
-                </LocalizationProvider>
-              </Box>
+<Box onSubmit={(e)=>{
+    handlePaymentRoom(e)
+}} component={"form"} textAlign={"center"}>
+  <Typography component={"label"}> Pick A Date</Typography>
+   <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer components={['DateRangePicker']}>
+       
+          <DateRangePicker
+        
+          format="YYYY-MM-DD"
+            value={value}
+            minDate={dayjs()}
+            onChange={(newValue) => setValue(newValue)}
+          />
+      </DemoContainer>
+    </LocalizationProvider>
 
-              {/* capacity input */}
-              <Typography
-                variant="subtitle2"
-                color="text.secondary"
-                mb={0.5}
-                mt={3}
-              >
-                Number Of Person
-              </Typography>
-              <Box component={"footer"} display={"flex"} gap={1} mt={1} mb={2}>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setCapacityValue((current) => current - 1);
-                  }}
-                  disabled={capacityValue === 1}
-                  color="warning"
-                >
-                  <Remove />
-                </Button>
-                <TextField
-                  sx={{
-                    "& .MuiInputBase-input": {
-                      textAlign: "center", // Center the input text
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "#ccc", // default border
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "#1976d2", // your custom hover color
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#1976d2", // focused state border color
-                      },
-                    },
-                  }}
-                  fullWidth
-                  value={capacityValue}
-                ></TextField>
-                <Button
-                  variant="contained"
-                  onClick={() => setCapacityValue((current) => current + 1)}
-                >
-                  <Add />
-                </Button>
-              </Box>
+<Box component={"footer"} display={"flex"} gap={1} mt={1}>
+<Button  onClick={()=>{setCapacityNumber((current)=>current -1)}} disabled={capacityNumber === 1 || isLoading} color="warning" variant="contained"  sx={{fontSize:"30px" ,fontWeight:700}}>-</Button>
+    <TextField
+      sx={{
+    '& .MuiInputBase-input': {
+      textAlign: 'center', // Center the input text
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#ccc', // default border
+      },
+      '&:hover fieldset': {
+        borderColor: '#1976d2', // your custom hover color
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#1976d2', // focused state border color
+      },
+    },
+  }}
+    
+    
+     fullWidth value={capacityNumber}></TextField>
+<Button disabled={isLoading} variant="contained" onClick={()=> setCapacityNumber((current)=> current + 1)} sx={{fontSize:"30px" ,fontWeight:700}}>+</Button>
 
-              <Typography color="text.secondary" mb={2}>
-                You will pay <strong>$480 USD</strong> per 2 Person
-              </Typography>
+</Box>
 
-              <Box display={"flex"} justifyContent="center" my={2}>
-                <Button
-                  size="large"
-                  variant="contained"
-                  sx={{
-                    borderRadius: 1,
-                    textTransform: "none",
-                    bgcolor: "var(--blue-color)",
-                    px: 6,
-                    py: 1.5,
-                    mt: 2,
-                    transition: "all 0.5s ease",
-                    "&:hover": {
-                      bgcolor: "#1a73e8",
-                      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-                    },
-                  }}
-                >
-                  Continue Book
-                </Button>
-              </Box>
+
+
+
+
+
+    <Typography mt={4} component={"p"} color="#B0B0B0"> You Will Pay <Typography component={"span"} color="#152C5B"> {room&& room.price * capacityNumber} $ USD</Typography> Per 
+    <Typography component={"span"} color="#152C5B"> {capacityNumber} Persone</Typography>
+    </Typography>
+
+    {errorMessage && <Typography mt={4} component={"p"} color="#B0B0B0">{errorMessage}</Typography>}
+   <Button disabled={isLoading} type="submit" variant="contained" sx={{mt:"6px"}}>Continue Book</Button>
+</Box>
+
             </Box>
           </Grid>
         </Grid>

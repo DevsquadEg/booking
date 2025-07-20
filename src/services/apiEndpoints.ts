@@ -141,7 +141,7 @@ export const PORTAL_URLS = {
   },
 
   // Booking Endpoints within Portal
-  BOOKING: {
+    BOOKING : {
     // Path to create a new booking by a portal user
     CREATE_BOOKING: `${baseURL}/portal/Booking`,
     // Path to get details of a specific booking by its ID for a portal user
@@ -165,5 +165,8 @@ export const PORTAL_URLS = {
 };
 
 // -----------------------------------------------------------------------------
+
+ export const  PAYMENT = (bookingId:string)=>`${baseURL}/portal/booking/${bookingId}/pay`
+
 
 export const PING_URL: string = `${baseURL}/Misc/Ping`; // Check if service is working
