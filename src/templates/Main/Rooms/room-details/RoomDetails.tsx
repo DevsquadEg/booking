@@ -65,6 +65,29 @@ export default function RoomDetails() {
     }
   }
 
+  // ==========    add room review ============
+  const addRoomReview = async () => {
+    if (!id || !message.trim() || !rating) {
+      toast.error("Please add rating and message");
+      return;
+    }
+
+    try {
+      const res = await axiosInstance.post(PORTAL_URLS.ROOMS.ADD_ROOM_REVIEW, {
+        roomId: id,
+        rating: rating,
+        review: message,
+      });
+
+      toast.success("Review sent successfully");
+      setMessage("");
+      setRating(null);
+    } catch (error) {
+      console.error("Error sending review:", error);
+      toast.error("Failed to send review");
+    }
+  };
+
   // =========== send comment ===========
   const addRoomComment = async () => {
     if (!id || !comment.trim()) return;
@@ -72,10 +95,10 @@ export default function RoomDetails() {
     try {
       const res = await axiosInstance.patch(
         PORTAL_URLS.ROOMS.ADD_ROOM_COMMENT(id),
-        { comment }
+        comment
       );
       console.log(res);
-      
+
       toast.success("Comment sent successfully");
       setComment(""); // امسح الـ input بعد الإرسال
     } catch (error) {
@@ -434,6 +457,7 @@ export default function RoomDetails() {
               />
 
               <Button
+                onClick={addRoomReview}
                 size="large"
                 variant="contained"
                 sx={{

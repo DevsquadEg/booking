@@ -134,10 +134,9 @@ export const PORTAL_URLS = {
     ADD_ROOM_COMMENT: (roomId: string) =>
       `${baseURL}/portal/room-comments/${roomId}`,
     // Path to get reviews for a specific room
-    GET_ROOM_REVIEWS: (roomId: string) =>
-      `${baseURL}/portal/Room-reviews/${roomId}`, // As seen in Postman screenshot
+    GET_ROOM_REVIEWS: `${baseURL}/portal/room-reviews`, // As seen in Postman screenshot
     // Path to add a review to a room
-    ADD_ROOM_REVIEW: `${baseURL}/portal/Room-reviews`,
+    ADD_ROOM_REVIEW: `${baseURL}/portal/room-reviews`,
     GET_ALL_ROOMS_FILTER: (
       pageNumber: number,
       pageSize: number,
