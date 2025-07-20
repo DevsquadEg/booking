@@ -1,0 +1,14 @@
+{
+  "start_booking": "ابدأ الحجز",
+  "per_night": "لكل ليلة",
+  "discount": "خصم {{percent}}%",
+  "pick_date": "اختر التاريخ",
+  "number_of_person": "عدد الأشخاص",
+  "continue_booking": "استمر في الحجز",
+  "message": "رسالتك",
+  "rate": "تقييم",
+  "send": "إرسال",
+  "add_your_comment": "أضف تعليقك",
+  "you_will_pay": "ستدفع {{price}} {{currency}} لكل {{persons}} شخص",
+  "add_comment": "اضف تعليقك"
+}

@@ -23,8 +23,10 @@ import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/en-gb";
 import type { DateRange } from "node_modules/@mui/x-date-pickers-pro/esm/models/range";
 import { useAuth } from "@/store/AuthContext/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export default function RoomDetails() {
+  const { t, i18n } = useTranslation();
   const { id } = useParams<string>();
   const { loginData } = useAuth();
   console.log("Login Data:", loginData?.role);
@@ -65,6 +67,8 @@ export default function RoomDetails() {
 
   return (
     <>
+      <button onClick={() => i18n.changeLanguage("ar")}>العربية</button>
+      <button onClick={() => i18n.changeLanguage("en")}>English</button>
       <Container maxWidth="lg" sx={{ my: 4 }}>
         <RoomHeader roomName={room?.roomNumber} />
         {/* Room details content goes here */}
@@ -184,7 +188,7 @@ export default function RoomDetails() {
                 fontWeight="500"
                 mb={1}
               >
-                Start Booking
+                {t("start_booking")}
               </Typography>
 
               <Typography
@@ -200,17 +204,17 @@ export default function RoomDetails() {
                   component="span"
                   color="text.secondary"
                 >
-                  per night
+                  {t("per_night")}
                 </Typography>
               </Typography>
               {room?.discount && (
                 <Typography color="error" mb={4} mt={1} fontSize={14}>
-                  Discount {room?.discount || 0}% Off
+                  {t("discount", { percent: room.discount })}
                 </Typography>
               )}
               {/* Pick a Date */}
               <Typography variant="subtitle2" color="text.secondary" mb={0.5}>
-                Pick a Date
+                {t("pick_date")}
               </Typography>
               <Box
                 display="flex"
@@ -255,7 +259,7 @@ export default function RoomDetails() {
                 mb={0.5}
                 mt={3}
               >
-                Number Of Person
+                {t("number_of_person")}
               </Typography>
               <Box component={"footer"} display={"flex"} gap={1} mt={1} mb={2}>
                 <Button
@@ -297,7 +301,11 @@ export default function RoomDetails() {
               </Box>
 
               <Typography color="text.secondary" mb={2}>
-                You will pay <strong>$480 USD</strong> per 2 Person
+                {t("you_will_pay", {
+                  price: 480,
+                  currency: "USD",
+                  persons: 2,
+                })}
               </Typography>
 
               <Box display={"flex"} justifyContent="center" my={2}>
@@ -318,7 +326,8 @@ export default function RoomDetails() {
                     },
                   }}
                 >
-                  Continue Book
+                  {t("continue_booking")}
+
                 </Button>
               </Box>
             </Box>
@@ -338,7 +347,7 @@ export default function RoomDetails() {
           >
             {/* Left Side: Rating & Message */}
             <Grid size={{ xs: 12, md: 6 }}>
-              <Typography mb={1}>Rate</Typography>
+              <Typography mb={1}>{t("rate")}</Typography>
               <Rating
                 name="rating"
                 value={rating}
@@ -348,7 +357,7 @@ export default function RoomDetails() {
               />
 
               <Typography mt={3} mb={1}>
-                Message
+                {t("message")}
               </Typography>
               <TextField
                 fullWidth
@@ -382,7 +391,7 @@ export default function RoomDetails() {
                   },
                 }}
               >
-                Rate
+                {t("rate")}
               </Button>
             </Grid>
 
@@ -397,7 +406,7 @@ export default function RoomDetails() {
 
             {/* Right Side: Comment */}
             <Grid size={{ xs: 12, md: 5.5 }} sx={{ mt: { xs: 4, md: 0 } }}>
-              <Typography mb={1}>Add Your Comment</Typography>
+              <Typography mb={1}>{t("add_comment")}</Typography>
               <TextField
                 fullWidth
                 multiline
@@ -431,7 +440,7 @@ export default function RoomDetails() {
                   },
                 }}
               >
-                Send
+                {t("send")}
               </Button>
             </Grid>
           </Grid>

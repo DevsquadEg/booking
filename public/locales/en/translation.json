@@ -1,0 +1,14 @@
+{
+  "start_booking": "Start Booking",
+  "per_night": "per night",
+  "discount": "Discount {{percent}}%",
+  "pick_date": "Pick a date",
+  "number_of_person": "Number of persons",
+  "continue_booking": "Continue Booking",
+  "message": "Message",
+  "rate": "Rate",
+  "send": "Send",
+  "add_your_comment": "Add Your Comment",
+  "you_will_pay": "You will pay ${{price}} {{currency}} per {{persons}} person",
+  "add_comment":"add comment"
+}
