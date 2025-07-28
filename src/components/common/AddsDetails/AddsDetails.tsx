@@ -13,8 +13,8 @@ import GroupIcon from "@mui/icons-material/Group";
 import DiscountIcon from "@mui/icons-material/Discount";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { RoomDetailsProps } from "../../../../Interfaces/Adds.interface";
 import { useMemo } from "react";
+import type { RoomDetailsProps } from "@/interfaces/Adds.interface";
 
 export default function AddsDetails({
   open,
