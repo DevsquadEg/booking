@@ -324,7 +324,7 @@ const Navbar = () => {
 
                 <ListItemButton
                   component={RouterLink}
-                  to="/explore"
+                  to="/rooms"
                   onClick={() => setDrawerOpen(false)}
                 >
                   <ListItemText primary="Explore" />
@@ -332,7 +332,7 @@ const Navbar = () => {
 
                 <ListItemButton
                   component={RouterLink}
-                  to="/reviews"
+                  to=""
                   onClick={() => setDrawerOpen(false)}
                 >
                   <ListItemText primary="Reviews" />
@@ -340,7 +340,7 @@ const Navbar = () => {
 
                 <ListItemButton
                   component={RouterLink}
-                  to="/favorites"
+                  to="/fav-list"
                   onClick={() => setDrawerOpen(false)}
                 >
                   <ListItemText primary="Favorites" />
