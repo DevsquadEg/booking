@@ -2,9 +2,9 @@ import { Box, Typography, Rating, IconButton } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
-import t1 from "../../../../public/photo-1497436072909-60f360e1d4b1.jpeg";
-import t2 from "../../../../public/HD-wallpaper-beautiful-sea-view-nature.jpg";
-import t3 from "../../../../public/photo-1518623489648-a173ef7824f3.jpeg";
+import t1 from "/photo-1497436072909-60f360e1d4b1.jpeg";
+import t2 from "/HD-wallpaper-beautiful-sea-view-nature.jpg";
+import t3 from "/photo-1518623489648-a173ef7824f3.jpeg";
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 

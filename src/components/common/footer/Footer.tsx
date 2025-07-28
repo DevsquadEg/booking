@@ -4,7 +4,7 @@ import {
   Typography
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import logoMain from '../../../../public/color-logo-Ci_5FMX-.svg';
+import logoMain from '/color-logo-Ci_5FMX-.svg';
 
 const FooterContainer = styled(Box)(({ theme }) => ({
   backgroundColor: "#fff",

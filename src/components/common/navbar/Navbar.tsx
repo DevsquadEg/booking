@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
-import logoMain from "../../../../public/color-logo-Ci_5FMX-.svg";
+import logoMain from "/color-logo-Ci_5FMX-.svg";
 import { useFavorite } from "@/store/AuthContext/FavoriteContext";
 import { Link as RouterLink } from "react-router-dom";
 import { Link as MUILink } from "@mui/material";
